@@ -4,7 +4,7 @@ class Cart{
     private $cartID;
     private $cartTotal;
     
-    public function __construct($userID)
+    public function __construct(userID)
 	{
         $this->itemsInCart = [];
         $this->cartTotal = 0;
@@ -67,7 +67,7 @@ class Cart{
         return($this->cartTotal);
     }
 	
-	public function deleteItemsFromCart ()
+	public function deleteItemsFromCart (itemID)
 	{
 		require_once 'login.php';
         $conn = new mysqli($hn, $un, $pw, $db);
@@ -79,14 +79,25 @@ class Cart{
 		if(!result) die(conn->connection_error);
 	}
 	
-	public function addItemsToCart ()
+	public function addItemsToCart (itemID)
 	{
 		require_once 'login.php';
         $conn = new mysqli($hn, $un, $pw, $db);
         if($conn->connect_error)
             die($conn->connect_error);
-        $query = "INSERT INTO cart_items VALUES (".$cartID.", ".$userID.", 
-		         ".$itemID.", 1".$priceTotal.")";
+		if($itemIDExists)
+		{
+			$query0 = "SELECT quantity FROM cart_items WHERE itemID = ".$itemID;
+			$quantity = $conn ->query($query0);
+			if(!quantity) die (conn->connection_error);
+			$quantity += 1;
+			$query = "UPDATE cart_items SET quantity = ".$quantity." WHERE userID = ".$userID; 
+		}
+		else
+		{
+			$query = "INSERT INTO cart_items VALUES (".$cartID.", ".$userID.", 
+					".$itemID.", 1".$priceTotal.")";
+		}
 		$result = $conn ->query($query);
 		if(!result) die(conn->connection_error);
 	}
