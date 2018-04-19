@@ -6,18 +6,45 @@ class Cart{
     
     public function __construct(userID)
 	{
-        $this->itemsInCart = [];
-        $this->cartTotal = 0;
 		require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if($conn->connect_error)
-            die($conn->connect_error);
-        $query = "INSERT INTO cart VALUES (".$userID.")";
-		$result = $conn ->query($query);
-		if(!result) die(conn->connection_error);
-		$query1 = "SELECT cartID FROM cart WHERE userID = ".$userID;
-		$cartID = $conn ->query($query1);
-		if(!cartID) die(conn->connection_error);
+		$conn = new mysqli($hn, $un, $pw, $db);
+		if($conn->connect_error)
+			die($conn->connect_error);
+		
+		$query0 = "SELECT cartID FROM cart WHERE userID = ".$userID;
+		$cartExists = $conn ->query($query0);
+		if(!cartExists)
+		{
+			$this->itemsInCart = [];
+			$this->cartTotal = 0;
+			
+			$query = "INSERT INTO cart VALUES (".$userID.")";
+			$result = $conn ->query($query);
+			
+			if(!result) die(conn->connection_error);
+			$query1 = "SELECT cartID FROM cart WHERE userID = ".$userID;
+			
+			$cartID = $conn ->query($query1);
+			if(!cartID) die(conn->connection_error);
+		}
+		else
+		{
+			$query2 = "SELECT  
+			
+			$rows = $result->num_rows;
+
+			for ($j = 0 ; $j < $rows ; ++$j)
+			{
+				$result->data_seek($j);
+				$row = $result->fetch_array(MYSQLI_ASSOC);
+
+				echo 'Author: '   . $row['author']   . '<br>';
+				echo 'Title: '    . $row['title']    . '<br>';
+				echo 'Category: ' . $row['category'] . '<br>';
+				echo 'Year: '     . $row['year']     . '<br>';
+				echo 'ISBN: '     . $row['isbn']     . '<br><br>';
+			}
+		}
     }
     
     public function deleteCart(userID)
