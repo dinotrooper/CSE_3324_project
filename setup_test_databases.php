@@ -1,7 +1,7 @@
 <?php
 
 require_once 'login.php';
-$connection = new mysqli($hn, $un, $pw);
+$connection = new mysqli('localhost', 'root', '', '');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>"); 
     die();
@@ -15,7 +15,7 @@ echo("Successfully created database group7_project_database. <br>");
 
 $connection->close();
 
-$connection = new mysqli($hn, $un, $pw, 'group7_project_database');
+$connection = new mysqli('localhost', 'root', '', 'group7_project_database');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>");
     die();
@@ -145,6 +145,7 @@ sendQuery($connection, $query);
 checkTableColumns($connection, 'item_comments', 4);
 
 echo("Database successfully created! Have a great day! :D");
+$connection.close();
 
 function checkTableColumns($connection, $table, $num_columns) {
     $query = "SHOW COLUMNS FROM $table";
