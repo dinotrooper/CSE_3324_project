@@ -21,7 +21,7 @@ class Cart{
 		if(!$cartIDEXists)
 		{
 		    //if it doesn't, create a new cart w/ the userID
-			$query = "INSERT INTO cart VALUES (".$userID.")";
+			$query = "INSERT INTO cart VALUES ('$userID')"; //TODO: verify this is the right way to format the variable into the insert query
 			$result = $conn->query($query);
 			if(!$result) die($conn->error);
 			
@@ -79,9 +79,11 @@ class Cart{
 		
 		if($isAdmin)
 		{
-			$query = "DELETE FROM cart WHERE userID = $userID";
+			$query = "DELETE FROM cart WHERE cartID = $this->cartID";
 			$result = $conn ->query($query);
 			if(!$result) die($conn->error);
+			
+			//TODO: do we need to set all class members to NULL?
 		}
 		//since the userID wasn't an admin check to see if the userID is the owner of the cart
 		else
@@ -96,7 +98,7 @@ class Cart{
 		    //compare the user of the cart and cartID
 			if($cartUser == $userID)
 			{
-				$query = "DELETE FROM cart WHERE userID = $userID"; 
+				$query = "DELETE FROM cart WHERE cartID = $this->cartID"; 
 				$result = $conn ->query($query);
 				if(!$result) die($conn->error);
 			}
@@ -123,7 +125,7 @@ class Cart{
 	public function deleteItemsFromCart($itemID)
 	{
 	    //initialize local variables
-	    $itemInCart = 0;
+	    $itemIsInCart = 0;
 	    //connect to database
 		require_once 'login.php';
         $conn = new mysqli($hn, $un, $pw, $db);
@@ -141,10 +143,10 @@ class Cart{
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $tempItemID = $row['itemID'];
-            if ($tempItemID == $itemID) $itemInCart = 1;
+            if ($tempItemID == $itemID) $itemIsInCart = 1;
         }
         
-        if ($itemInCart) {
+        if ($itemIsInCart) {
             //reduce the cart total by the price of the item times the quantity of the item
             //get value of item
             $query = "SELECT itemPrice FROM items WHERE itemID = $itemID";
@@ -175,16 +177,31 @@ class Cart{
         
         //check to see if item exists in items table
         $query = "SELECT * FROM items WHERE itemID = $itemID";
-        $itemIDExists = $conn->query($query); //does the MYSQL database return anything if the query can't pull data?
-		if($itemIDExists)
+        $itemIDExists = $conn->query($query); //TODO: does the MYSQL database return anything if the query can't pull data?
+
+        
+		if ($itemIDExists)
 		{
 		    //check to see if the item is in the cart's associate array
 		    if(isset($this->itemsInCart["$itemID"])) {
 		        //if it is in cart, update the associate array and the cart_items table
                 $this->itemsInCart["$itemID"] += 1;
-                $query = "UPDATE cart_items SET quantity = ".$this->itemsInCart["$itemID"]." WHERE cartID = $this->cartID AND itemID = $itemID"; //TODO: verify that this query is correct
+                $query = "UPDATE cart_items SET cartQuantity = ".$this->itemsInCart["$itemID"]." WHERE cartID = $this->cartID AND itemID = $itemID"; //TODO: verify that this query is correct
                 $result = $conn->query($query);
                 if (!$result) die($conn->error);
+                
+                //get item price and quantity from the itemIDExists query made eariler
+                $itemIDExists->data_seek(0);
+                $itemPrice = $itemIDExists->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+                
+                //update the totalPrice field of the row in cart_items table
+                $itemTotal = $itemPrice * $this->itemsInCart["$itemID"];
+                $query = "UPDATE cart_items SET priceTotal = $itemTotal  WHERE cartID = $this->cartID AND itemID = $itemID"; //TODO: verify that this query is correct
+                $result = $conn->query($query);
+                if (!$result) die($conn->error);
+                
+                //update the cart total price
+                $this->cartTotal += $itemPrice;
 		    }
 		    else {
 		        //if it is not in cart, add it to the associate array and add a row into the cart_items table
@@ -194,6 +211,7 @@ class Cart{
 		        $result = $conn->query($query);
 		        if (!$result) die($conn->error);
 		        $result->data_seek(0);
+		        
 		        $userID = $result->fetch_array(MYSQLI_ASSOC)['userID'];
 		        
 		        //then get item price from the itemIDExists query made earlier
@@ -201,9 +219,12 @@ class Cart{
 		        $itemPrice = $itemIDExists->fetch_array(MYSQLI_ASSOC)['itemPrice'];
 		        
 		        //insert the values into the cart_items table
-			    $query = "INSERT INTO cart_items(cartID, userID, itemID, cartQuantity, priceTotal) VALUES($this->cartID, $userID, $itemID, 1, $itemPrice)";//TODO: verify that the one in the query doesn't need quotes
+			    $query = "INSERT INTO cart_items(cartID, userID, itemID, cartQuantity, priceTotal) VALUES ('$this->cartID', '$userID', '$itemID', 1, '$itemPrice')";//TODO: verify that the numerical one in the query doesn't need quotes
 			    $result = $conn ->query($query);
 			    if(!$result) die ($conn->error);
+			    
+			    //add new item's price to cart total
+			    $this->cartTotal += $itemPrice;
 		    }
 		}
 		//disconnect from database
