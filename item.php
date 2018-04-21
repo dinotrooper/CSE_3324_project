@@ -85,7 +85,7 @@ class Item {
         
         //create new item in the items table
         $query = "INSERT INTO items(userID, itemImage, itemName, itemDescription, itemQuantity, itemCategory, itemPrice) 
-                 VALUES ($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice)";
+                 VALUES ($userID, '$itemName', '$itemDescription', '$itemCategory', '$itemImageSrc', $itemQuantity, $itemPrice)";
         $result = $conn->query($query);
         if (!$result) die($conn->error);
         
@@ -182,7 +182,6 @@ class Item {
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
         
-        
         if($isAdmin)
         {
             $query = "DELETE FROM items WHERE itemID = $this->itemID";
@@ -220,7 +219,7 @@ class Item {
         if($conn->connect_error) die($conn->connect_error);
         
         //create and send the query to create the rating in the item_rating table
-        $query = "INSERT INTO item_ratings(itemID, userID, ratingNumber) VALUES ('$this->itemID','.$userID','.$rating.')";
+        $query = "INSERT INTO item_ratings(itemID, userID, ratingNumber) VALUES ($this->itemID, $userID, $rating)";
         $result = $conn ->query($query);
         if(!$result) die($conn->error);
         
@@ -238,7 +237,7 @@ class Item {
         {
             $result->data_seek($j);
             $tempID = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
-            if ($tempID > $this->itemID) $ratingID = $tempID;
+            if ($tempID > $ratingID) $ratingID = $tempID;
         }
         
         $this->ratings[] = $ratingID;
@@ -262,7 +261,6 @@ class Item {
         $result = $conn->query($query);
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
-        
         
         if($isAdmin)
         {
@@ -301,7 +299,7 @@ class Item {
         if($conn->connect_error) die($conn->connect_error);
         
         //create and send the query to create the rating in the item_rating table
-        $query = "INSERT INTO item_comments(itemID, userID, commentText) VALUES ('$this->itemID','.$userID','.$comment.')";
+        $query = "INSERT INTO item_comments(itemID, userID, commentText) VALUES ($this->itemID, $userID,'$comment')";
         $result = $conn ->query($query);
         if(!$result) die($conn->error);
         
@@ -319,7 +317,7 @@ class Item {
         {
             $result->data_seek($j);
             $tempID = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
-            if ($tempID > $this->itemID) $commentID = $tempID;
+            if ($tempID > $commentID) $commentID = $tempID;
         }
         
         $this->comments[] = $commentID;
@@ -343,8 +341,7 @@ class Item {
         $result = $conn->query($query);
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
-        
-        
+                
         if($isAdmin)
         {
             $query = "DELETE FROM item_comments WHERE commentID = $commentID";
