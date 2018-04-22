@@ -78,11 +78,15 @@ class Cart{
 				
 		if($isAdmin)
 		{
+		    //TODO: remove all items associated with this cartID
+		    //from the cart_items table
+		    
+		    //finally delete row from cart table
 			$query = "DELETE FROM cart WHERE cartID = $this->cartID";
 			$result = $conn ->query($query);
 			if(!$result) die($conn->error);
 			
-			//TODO: do we need to set all class members to NULL?
+			//TODO:set all class members to NULL?
 		}
 		//since the userID wasn't an admin check to see if the userID is the owner of the cart
 		else
@@ -97,9 +101,15 @@ class Cart{
 		    //compare the user of the cart and cartID
 			if($cartUser == $userID)
 			{
-				$query = "DELETE FROM cart WHERE cartID = $this->cartID"; 
-				$result = $conn ->query($query);
-				if(!$result) die($conn->error);
+			    //TODO: remove all items associated with this cartID
+			    //from the cart_items table
+			    
+			    //finally delete row from cart table
+			    $query = "DELETE FROM cart WHERE cartID = $this->cartID";
+			    $result = $conn ->query($query);
+			    if(!$result) die($conn->error);
+			    
+			    //TODO:set all class members to NULL?
 			}
 		}
         //disconnect from database

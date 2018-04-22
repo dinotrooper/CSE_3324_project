@@ -28,12 +28,12 @@ $query = "CREATE TABLE user (
     username  VARCHAR(32) NOT NULL UNIQUE,
     password  VARCHAR(10) NOT NULL,
     email VARCHAR(32) NOT NULL UNIQUE,
-    billingStreetOne VARCHAR(32),
-    billingStreetTwo VARCHAR(32),
+    billingStreetOne VARCHAR(64),
+    billingStreetTwo VARCHAR(64),
     billingState VARCHAR(32),
     billingCity VARCHAR(32),
     billingZip  INT(32),
-    avatarImg   VARCHAR(32) DEFAULT 'default location',
+    avatarImg   VARCHAR(64) DEFAULT 'default location',
     cardNumber INT(32),
     cardExpDate VARCHAR(32),
     cardSecureCode INT(32),
@@ -45,11 +45,14 @@ sendQuery($connection, $query);
 checkTableColumns($connection, "user", 13);
 
 //create orders table
+//TODO: either add a shippingName field 
+//or delete the shippingName class member from the order class
+//TODO: add field for orderTotal
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL UNIQUE,
-    shippingStreetOne VARCHAR(32) NOT NULL,
-    shippingStreetTwo VARCHAR(32) NULL,
+    shippingStreetOne VARCHAR(64) NOT NULL,
+    shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,
     shippingState VARCHAR(32) NOT NULL,
     shippingZip VARCHAR(32) NOT NULL,
@@ -65,11 +68,11 @@ checkTableColumns($connection, "orders", 8);
 $query = "CREATE TABLE items (
     itemID INT UNSIGNED AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL,
-    itemImage VARCHAR(32) DEFAULT 'default item image',
+    itemImage VARCHAR(64) DEFAULT 'default item image',
     itemName VARCHAR(32) NOT NULL,
-    itemDescription VARCHAR(32) NOT NULL,
+    itemDescription VARCHAR(1024) NOT NULL,
     itemQuantity INT(32) NOT NULL,
-    itemCategory VARCHAR(32) NOT NULL,
+    itemCategory VARCHAR(64) NOT NULL,
     itemPrice FLOAT(32) NOT NULL,
     PRIMARY KEY (itemID),
     FOREIGN KEY (userID) REFERENCES user(userID)
@@ -103,6 +106,8 @@ $query = "CREATE TABLE orders_items (
 sendQuery($connection, $query);
 checkTableColumns($connection, "orders_items", 4);
 
+//TODO: possible remove priceTotal field in case the price of the item
+//is changed after it row data is inserted?
 $query = "CREATE TABLE cart_items (
     cartID INT UNSIGNED NOT NULL,
     itemID INT UNSIGNED NOT NULL,
@@ -136,7 +141,7 @@ $query = "CREATE TABLE item_comments (
     commentID INT UNSIGNED AUTO_INCREMENT,
     itemID INT UNSIGNED NOT NULL,
     userID INT UNSIGNED NOT NULL,
-    commentText VARCHAR(32) NOT NULL,
+    commentText VARCHAR(1024) NOT NULL,
     PRIMARY KEY (commentID),
     FOREIGN KEY (userID) REFERENCES user(userID),
     FOREIGN KEY (itemID) REFERENCES items(itemID)
@@ -146,7 +151,7 @@ sendQuery($connection, $query);
 checkTableColumns($connection, 'item_comments', 4);
 
 echo("Database successfully created! Have a great day! :D");
-$connection.close();
+$connection->close();
 
 function checkTableColumns($connection, $table, $num_columns) {
     $query = "SHOW COLUMNS FROM $table";
@@ -171,7 +176,7 @@ function sendQuery($connection, $query) {
         echo("Error message: $connection->error. <br>");
         die();
     }
-    else echo("Query successfully sent. <br>");
+    //else echo("Query successfully sent. <br>");
     return $result;
 }
 

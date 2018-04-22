@@ -10,12 +10,26 @@ class Item {
     private $ratings; 
     private $comments;
     
-    public function __construct($itemID) {
-        //this constructor should be called when an item already exists in the table and needs to be called
-        //initialize class members
-        $this->itemID = $itemID;
-        $this->ratings = [];
+    public function __construct() {
+        $this->itemName = '';
+        $this->itemID = 0;
+        $this->itemDescription = '';
+        $this->itemCategory ='';
+        $this->itemImageSrc ='';
+        $this->itemQuantity = 0;
+        $this->itemPrice = 0.0;
         $this->comments = [];
+        $this->ratings = [];
+    }
+    
+    public function getExistingItem($itemID) {
+        //create an instance of the class
+        $instance = new self();
+        
+        //initialize class members
+        $instance->itemID = $itemID;
+        $instance->ratings = [];
+        $instance->comments = [];
         
         //connect to database
         require_once 'login.php';
@@ -28,12 +42,12 @@ class Item {
         if (!$result) die($conn->error);
         
         $result->data_seek(0);
-        $this->itemName = $result->fetch_array(MYSQLI_ASSOC)['itemName'];
-        $this->itemDescription = $result->fetch_array(MYSQLI_ASSOC)['itemDescription'];
-        $this->itemCategory = $result->fetch_array(MYSQLI_ASSOC)['itemCategory'];
-        $this->itemImageSrc = $result->fetch_array(MYSQLI_ASSOC)['itemImageSrc'];
-        $this->itemQuantity = $result->fetch_array(MYSQLI_ASSOC)['itemQuantity'];
-        $this->itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+        $instance->itemName = $result->fetch_array(MYSQLI_ASSOC)['itemName'];
+        $instance->itemDescription = $result->fetch_array(MYSQLI_ASSOC)['itemDescription'];
+        $instance->itemCategory = $result->fetch_array(MYSQLI_ASSOC)['itemCategory'];
+        $instance->itemImageSrc = $result->fetch_array(MYSQLI_ASSOC)['itemImageSrc'];
+        $instance->itemQuantity = $result->fetch_array(MYSQLI_ASSOC)['itemQuantity'];
+        $instance->itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
         
         //get all ratingIDs with the same itemID and put into a list
         $query = "SELECT * FROM item_ratings WHERE itemID = $itemID";
@@ -45,7 +59,7 @@ class Item {
         for ($j = 0 ; $j < $rows ; ++$j)
         {
             $result->data_seek($j);
-            $this->ratings[] = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
+            $instance->ratings[] = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
         }
         
         //get all commentIDs with the same itemID and put into a list
@@ -58,25 +72,29 @@ class Item {
         for ($j = 0 ; $j < $rows ; ++$j)
         {
             $result->data_seek($j);
-            $this->comments[] = $result->fetch_array(MYSQLI_ASSOC)['commentID'];
+            $instance->comments[] = $result->fetch_array(MYSQLI_ASSOC)['commentID'];
         }
         
         //disconnect from database
         $conn->close();
+        
+        return $instance;
     }
     
     //TODO: make note of missing parameter $userID
-    public function __construct($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice) {
-        //this constuctor should be called when a new item is added to the site
+    public function createNewItem($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice) {
+        //create new instance of class
+        $instance = new self();    
+        
         //initialize class members
-        $this->itemName = $itemName;
-        $this->itemCategory = $itemCategory;
-        $this->itemDescription = $itemDescription;
-        $this->itemImageSrc = $itemImageSrc;
-        $this->itemPrice = $itemPrice;
-        $this->itemQuantity = $itemQuantity;
-        $this->ratings = [];
-        $this->comments = [];
+        $instance->itemName = $itemName;
+        $instance->itemCategory = $itemCategory;
+        $instance->itemDescription = $itemDescription;
+        $instance->itemImageSrc = $itemImageSrc;
+        $instance->itemPrice = $itemPrice;
+        $instance->itemQuantity = $itemQuantity;
+        $instance->ratings = [];
+        $instance->comments = [];
         
         //connect to database
         require_once 'login.php';
@@ -103,11 +121,13 @@ class Item {
         {
             $result->data_seek($j);
             $tempID = $result->fetch_array(MYSQLI_ASSOC)['itemID'];
-            if ($tempID > $this->itemID) $this->itemID = $tempID;
+            if ($tempID > $instance->itemID) $instance->itemID = $tempID;
         }
         
         //disconnect from database
         $conn->close();
+        
+        return $instance;
     }
     
     public function getItemName() {
@@ -174,7 +194,7 @@ class Item {
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
-        $query = "SELECT isAdmin FROM user WHERE userID = ".$userID;
+        $query = "SELECT isAdmin FROM user WHERE userID = $userID";
         $result = $conn ->query($query);
         if(!$result) die($conn->error);
         
@@ -184,11 +204,15 @@ class Item {
         
         if($isAdmin)
         {
+            //TODO: write queries that will delete the current item
+            //from the other item tables (orders_items, cart_items)
+            
+            //finally delete item from items table
             $query = "DELETE FROM items WHERE itemID = $this->itemID";
             $result = $conn ->query($query);
             if(!$result) die($conn->error);
             
-            //TODO: do we need to set all the class members to NULL?
+            //TODO: set all the class members to NULL
         }
         //since the userID wasn't an admin check to see if the userID is the owner of the cart
         else
@@ -203,9 +227,16 @@ class Item {
             //compare the user of the cart and cartID
             if($itemCreator == $userID)
             {
+                
+                //TODO: write queries that will delete the current item
+                //from the other item tables (orders_items, cart_items)
+                
+                //finally delete item from items table
                 $query = "DELETE FROM items WHERE itemID = $this->itemID";
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
+                
+                //TODO: set all the class members to NULL
             }
         }
         //disconnect from database;
@@ -254,7 +285,7 @@ class Item {
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
-        $query = "SELECT isAdmin FROM user WHERE userID = ".$userID;
+        $query = "SELECT isAdmin FROM user WHERE userID = $userID";
         $result = $conn ->query($query);
         if(!$result) die($conn->error);
         
@@ -334,11 +365,10 @@ class Item {
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
-        $query = "SELECT isAdmin FROM user WHERE userID = ".$userID;
+        $query = "SELECT isAdmin FROM user WHERE userID = $userID";
         $result = $conn ->query($query);
-        if(!$result) die($conn->error);
+        if(!$result) {echo("$conn->error <br>"); die($conn->error);}
         
-        $result = $conn->query($query);
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
                 
@@ -346,9 +376,9 @@ class Item {
         {
             $query = "DELETE FROM item_comments WHERE commentID = $commentID";
             $result = $conn ->query($query);
-            if(!$result) die($conn->error);
+            if(!$result) {echo("$conn->error <br>"); die($conn->error);}
             
-            //TODO: do we need to set all the class members to NULL?
+            //TODO: set all the class members to NULL?
         }
         //since the userID wasn't an admin check to see if the userID is the owner of the cart
         else
@@ -356,7 +386,8 @@ class Item {
             //grab the original userID associated with the cart
             $query = "SELECT userID FROM item_comments WHERE commentID = $commentID";
             $result = $conn->query($query);
-            if(!$result) die($conn->error);
+            if(!$result) {echo("$conn->error <br>"); die($conn->error);}
+            
             $result->data_seek(0);
             $commentCreator = $result->fetch_array(MYSQLI_ASSOC)['userID'];
             
@@ -365,7 +396,7 @@ class Item {
             {
                 $query = "DELETE FROM item_comments WHERE commentID = $commentID";
                 $result = $conn ->query($query);
-                if(!$result) die($conn->error);
+                if(!$result) {echo("$conn->error <br>"); die($conn->error);}
             }
         }
         //disconnect from database;
