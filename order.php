@@ -1,5 +1,6 @@
 <?php 
 class Order{
+    //TODO: document new class members
     private $orderID;
     private $orderTotal;
     private $shippingName;
@@ -9,11 +10,8 @@ class Order{
 	private $shippingState;
 	private $shippingZip;
 	private $orderDate;
-	//TODO: talk about new class member
 	private $itemsInOrder;
 	
-	//TODO: ask why we didn't include userID in order constructor
-	//TODO: want to add a list of items like in cart?
 	public function __construct(){
 	    $this->orderID = 0.0;
 	    $this->orderTotal = 0;
@@ -56,12 +54,29 @@ class Order{
 	    //require_once 'login.php';
 	    $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
 	    if($conn->connect_error) die($conn->connect_error);
-	    
-	    //create new order in the orders table
-        $query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingStreetTwo, shippingCity, shippingState, shippingZip, orderDate) 
-                            VALUES ($userID, '$shippingName', '$shippingStreetOne', '$shippingStreetTwo', '$shippingCity', '$shippingState', $shippingZip, '$orderDate')";
-        $result = $conn ->query($query);
-        if(!$result) {echo("$conn->error <br>"); die($conn->error);}
+		
+		//get list of item names in cartID and item quantity from cart_items table 
+		//to put calculate orderTotal to create row in orders table and get orderID
+		$query = "SELECT * FROM cart_items WHERE cartID = $cartID";
+		$cartItems = $conn->query($query);
+		if (!$cartItems) {echo($conn->error); die($conn->error);}
+		$rows = $cartItems->num_rows;
+		for ($j = 0 ; $j < $rows ; ++$j)
+		{
+		    $cartItems->data_seek($j);
+		    $row = $cartItems->fetch_array(MYSQLI_ASSOC);
+		    $itemTotal = $row['priceTotal'];
+		    $instance->orderTotal += $itemTotal;
+		}
+		
+		
+		//create new order in the orders table
+		//now that we have orderTotal
+		$query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingStreetTwo, shippingCity, shippingState, shippingZip, orderDate, orderTotal)
+                            VALUES ($userID, '$shippingName', '$shippingStreetOne', '$shippingStreetTwo', '$shippingCity', '$shippingState', $shippingZip, '$orderDate', $instance->orderTotal)";
+		$result = $conn ->query($query);
+		if(!$result) {echo("$conn->error <br>"); die($conn->error);}
+		
 		
 		//get orderID from orders table
 		//since users can have more than one order, get the largest orderID
@@ -80,32 +95,38 @@ class Order{
 		    if ($tempID > $instance->orderID) $instance->orderID = $tempID;
 		}
 		
-		//get list of items in cartID and item quantity from cart_items table 
-		//to put into itemsInOrder associatve array and in order_items tables
+		
+		//now that we have orderID
+		//we can create rows for orders_items table
 		$query = "SELECT * FROM cart_items WHERE cartID = $cartID";
 		$cartItems = $conn->query($query);
 		if (!$cartItems) {echo($conn->error); die($conn->error);}
-		
 		$rows = $cartItems->num_rows;
+		
 		for ($j = 0 ; $j < $rows ; ++$j)
 		{
 		    //get itemID and itemQuantity from order_items table
 		    $cartItems->data_seek($j);
 		    $row = $cartItems->fetch_array(MYSQLI_ASSOC);
 		    $itemID = $row['itemID'];
-		    $quantity = $row['cartQuantity'];
+		    $itemQuantity = $row['cartQuantity'];
 		    $itemTotal = $row['priceTotal'];
-		    $instance->itemsInOrder[$itemID] = $quantity;
 		    
-// 		    //get itemPrice using itemID from items table
-// 		    $query = "SELECT * FROM items WHERE itemID = $itemID";
-// 		    $item = $conn->query($query);
-// 		    if(!$item) {echo("$conn->error <br>"); die($conn->error);}
-// 		    $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+		    //get itemName from the itemID
+		    $query = "SELECT itemName FROM items WHERE itemID = $itemID";
+		    $itemNameResult = $conn->query($query);
+		    if (!$itemNameResult) {echo($conn->error); die($conn->error);}
+		    $itemNameResult->data_seek(0);
+		    $itemName = $itemNameResult->fetch_array(MYSQLI_ASSOC)['itemName'];
 		    
-		    //add to total equal to itemPrice * itemQuantity
-		    //$instance->orderTotal += ($itemPrice * $quantity);
-		    $instance->orderTotal += $itemTotal;
+		    //add key value pair into associate array
+		    $instance->itemsInOrder[$itemName] = $itemQuantity;
+		  
+		    //insert item into orders_items table
+		    $query = "INSERT INTO orders_items (orderID, userID, itemName, orderQuantity, itemTotal)
+                                        VALUES ($instance->orderID, $userID, '$itemName', $itemQuantity, $itemTotal)";
+		    $result = $conn->query($query);
+		    if (!$result) {echo("$conn->error <br>"); die($conn->error);}
 		    
 		    //delete item from cartItems table
 		    $query = "DELETE FROM cart_items WHERE itemID = $itemID";
@@ -113,28 +134,6 @@ class Order{
 		    if (!$result) {echo("$conn->error <br>"); echo($conn->error);}
 		    
 		}
-		
-		//using the values in the itemsInOrder associate array
-		//calulate order total
-		//create rows into the orders_items table
-		foreach ($instance->itemsInOrder as $itemID => $itemQuantity)
-		{
-		    //get itemPrice using itemID from items table
-// 		    $query = "SELECT * FROM items WHERE itemID = $itemID";
-// 		    $item = $conn->query($query);
-// 		    if(!$item) {echo("$conn->error <br>"); die($conn->error);}
-// 		    $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
-		    
-		    //insert item into orders_items table
-		    $query = "INSERT INTO orders_items (orderID, itemID, userID, orderQuantity) 
-                                        VALUES ($instance->orderID, $itemID, $userID, $itemQuantity)";
-		    $result = $conn->query($query);
-		    if (!$result) {echo("$conn->error <br>"); die($conn->error);}
-		    
- 		    //add itemPrice * itemQuantity to orderTotal
-// 		    $instance->orderTotal += ($itemPrice * $itemQuantity);
-		}
-		
 		
 		//disconnect from database
 		$conn->close();
@@ -168,6 +167,7 @@ class Order{
         $instance->shippingCity = $row['shippingCity'];
         $instance->shippingState = $row['shippingState'];
         $instance->shippingZip = $row['shippingZip'];
+        $instance->orderTotal = $row['orderTotal'];
         
         //calulate order total
         //get all items that are associated with the orderID
@@ -178,21 +178,13 @@ class Order{
         $rows = $orderItems->num_rows;
         for ($j = 0 ; $j < $rows ; ++$j)
         {
-            //get itemID and itemQuantity from order_items table
+            //get itemName and itemQuantity from order_items table
+            //put the key value pair into the itemsInOrder associate array
             $orderItems->data_seek($j);
             $row = $orderItems->fetch_array(MYSQLI_ASSOC);
-            $itemID = $row['itemID'];
+            $itemName = $row['itemName'];
             $quantity = $row['orderQuantity'];
-            $instance->itemsInOrder[$itemID] = $quantity;
-            
-            //get itemPrice using itemID from items table
-            $query = "SELECT * FROM items WHERE itemID = $itemID";
-            $item = $conn->query($query);
-            if(!$item) {echo("$conn->error <br>"); die($conn->error);}
-            $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
-            
-            //add to total equal to itemPrice * itemQuantity
-            $instance->orderTotal += ($itemPrice * $quantity);
+            $instance->itemsInOrder[$itemName] = $quantity;
         }
         
         return $instance;
@@ -238,6 +230,7 @@ class Order{
     public function getItemsInOrder() {
         return $this->itemsInOrder;
     }
+    
     public function deleteOrder($userID)
 	{
 	    //connect to database
