@@ -60,7 +60,6 @@ $query = "CREATE TABLE orders (
     shippingState VARCHAR(32) NOT NULL,
     shippingZip VARCHAR(32) NOT NULL,
     orderDate DATETIME NOT NULL,
-    orderTotal FLOAT(32) NOT NULL,
     PRIMARY KEY (orderID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";
@@ -98,12 +97,12 @@ checkTableColumns($connection, "cart", 2);
 
 $query = "CREATE TABLE orders_items (
     orderID INT UNSIGNED NOT NULL,
+    itemID INT UNSIGNED NOT NULL,
     userID INT UNSIGNED NOT NULL,
-    itemName VARCHAR(32) NOT NULL,
     orderQuantity INT(32) NOT NULL,
-    itemTotal FLOAT(32) NOT NULL,
     FOREIGN KEY (orderID) REFERENCES orders(orderID),
-    FOREIGN KEY (userID) REFERENCES user(userID)
+    FOREIGN KEY (userID) REFERENCES user(userID),
+    FOREIGN KEY (itemID) REFERENCES items(itemID)
 )";
 
 //create orders_items table
