@@ -11,45 +11,45 @@ DCSP Project - Spring 2018
 GENERAL
 
 
-organize repo/make subdirectories for each webpage with support files (images, css files, etc.)
-write template for Implementation Report
-create a powerpoint for presentation
+-organize repo/make subdirectories for each webpage with support files (images, css files, etc.)
+-write template for Implementation Report
+-create a powerpoint for presentation
 
 
 BACKEND CLASSES THAT NEED TO BE DEBUGGED/TESTED:
 
 
-cart.php
-item.php
-search.php
-user.php
+-cart.php
+-item.php
+-search.php
+-user.php
 
 
 WEBPAGES TO BE CREATED:
 
 
-personal_info_page
-personal_info_edit_page
-orders_page
-general_order_page
-inventory_page
-general_item_page
-search_page
-and much more...
+-personal_info_page
+-personal_info_edit_page
+-orders_page
+-general_order_page
+-inventory_page
+-general_item_page
+-search_page
+-and much more...
 
 
 WEBPAGES THAT NEED PHP:
 
 
-home_page
-login_page
+-home_page
+-login_page
 
 ## DONE ##
 ------------------------------------------------------------------------
-WEBPAGES:
+-WEBPAGES:
 
 
 
-BACKEND CLASSES:
+-BACKEND CLASSES:
 
 order.php
