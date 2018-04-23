@@ -17,19 +17,22 @@ $orderTotal = 208.98;
 $cartTotal = 17.98;
 $allTestPassed = 1;
 
+$wrek_item_Name = 'Kool Basketball';
+$lee_item_Name = 'Calculus Textbook';
+
 $dino_userID = createUser($connection, 'dinotrooper', 'alexward', 'dino@gmail.com', '123 Fire Rd', 'Starkville', 'MS', 98765, 12345678, '3/3000', 134, 1);
 $wrekk_userID = createUser($connection, 'wrekker', 'wardalex', 'wrekker@gmail.com', '123 Water Rd', 'Memphis', 'TN', 65478, 98765432, '8/2045', 753, 1);
 $lee_userID = createUser($connection, 'lee-thegreat', 'wardlee', 'greatlee@gmail.com', '123 Grass Rd', 'Huntsville', 'AL', 45218, 12378965, '4/2075', 367, 0);
 
-$dino_orderID = createOrder($connection,'dinotrooper', $dino_userID, '123 Fire Rd', 'Starkville', 'MS', 98765, '2018-04-20 10:08:45');
+$dino_orderID = createOrder($connection,'dinotrooper', $dino_userID, '123 Fire Rd', 'Starkville', 'MS', 98765, '2018-04-20 10:08:45', 208.98);
 $dino_cartID = createCart($connection, 'dinotrooper', $dino_userID);
 
 $dino_itemID = createItem($connection, 'dinotrooper', $dino_userID, 'tshirt_image', 'Dino Shirt', 'a dino tshirt', 1, 'clothing', 4.99);
 $wrek_itemID = createItem($connection, 'wrekker', $wrekk_userID, 'basketball_image', 'Kool Basketball', 'A really cool basketball', 1, 'sports', 8.99);
 $lee_itemID = createItem($connection, 'lee', $lee_userID, 'textbook_image', 'Calculus Textbook', 'Textbook I used from Cal 1 to Cal IV', 1, 'media', 199.99);
 
-createOrderItem($connection, $dino_orderID, $wrek_itemID, $dino_userID, 1);
-createOrderItem($connection, $dino_orderID, $lee_itemID, $dino_userID, 1);
+createOrderItem($connection, $dino_orderID, $wrek_item_Name, $dino_userID, 1, 8.99);
+createOrderItem($connection, $dino_orderID, $lee_item_Name, $dino_userID, 1, 199.99);
 
 createCartItem($connection, $dino_cartID, $wrek_itemID, $dino_userID, 2, $cartTotal);
 
@@ -46,7 +49,7 @@ $dino_order = Order::existingOrder($dino_orderID);
 echo('Checking all class members of $dino_order. <br>');
 
 if (testOrder($dino_order, $dino_orderID, $shippingName, $shippingStreetOne, $shippingStreetTwo, 
-    $shippingCity, $shippingState, $shippingZip, $orderDate, $orderTotal, $wrek_itemID, $lee_itemID, 1))
+    $shippingCity, $shippingState, $shippingZip, $orderDate, $orderTotal, $wrek_item_Name, $lee_item_Name, 1))
         echo('All tests for $dino_order passed! <br>');
     else echo('One or more tests failed for $dino_order! <br>');
 
@@ -57,7 +60,7 @@ $dino_order_two = Order::newOrder($dino_userID, $dino_cartID, 'dinotrooper', '12
 //checking order object
 echo('Checking all class members of $dino_order_two. <br>');
 if (testOrder($dino_order_two, $dino_orderID + 1, $shippingName, $shippingStreetOne, $shippingStreetTwo,
-    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_itemID, $lee_itemID, 2))
+    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_item_Name, $lee_item_Name, 2))
         echo('All tests for $dino_order_two passed! <br>');
     else echo('One or more tests failed for $dino_order_two! <br>');
     
@@ -80,7 +83,7 @@ $dino_order_three = Order::newOrder($dino_userID, $dino_cartID, 'dinotrooper', '
 
 echo('Checking all class members of $dino_order_three. <br>');
 if (testOrder($dino_order_three, $dino_orderID + 2, $shippingName, $shippingStreetOne, $shippingStreetTwo,
-    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_itemID, $lee_itemID, 2))
+    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_item_Name, $lee_item_Name, 2))
     echo('All tests for $dino_order_three passed! <br>');
     else echo('One or more tests failed for $dino_order_three! <br>');
 
@@ -101,7 +104,7 @@ $dino_order_four = Order::newOrder($dino_userID, $dino_cartID, 'dinotrooper', '1
 
 echo('Checking all class members of $dino_order_four. <br>');
 if (testOrder($dino_order_four, $dino_orderID + 3, $shippingName, $shippingStreetOne, $shippingStreetTwo,
-    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_itemID, $lee_itemID, 2))
+    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_item_Name, $lee_item_Name, 2))
     echo('All tests for $dino_order_four passed! <br>');
     else echo('One or more tests failed for $dino_order_four! <br>');
     
@@ -110,7 +113,7 @@ echo('Deletion should fail since $lee_userID is not an userID of an admin accoun
 $dino_order_three->deleteOrder($lee_userID);
     
 if (testOrder($dino_order_four, $dino_orderID + 3, $shippingName, $shippingStreetOne, $shippingStreetTwo,
-    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_itemID, $lee_itemID, 2))
+    $shippingCity, $shippingState, $shippingZip, $orderDate, $cartTotal, $wrek_item_Name, $lee_item_Name, 2))
     echo('All tests for $dino_order_four passed! <br>');
     else echo('One or more tests failed for $dino_order_four! <br>');
 
@@ -127,8 +130,8 @@ function testOrder($order, $id, $name, $streetOne, $streetTwo, $city, $state, $z
     if (!testValues($zip, $order->getShippingZip())) {echo("ShippingZip check failed. <br>"); $allTestPassed = 0;}
     if (!$order->getOrderDate()) {echo("OrderDate check failed. <br>"); $allTestPassed = 0;}
     if (!testValues($total, $order->getOrderTotal())) {echo("OrderTotal check failed. <br>"); $allTestPassed = 0;}
-    foreach ($order->getItemsInOrder() as $itemID => $itemQuantity) {
-        if (!testValues($itemID, $itemOne) AND !testValues($itemID, $itemTwo)) {echo("ItemID check failed. <br>"); $allTestPassed = 0;}
+    foreach ($order->getItemsInOrder() as $itemName => $itemQuantity) {
+        if (!testValues($itemName, $itemOne) AND !testValues($itemName, $itemTwo)) {echo("ItemID check failed. <br>"); $allTestPassed = 0;}
         if (!testValues($itemQuantity, $quantity)) {echo("ItemQuantity check failed. <br>"); $allTestPassed = 0;}
     }
     
