@@ -9,8 +9,8 @@ if ($connection->connect_error) {
 else echo("Successfully connected to mySQL server. <br>");
 
 $query = "CREATE DATABASE group7_project_database";
-
 sendQuery($connection, $query);
+
 echo("Successfully created database group7_project_database. <br>");
 
 $connection->close();
@@ -51,6 +51,7 @@ checkTableColumns($connection, "user", 13);
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL,
+    shippingName VARCHAR(64) NOT NULL,
     shippingStreetOne VARCHAR(64) NOT NULL,
     shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,

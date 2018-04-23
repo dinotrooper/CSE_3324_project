@@ -9,11 +9,13 @@ class Order{
 	private $shippingState;
 	private $shippingZip;
 	private $orderDate;
+	//TODO: talk about new class member
+	private $itemsInOrder;
 	
 	//TODO: ask why we didn't include userID in order constructor
 	//TODO: want to add a list of items like in cart?
 	public function __construct(){
-	    $this->orderID = 0;
+	    $this->orderID = 0.0;
 	    $this->orderTotal = 0;
 	    //TODO: either add a shippingName field in the orders table
 	    //or delete this shippingName class member
@@ -24,22 +26,26 @@ class Order{
 	    $this->shippingState = '';
 	    $this->shippingZip = 0;
 	    $this->orderDate = '';
+	    $this->itemsInOrder = [];
 	}
 	
 	
-    public static function NewOrder($userID, $cartID, $orderTotal, $shippingName, $shippingStreetOne, $shippingStreetTwo, $shippingCity, $shippingState, $shippingZip)
+    public static function newOrder($userID, $cartID, $shippingName, $shippingStreetOne, $shippingStreetTwo, $shippingCity, $shippingState, $shippingZip)
 	{
         //create new instance of the class
         $instance = new self();
         
         //initialize class members
-	    $instance->orderTotal = $orderTotal;
+	    $instance->orderTotal = 0.0;
 	    $instance->shippingName = $shippingName;
 	    $instance->shippingStreetOne = $shippingStreetOne;
+	    if (!$shippingStreetTwo) $instance->shippingStreetTwo = NULL;
+	    else $instance->shippingStreetTwo = $shippingStreetTwo;
 	    $instance->shippingStreetTwo = $shippingStreetTwo;
 	    $instance->shippingCity = $shippingCity;
 	    $instance->shippingState = $shippingState;
 	    $instance->shippingZip = $shippingZip;
+	    $instance->itemsInOrder = [];
 	    
 	    //get date and time from server
 	    $dateTime = getDate();
@@ -52,8 +58,8 @@ class Order{
 	    if($conn->connect_error) die($conn->connect_error);
 	    
 	    //create new order in the orders table
-        $query = "INSERT INTO orders(userID, shippingStreetOne, shippingStreetTwo, shippingStreetCity, shippingState, shippingZip, orderDate) 
-                            VALUES ($userID, '$shippingStreetOne', '$shippingStreetTwo', '$shippingCity', '$shippingState', $shippingZip, '$orderDate')";
+        $query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingStreetTwo, shippingCity, shippingState, shippingZip, orderDate) 
+                            VALUES ($userID, '$shippingName', '$shippingStreetOne', '$shippingStreetTwo', '$shippingCity', '$shippingState', $shippingZip, '$orderDate')";
         $result = $conn ->query($query);
         if(!$result) {echo("$conn->error <br>"); die($conn->error);}
 		
@@ -64,40 +70,69 @@ class Order{
 		$result = $conn->query($query);
 		if(!$result) {echo("$conn->error <br>"); die($conn->error);}
 		
-		$rows = $num_rows;
-		$this->orderID = 0;
+		$rows = $result->num_rows;
+		$instance->orderID = 0;
 		
 		for ($j = 0 ; $j < $rows ; ++$j)
 		{
 		    $result->data_seek($j);
-		    $tempID = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
-		    if ($tempID > $insance->orderID) $instance->orderID = $tempID;
+		    $tempID = $result->fetch_array(MYSQLI_ASSOC)['orderID'];
+		    if ($tempID > $instance->orderID) $instance->orderID = $tempID;
 		}
 		
+		//get list of items in cartID and item quantity from cart_items table 
+		//to put into itemsInOrder associatve array and in order_items tables
+		$query = "SELECT * FROM cart_items WHERE cartID = $cartID";
+		$cartItems = $conn->query($query);
+		if (!$cartItems) {echo($conn->error); die($conn->error);}
 		
-		//calulate order total
-		//get all items that are associated with the orderID
-		$query = "SELECT * FROM orders_items WHERE orderID = $instance->orderID";
-		$orderItems = $conn->query($query);
-		if(!$orderItems) {echo("$conn->error <br>"); die($conn->error);}
-		
-		$rows = $orderItems->num_rows;
+		$rows = $cartItems->num_rows;
 		for ($j = 0 ; $j < $rows ; ++$j)
 		{
 		    //get itemID and itemQuantity from order_items table
-		    $orderItems->data_seek($j);
-		    $row = $orderItems->fetch_array(MYSQLI_ASSOC);
+		    $cartItems->data_seek($j);
+		    $row = $cartItems->fetch_array(MYSQLI_ASSOC);
 		    $itemID = $row['itemID'];
-		    $quantity = $row['orderQuantity'];
+		    $quantity = $row['cartQuantity'];
+		    $itemTotal = $row['priceTotal'];
+		    $instance->itemsInOrder[$itemID] = $quantity;
 		    
-		    //get itemPrice using itemID from items table
-		    $query = "SELECT * FROM items WHERE itemID = $itemID";
-		    $item = $conn->query($query);
-		    if(!$item) {echo("$conn->error <br>"); die($conn->error);}
-		    $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+// 		    //get itemPrice using itemID from items table
+// 		    $query = "SELECT * FROM items WHERE itemID = $itemID";
+// 		    $item = $conn->query($query);
+// 		    if(!$item) {echo("$conn->error <br>"); die($conn->error);}
+// 		    $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
 		    
 		    //add to total equal to itemPrice * itemQuantity
-		    $instance->orderTotal += ($itemPrice * $quantity);
+		    //$instance->orderTotal += ($itemPrice * $quantity);
+		    $instance->orderTotal += $itemTotal;
+		    
+		    //delete item from cartItems table
+		    $query = "DELETE FROM cart_items WHERE itemID = $itemID";
+		    $result = $conn->query($query);
+		    if (!$result) {echo("$conn->error <br>"); echo($conn->error);}
+		    
+		}
+		
+		//using the values in the itemsInOrder associate array
+		//calulate order total
+		//create rows into the orders_items table
+		foreach ($instance->itemsInOrder as $itemID => $itemQuantity)
+		{
+		    //get itemPrice using itemID from items table
+// 		    $query = "SELECT * FROM items WHERE itemID = $itemID";
+// 		    $item = $conn->query($query);
+// 		    if(!$item) {echo("$conn->error <br>"); die($conn->error);}
+// 		    $itemPrice = $item->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+		    
+		    //insert item into orders_items table
+		    $query = "INSERT INTO orders_items (orderID, itemID, userID, orderQuantity) 
+                                        VALUES ($instance->orderID, $itemID, $userID, $itemQuantity)";
+		    $result = $conn->query($query);
+		    if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+		    
+ 		    //add itemPrice * itemQuantity to orderTotal
+// 		    $instance->orderTotal += ($itemPrice * $itemQuantity);
 		}
 		
 		
@@ -108,7 +143,7 @@ class Order{
 		
     }
     
-    public static function ExistingOrder($orderID) {
+    public static function existingOrder($orderID) {
         //create new instance of class
         $instance = new self();
         
@@ -127,6 +162,7 @@ class Order{
         $row = $result->fetch_array(MYSQLI_ASSOC);
    
         $instance->orderDate = $row['orderDate'];
+        $instance->shippingName = $row['shippingName'];
         $instance->shippingStreetOne = $row['shippingStreetOne'];
         $instance->shippingStreetTwo = $row['shippingStreetTwo'];
         $instance->shippingCity = $row['shippingCity'];
@@ -147,6 +183,7 @@ class Order{
             $row = $orderItems->fetch_array(MYSQLI_ASSOC);
             $itemID = $row['itemID'];
             $quantity = $row['orderQuantity'];
+            $instance->itemsInOrder[$itemID] = $quantity;
             
             //get itemPrice using itemID from items table
             $query = "SELECT * FROM items WHERE itemID = $itemID";
@@ -162,38 +199,45 @@ class Order{
         
     }
     
+    public function getOrderID() {
+        return $this->orderID;
+    }
+    
     public function getOrderTotal() {
-        return ($this->orderTotal);
+        return $this->orderTotal;
     }
     
     public function getShippingName() {
-        return ($this->shippingName);
+        return $this->shippingName;
     }
     
     public function getShippingStreetOne() {
-        return ($this->shippingStreetOne);
+        return $this->shippingStreetOne;
     }
     
     public function getShippingStreetTwo() {
-        return ($this->shippingStreetTwo);
+        return $this->shippingStreetTwo;
     }
     
     public function getShippingCity() {
-        return ($this->shippingCity);
+        return $this->shippingCity;
     }
     
     public function getShippingState() {
-        return ($this->shippingState);
+        return $this->shippingState;
     }
     
     public function getShippingZip() {
-        return ($this->shippingZip);
+        return $this->shippingZip;
     }
     
     public function getOrderDate() {
-        return ($this->orderDate);
+        return $this->orderDate;
     }
     
+    public function getItemsInOrder() {
+        return $this->itemsInOrder;
+    }
     public function deleteOrder($userID)
 	{
 	    //connect to database
@@ -233,6 +277,7 @@ class Order{
 	        $this->shippingState = '';
 	        $this->shippingZip = 0;
 	        $this->orderID = 0;
+	        $this->itemsInOrder = [];
 	    }
 	    //since the userID wasn't an admin check to see if the userID is the owner of the cart
 	    else
@@ -264,6 +309,7 @@ class Order{
 	            $this->shippingState = '';
 	            $this->shippingZip = 0;
 	            $this->orderID = 0;
+	            $this->itemsInOrder = [];
 	        }
 	    }
 	    //disconnect from database

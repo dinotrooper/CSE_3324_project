@@ -38,8 +38,8 @@ function createUser($connection, $un, $pw, $email, $billStreetOne, $billCity, $b
 function createOrder($connection, $un, $userID, $shipStreetOne, $shipCity, $shipState, $shipZip, $orderDate) {
     //creates a query using the function's parameters to insert a new order into the order table
     //then returns the orderID of the newly created order
-    $query = "INSERT INTO orders(userID, shippingStreetOne, shippingCity, shippingState, shippingZip, orderDate)
-                    VALUES ($userID, '$shipStreetOne', '$shipCity', '$shipState', $shipZip, '$orderDate')";
+    $query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingCity, shippingState, shippingZip, orderDate)
+                    VALUES ($userID, '$un', '$shipStreetOne', '$shipCity', '$shipState', $shipZip, '$orderDate')";
     
     sendQuery($connection, $query);
     echo ("$un's order successfully created. <br>");
@@ -141,5 +141,14 @@ function selectValueFromTable($connection, $valueType, $table, $keyType, $keyVal
     $result = sendQuery($connection, $query);
     $result->data_seek(0);
     return $result->fetch_array(MYSQLI_ASSOC)[$valueType];
+}
+
+function testValues($valueOne, $valueTwo) {
+    if ($valueOne != $valueTwo) {
+        echo('$valueOne does not equal $valueTwo(). <br>');
+        echo('$valueOne: '.$valueOne.'; $valueTwo: '.$valueTwo.'<br>');
+        return 0;
+    }
+    else return 1;
 }
 ?>
