@@ -1,15 +1,23 @@
 <?php
 
+include_once "setup_test_databases.php";
+
+function deleteDB($connection)
+{
+	$query = "DROP DATABASE group7_project_database";
+	sendQuery($connection, $query);
+}
 function connectToLocalDatabase() {
     $connection = new mysqli('localhost', 'root', '', 'group7_project_database');
     if ($connection->connect_error) {
         echo("Connection to database failed. <br>");
         die();
     }
-    else echo("Succesfully connected to mySQL server and group7_project_database. <br>");
+
     
     return $connection;
 }
+
 function sendQuery($connection, $query) {
     //sends a basic query to the database
     $result = $connection->query($query);
@@ -31,7 +39,7 @@ function createUser($connection, $un, $pw, $email, $billStreetOne, $billCity, $b
                     VALUES ('$un', '$pw', '$email', '$billStreetOne', '$billCity', '$billState', $billZip, $cardNum, '$cardDate', $cardCode, $isAdmin)";
     
     sendQuery($connection, $query);
-    echo ("User $un successfully created. <br>");
+
     return selectValueFromTable($connection, 'userID', 'user', 'username', $un);
 }
 
@@ -42,7 +50,7 @@ function createOrder($connection, $un, $userID, $shipStreetOne, $shipCity, $ship
                     VALUES ($userID, '$un', '$shipStreetOne', '$shipCity', '$shipState', $shipZip, '$orderDate')";
     
     sendQuery($connection, $query);
-    echo ("$un's order successfully created. <br>");
+
     return selectValueFromTable($connection, 'orderID', 'orders', 'userID', $userID);
 }
 
@@ -53,7 +61,7 @@ function createItem($connection, $un, $userID, $image, $name, $description, $qua
                         VALUES ($userID, '$image', '$name', '$description', $quantity, '$category', $price)";
     
     sendQuery($connection, $query);
-    echo ("$un's item successfully created. <br>");
+
     return selectValueFromTable($connection, 'itemID', 'items', 'userID', $userID);
 }
 
@@ -62,7 +70,7 @@ function createCart($connection, $un, $userID) {
     //then returns the cartID of the newly created order
     $query = "INSERT INTO cart (userID) VALUES ($userID)";
     sendQuery($connection, $query);
-    echo("$un's cart successfully created. <br>");
+
     
     return selectValueFromTable($connection, 'cartID', 'cart', 'userID', $userID);
 }
@@ -72,7 +80,7 @@ function createOrderItem($connection, $orderID, $itemID, $userID, $quantity) {
     $query = "INSERT INTO orders_items (orderID, itemID, userID, orderQuantity) 
                                 VALUES ($orderID, $itemID, $userID, $quantity)";
     sendQuery($connection, $query);
-    echo("Item added to Order: $orderID. <br>");
+
 }
 
 function createCartItem($connection, $cartID, $itemID, $userID, $quantity, $priceTotal) {
@@ -80,7 +88,6 @@ function createCartItem($connection, $cartID, $itemID, $userID, $quantity, $pric
     $query = "INSERT INTO cart_items(cartID, itemID, userID, cartQuantity, priceTotal) 
                             VALUES ($cartID, $itemID, $userID, $quantity, $priceTotal)";
     sendQuery($connection, $query);
-    echo("Item added to Cart: $cartID. <br>");
 }
 
 function createItemRating($connection, $itemID, $userID, $number) {
@@ -89,7 +96,7 @@ function createItemRating($connection, $itemID, $userID, $number) {
     $query = "INSERT INTO item_ratings(itemID, userID, ratingNumber) 
                             VALUES ($itemID, $userID, $number)";
     sendQuery($connection, $query);
-    echo("Rating from userID: $userID successfully created. <br>");
+;
     
     return selectValueFromTable($connection, 'ratingID', 'item_ratings', 'userID', $userID);
 }
@@ -99,7 +106,7 @@ function createItemComment($connection, $itemID, $userID, $text) {
                                 VALUES ($itemID, $userID, '$text')";
     
     sendQuery($connection, $query);
-    echo("Comment from userID: $userID successfully created. <br>");
+
     
     return selectValueFromTable($connection, 'commentID', 'item_comments', 'userID', $userID);
 }
@@ -121,7 +128,6 @@ function deleteAllDataFromTables($connection) {
     sendQuery($connection, $query);
     $query = "DELETE FROM user";
     sendQuery($connection, $query);
-    echo("All data deleted from tables successfully! <br>");
 }
 
 

@@ -2,9 +2,11 @@
 <!Source code researched on www.w3schools.com>
 <html>
 <head>
-
+<?php
+include_once "test_index.php";
+?>
+<title>Titanic Treasures | Home</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <style>
 * {
     box-sizing: border-box;
@@ -422,17 +424,29 @@ function showSlides() {
 	<div class='rightcolumn'>
 			<div class='card'>
 				<h2>Account Snapshot</h2>
-				<?php echo "<img src='avatar-placeholder.gif' alt='tit' style='height:200px;'/>";
+				<?php 
+				
+				echo "<img src='avatar-placeholder.gif' alt='tit' style='height:200px;'/>";
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
 			</div>
 		</div>
 <?php	
 	for($i=0;$i<10;++$i)
 	{
+		include_once "item.php";
+				
+		$conn = new mysqli("localhost","root","","group7_project_database");
+		$query = "SELECT itemID FROM items ORDER BY RAND() LIMIT 1";
+		$result = $conn->query($query);
+		if(!$result) die ($conn->error);
+				
+		$result->data_seek(0);
+				
+		$home_item = Item::existingItem($result->fetch_array(MYSQLI_ASSOC)["itemID"]);
 		echo "<div class='leftcolumn'>
 		<div class='card'>
 		<!Item Name Goes Here>
-		  <h2>ItemName</h2>
+		  <h2>".$home_item->getitemName()."</h2>
 		  <!Item Image Goes Here>
 		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
 		  <pre class='alignright'>

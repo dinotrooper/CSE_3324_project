@@ -1,17 +1,20 @@
 <?php
 
 require_once 'login.php';
+require_once 'test_database_functions.php';
 $connection = new mysqli('localhost', 'root', '', '');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>"); 
     die();
 }
-else echo("Successfully connected to mySQL server. <br>");
+
+
+deleteDB($connection);
 
 $query = "CREATE DATABASE group7_project_database";
+
 sendQuery($connection, $query);
 
-echo("Successfully created database group7_project_database. <br>");
 
 $connection->close();
 
@@ -20,7 +23,7 @@ if ($connection->connect_error) {
     echo("Connection to database failed. <br>");
     die();
 }
-else echo("Succesfully connected to mySQL server and group7_project_database. <br>");
+
 
 //create user table
 $query = "CREATE TABLE user (
@@ -50,8 +53,7 @@ checkTableColumns($connection, "user", 13);
 //TODO: add field for orderTotal
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    userID INT UNSIGNED NOT NULL,
-    shippingName VARCHAR(64) NOT NULL,
+    userID INT UNSIGNED NOT NULL UNIQUE,
     shippingStreetOne VARCHAR(64) NOT NULL,
     shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,
@@ -85,7 +87,7 @@ checkTableColumns($connection, 'items', 8);
 //create cart table
 $query = "CREATE TABLE cart (
     cartID INT UNSIGNED AUTO_INCREMENT,
-    userID INT UNSIGNED NOT NULL,
+    userID INT UNSIGNED NOT NULL UNIQUE,
     PRIMARY KEY (cartID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";
@@ -151,8 +153,8 @@ $query = "CREATE TABLE item_comments (
 sendQuery($connection, $query);
 checkTableColumns($connection, 'item_comments', 4);
 
-echo("Database successfully created! Have a great day! :D");
-$connection->close();
+
+
 
 function checkTableColumns($connection, $table, $num_columns) {
     $query = "SHOW COLUMNS FROM $table";
@@ -165,10 +167,11 @@ function checkTableColumns($connection, $table, $num_columns) {
         echo("Error message: Table $table did not contain enough fields.The number of field expected is $num_of_columns. The actual number is $rows. <br><br>");
         die();
     }
-    else echo("Successfully created $table. <br>");
-}
 
-function sendQuery($connection, $query) {
+}
+$connection->close();
+
+/*function sendQuery($connection, $query) {
     $result = $connection->query($query);
     if (!$result) {
         echo("Query failed. <br>");
@@ -179,6 +182,6 @@ function sendQuery($connection, $query) {
     }
     //else echo("Query successfully sent. <br>");
     return $result;
-}
+}*/
 
 ?>

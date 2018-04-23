@@ -3,12 +3,19 @@
 require_once 'test_database_functions.php';
 require_once 'login.php';
 
+$conn = new mysqli ('localhost','root', '', '');
+if ($connection->connect_error) {
+    echo("Connection to database failed. <br>");
+die();}
+deleteDB();
+
 $connection = new mysqli('localhost', 'root', '', 'group7_project_database');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>");
     die();
 }
 else echo("Succesfully connected to mySQL server and group7_project_database. <br>");
+
 
 echo("Deleting any rows that may be in the database.");
 deleteAllDataFromTables($connection);
