@@ -22,7 +22,7 @@ class Item {
         $this->ratings = [];
     }
     
-    public function getExistingItem($itemID) {
+    public static function existingItem($itemID) {
         //create an instance of the class
         $instance = new self();
         
@@ -82,7 +82,7 @@ class Item {
     }
     
     //TODO: make note of missing parameter $userID
-    public function createNewItem($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice) {
+    public static function newItem($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice) {
         //create new instance of class
         $instance = new self();    
         
