@@ -50,7 +50,7 @@ checkTableColumns($connection, "user", 13);
 //TODO: add field for orderTotal
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    userID INT UNSIGNED NOT NULL UNIQUE,
+    userID INT UNSIGNED NOT NULL,
     shippingStreetOne VARCHAR(64) NOT NULL,
     shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,
@@ -84,7 +84,7 @@ checkTableColumns($connection, 'items', 8);
 //create cart table
 $query = "CREATE TABLE cart (
     cartID INT UNSIGNED AUTO_INCREMENT,
-    userID INT UNSIGNED NOT NULL UNIQUE,
+    userID INT UNSIGNED NOT NULL,
     PRIMARY KEY (cartID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";

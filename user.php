@@ -42,7 +42,7 @@ class User{
         $this->isAdmin = 0;
 
         $query2 = mysql_query("INSERT INTO user(userID, username, password, email, billingStreetOne,billingStreetTwo,billingCity,billingZip,avatarImg,cardNumber,cardExpDate,cardSecureCode,isAdmin) VALUES('$username','$password','$email',
-        '$billingStreetOne','$billingStreetTwo','$billingCity','$billingState','$billingZip','$avatarImg','$cardNumber','$cardExpDate','$cardSecureCode')")
+        '$billingStreetOne','$billingStreetTwo','$billingCity','$billingState','$billingZip','$avatarImg','$cardNumber','$cardExpDate','$cardSecureCode')");
 
         $conn->close();
 
@@ -51,7 +51,7 @@ class User{
         $this->userID = $userID;
 
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db)
+        $conn = new mysqli($hn, $un, $pw, $db);
         if($conn->connect_error) die($conn->connect_error);
         $query1 = "SELECT * FROM user WHERE userID = " .$userID;
         $result = $conn->query($query1);
@@ -68,7 +68,7 @@ class User{
         $this->avatarImg = $result->fetch_array(MYSQLI_ASSOC)['avatarImg'];
         $this->cardNumber = $result->fetch_array(MYSQLI_ASSOC)['cardNumber'];
         $this->cardExpDate = $result->fetch_array(MYSQLI_ASSOC)['cardExpDate'];
-        $this->cardSecureCode = $result->fetch_array(MYSQLI_ASSOC)['cardSecureCode']
+        $this->cardSecureCode = $result->fetch_array(MYSQLI_ASSOC)['cardSecureCode'];
         
         $conn->close();
     }
@@ -130,7 +130,7 @@ class User{
     }
 
     public function getBillingZip(){
-        return($this->billingZip)
+        return($this->billingZip);
     }
 
     public function setBillingZip(){

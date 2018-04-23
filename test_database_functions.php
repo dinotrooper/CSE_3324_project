@@ -1,4 +1,15 @@
 <?php
+
+function connectToLocalDatabase() {
+    $connection = new mysqli('localhost', 'root', '', 'group7_project_database');
+    if ($connection->connect_error) {
+        echo("Connection to database failed. <br>");
+        die();
+    }
+    else echo("Succesfully connected to mySQL server and group7_project_database. <br>");
+    
+    return $connection;
+}
 function sendQuery($connection, $query) {
     //sends a basic query to the database
     $result = $connection->query($query);
