@@ -426,11 +426,17 @@ function showSlides() {
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
 			</div>
 		</div>
-	<div class='leftcolumn'>
+<?php	
+	for($i=0;$i<10;++$i)
+	{
+		echo "<div class='leftcolumn'>
 		<div class='card'>
-		  <?php echo "<h2>ItemName</h2>";
-		  echo "<img src='titanicTit.jpg' alt="tit" style='height:200px;'/>";
-		  echo "<pre class='alignright'>
+		<!Item Name Goes Here>
+		  <h2>ItemName</h2>
+		  <!Item Image Goes Here>
+		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
+		  <pre class='alignright'>
+		  <!Item Data Goes Here>
 		  <b>Description:</b> Something, something, something...
 		  
 		  <b>Category:</b> Erotic-literature
@@ -438,27 +444,13 @@ function showSlides() {
 		  <b>Price:</b> $24.99
 		  
 		  <b>Avg. Rating:</b> 4.5 Icebergs
-		  </pre>";?>
+		  </pre>
 		</div>
-	</div>
-	  <div class='leftcolumn'>
-		<div class='card'>
-		  <h2>ItemName</h2>
-		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <p>Description:</p>
-		  <p>...</p>
+	</div>";
+	}
+	?>
 	  </div>
-		<div class='card'>
-		  <h2>ItemName</h2>
-		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <p>Description:</p>
-		  <p>...</p>
-		</div>
-	  </div>
-	  </div>
-EOT;
 	 
-?>
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
