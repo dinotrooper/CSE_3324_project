@@ -4,7 +4,8 @@ class Item {
     private $itemID;
     private $itemDescription;
     private $itemCategory;
-    private $itemImageSrc;
+    //TODO: make note of deviation of design document
+    private $itemImage;
     private $itemQuantity;
     private $itemPrice;
     private $ratings; 
@@ -15,7 +16,7 @@ class Item {
         $this->itemID = 0;
         $this->itemDescription = '';
         $this->itemCategory ='';
-        $this->itemImageSrc ='';
+        $this->itemImage ='';
         $this->itemQuantity = 0;
         $this->itemPrice = 0.0;
         $this->comments = [];
@@ -32,8 +33,7 @@ class Item {
         $instance->comments = [];
         
         //connect to database
-        require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //if item is in items table, get class values
@@ -42,12 +42,13 @@ class Item {
         if (!$result) die($conn->error);
         
         $result->data_seek(0);
-        $instance->itemName = $result->fetch_array(MYSQLI_ASSOC)['itemName'];
-        $instance->itemDescription = $result->fetch_array(MYSQLI_ASSOC)['itemDescription'];
-        $instance->itemCategory = $result->fetch_array(MYSQLI_ASSOC)['itemCategory'];
-        $instance->itemImageSrc = $result->fetch_array(MYSQLI_ASSOC)['itemImageSrc'];
-        $instance->itemQuantity = $result->fetch_array(MYSQLI_ASSOC)['itemQuantity'];
-        $instance->itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $instance->itemName = $row['itemName'];
+        $instance->itemDescription = $row['itemDescription'];
+        $instance->itemCategory = $row['itemCategory'];
+        $instance->itemImage = $row['itemImage'];
+        $instance->itemQuantity = $row['itemQuantity'];
+        $instance->itemPrice = $row['itemPrice'];
         
         //get all ratingIDs with the same itemID and put into a list
         $query = "SELECT * FROM item_ratings WHERE itemID = $itemID";
@@ -82,7 +83,7 @@ class Item {
     }
     
     //TODO: make note of missing parameter $userID
-    public static function newItem($userID, $itemName, $itemDescription, $itemCategory, $itemImageSrc, $itemQuantity, $itemPrice) {
+    public static function newItem($userID, $itemName, $itemDescription, $itemCategory, $itemImage, $itemQuantity, $itemPrice) {
         //create new instance of class
         $instance = new self();    
         
@@ -90,7 +91,7 @@ class Item {
         $instance->itemName = $itemName;
         $instance->itemCategory = $itemCategory;
         $instance->itemDescription = $itemDescription;
-        $instance->itemImageSrc = $itemImageSrc;
+        $instance->itemImage = $itemImageSrc;
         $instance->itemPrice = $itemPrice;
         $instance->itemQuantity = $itemQuantity;
         $instance->ratings = [];
@@ -103,7 +104,7 @@ class Item {
         
         //create new item in the items table
         $query = "INSERT INTO items(userID, itemImage, itemName, itemDescription, itemQuantity, itemCategory, itemPrice) 
-                 VALUES ($userID, '$itemName', '$itemDescription', '$itemCategory', '$itemImageSrc', $itemQuantity, $itemPrice)";
+                 VALUES ($userID, '$itemName', '$itemDescription', '$itemCategory', '$itemImage', $itemQuantity, $itemPrice)";
         $result = $conn->query($query);
         if (!$result) die($conn->error);
         
@@ -130,66 +131,128 @@ class Item {
         return $instance;
     }
     
+    public function getItemID() {
+        return $this->itemID;
+    }
+    
     public function getItemName() {
-        return ($this->itemName);
+        return $this->itemName;
     }
     
     public function setItemName($itemName) {
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemName = '$itemName' WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
         $this->itemName = $itemName;
+        
+        $conn->close();
     }
     
     public function getItemDescription() {
-        return ($this->itemDescription);
+        return $this->itemDescription;
     }
     
     public function setItemDescription($itemDescription) {
-        $this->itemDescriptiion = $itemDescription;
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemDescription = '$itemDescription' WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
+        $this->itemDescription = $itemDescription;
+        
+        $conn->close();
     }
     
     public function getItemCategory() {
-        return($this->itemCategory);
+        return $this->itemCategory;
     }
     
     public function setItemCategory($itemCategory) {
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemCategory = '$itemCategory' WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
         $this->itemCategory = $itemCategory;
+        
+        $conn->close();
     }
     
     public function getItemImageSrc() {
-        return($this->itemImageSrc);
+        return $this->itemImage;
     }
     
-    public function setItemImageSrc($itemImageSrc) {
-        $this->itemImageSrc = $itemImageSrc;
+    public function setItemImageSrc($itemImage) {
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemImage = '$itemImage' WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
+        $this->itemImageSrc = $itemImage;
+        
+        $conn->close();
     }
     
     public function getItemQuantity () {
-        return ($this->itemQuantity);
+        return $this->itemQuantity;
     }
     
     public function setItemQuantity($itemQuantity) {
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemQuantity = $itemQuantity WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
         $this->itemQuantity = $itemQuantity;
+        
+        $conn->close();
     }
     
     public function getItemPrice() {
-        return ($this->itemPrice);
+        return $this->itemPrice;
     }
     
     public function setItemPrice($itemPrice) {
+        
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        if($conn->connect_error) die($conn->connect_error);
+        
+        $query = "UPDATE items SET itemPrice = $itemPrice WHERE itemID = $this->itemID";
+        $result = $conn->query($query);
+        if (!$result) {echo("$conn->error <br>"); die($conn->error);}
+        
         $this->itemPrice = $itemPrice;
     }
     
     public function getRatings() {
-        return ($this->ratings);
+        return $this->ratings;
     }
     
     public function getComments() {
-        return ($this->comments);
+        return $this->comments;
     }
     
     public function deleteItem($userID) {
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //check to see if the userID is an admin
@@ -202,10 +265,28 @@ class Item {
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
         
+        foreach ($this->comments as $getCommentID) {
+            echo("CommentID: $getCommentID <br>");
+        }
+        foreach ($this->ratings as $getRatingID) {
+            echo("RatingID: $getRatingID <br>");
+        }
+        
         if($isAdmin)
         {
-            //TODO: write queries that will delete the current item
-            //from the other item tables (orders_items, cart_items)
+            //delete item comments from item_comments table
+            foreach($this->comments as $commentID) {
+                $this->deleteItemComment($userID, $commentID);
+            }
+            
+            foreach($this->ratings as $ratingID) {
+                $this->deleteItemRating($userID, $ratingID);
+            }
+            
+            //delete items from cart_items tables
+            $query = "DELETE FROM cart_items WHERE itemID = $this->itemID";
+            $result = $conn ->query($query);
+            if(!$result) die($conn->error);
             
             //finally delete item from items table
             $query = "DELETE FROM items WHERE itemID = $this->itemID";
@@ -213,6 +294,15 @@ class Item {
             if(!$result) die($conn->error);
             
             //TODO: set all the class members to NULL
+            $this->itemID = 0;
+            $this->itemName = '';
+            $this->itemCategory = '';
+            $this->itemDescription = '';
+            $this->itemImage = '';
+            $this->itemPrice = 0;
+            $this->itemQuantity = 0;
+            $this->ratings = [];
+            $this->comments = [];
         }
         //since the userID wasn't an admin check to see if the userID is the owner of the cart
         else
@@ -228,15 +318,34 @@ class Item {
             if($itemCreator == $userID)
             {
                 
-                //TODO: write queries that will delete the current item
-                //from the other item tables (orders_items, cart_items)
+                foreach($this->comments as $commentID) {
+                    $this->deleteItemComment($userID, $commentID);
+                }
+                
+                foreach($this->ratings as $ratingsID) {
+                    $this->deleteItemComment($userID, $ratingID);
+                }
+                
+                //delete items from cart_items tables
+                $query = "DELETE FROM cart_items WHERE itemID = $this->itemID";
+                $result = $conn ->query($query);
+                if(!$result) die($conn->error);
+                
                 
                 //finally delete item from items table
                 $query = "DELETE FROM items WHERE itemID = $this->itemID";
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
                 
-                //TODO: set all the class members to NULL
+                $this->itemID = 0;
+                $this->itemName = '';
+                $this->itemCategory = '';
+                $this->itemDescription = '';
+                $this->itemImage = '';
+                $this->itemPrice = 0;
+                $this->itemQuantity = 0;
+                $this->ratings = [];
+                $this->comments = [];
             }
         }
         //disconnect from database;
@@ -246,7 +355,7 @@ class Item {
     public function addItemRating($userID, $rating) {
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //create and send the query to create the rating in the item_rating table
@@ -261,10 +370,10 @@ class Item {
         $result = $conn->query($query);
         if (!$result) die($conn->error);
         
-        $rows = $num_rows;
+        $rows = $result->num_rows;
         $ratingID = 0;
         
-        for ($j = 0 ; $j < $rows ; ++$j)
+        for ($j = 0; $j < $rows ; ++$j)
         {
             $result->data_seek($j);
             $tempID = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
@@ -280,7 +389,7 @@ class Item {
     public function deleteItemRating($userID, $ratingID) {
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //check to see if the userID is an admin
@@ -299,24 +408,57 @@ class Item {
             $result = $conn ->query($query);
             if(!$result) die($conn->error);
             
-            //TODO: do we need to set all the class members to NULL?
+            //remove list element from list
+            //find element with ratingID
+            
+            for ($j = 1; $j < count($this->ratings); ++$j) {
+                if ($this->ratings[$j] == $ratingID) {
+                   unset($this->ratings[$j]);
+                }
+            }
         }
-        //since the userID wasn't an admin check to see if the userID is the owner of the cart
+        //since the userID wasn't an admin check to see if the userID is the owner of the item
+        //or is the owner of the rating
         else
         {
-            //grab the original userID associated with the cart
+            //grab the userID associated with the rating
             $query = "SELECT userID FROM item_ratings WHERE ratingID = $ratingID";
             $result = $conn->query($query);
             if(!$result) die($conn->error);
             $result->data_seek(0);
             $ratingCreator = $result->fetch_array(MYSQLI_ASSOC)['userID'];
             
-            //compare the user of the cart and cartID
+            //grab the userID associated with the item
+            $query = "SELECT userID FROM items WHERE itemID = $this->itemID";
+            $result = $conn->query($query);
+            if(!$result) die($conn->error);
+            $result->data_seek(0);
+            $itemCreator = $result->fetch_array(MYSQLI_ASSOC)['userID'];
+            
             if($ratingCreator == $userID)
             {
                 $query = "DELETE FROM item_ratings WHERE ratingID = $ratingID";
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
+                
+                //remove list element from list
+                for ($j = 1; $j < count($this->ratings); ++$j) {
+                    if ($this->rating[$j] == $ratingID) {
+                        unset($this->ratings[$j]);
+                    }
+                }
+            }
+            else if ($itemCreator == $userID) {
+                $query = "DELETE FROM item_ratings WHERE ratingID = $ratingID";
+                $result = $conn ->query($query);
+                if(!$result) die($conn->error);
+                
+                //remove list element from list
+                for ($j = 0; $j < count($this->ratings); ++$j) {
+                    if ($this->rating[$j] == $ratingID) {
+                        unset($this->ratings[$j]);
+                    }
+                }
             }
         }
         //disconnect from database;
@@ -326,7 +468,7 @@ class Item {
     public function addItemComment($userID, $comment) {
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //create and send the query to create the rating in the item_rating table
@@ -341,13 +483,13 @@ class Item {
         $result = $conn->query($query);
         if (!$result) die($conn->error);
         
-        $rows = $num_rows;
+        $rows = $result->num_rows;
         $commentID = 0;
         
-        for ($j = 0 ; $j < $rows ; ++$j)
+        for ($j = 0; $j < $rows ; ++$j)
         {
             $result->data_seek($j);
-            $tempID = $result->fetch_array(MYSQLI_ASSOC)['ratingID'];
+            $tempID = $result->fetch_array(MYSQLI_ASSOC)['commentID'];
             if ($tempID > $commentID) $commentID = $tempID;
         }
         
@@ -360,7 +502,7 @@ class Item {
     public function deleteItemComment($userID, $commentID) {
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //check to see if the userID is an admin
@@ -378,29 +520,63 @@ class Item {
             $result = $conn ->query($query);
             if(!$result) {echo("$conn->error <br>"); die($conn->error);}
             
-            //TODO: set all the class members to NULL?
+            //remove list element from list
+            for ($j = 1; $j < count($this->comments); ++$j) {
+                if ($this->comments[$j] == $commentID) {
+                    unset($this->comments[$j]);
+                }
+            }
         }
-        //since the userID wasn't an admin check to see if the userID is the owner of the cart
+        //since the userID wasn't an admin check to see if the userID is the owner of the item
+        //or is the owner of the rating
         else
         {
-            //grab the original userID associated with the cart
+            //grab the original userID associated with the comment
             $query = "SELECT userID FROM item_comments WHERE commentID = $commentID";
             $result = $conn->query($query);
             if(!$result) {echo("$conn->error <br>"); die($conn->error);}
-            
             $result->data_seek(0);
             $commentCreator = $result->fetch_array(MYSQLI_ASSOC)['userID'];
             
-            //compare the user of the cart and cartID
+            //grab the original userID associated with the item
+            $query = "SELECT userID FROM items WHERE itemID = $this->itemID";
+            $result = $conn->query($query);
+            if(!$result) die($conn->error);
+            $result->data_seek(0);
+            $itemCreator = $result->fetch_array(MYSQLI_ASSOC)['userID'];
+            
             if($commentCreator == $userID)
             {
                 $query = "DELETE FROM item_comments WHERE commentID = $commentID";
                 $result = $conn ->query($query);
                 if(!$result) {echo("$conn->error <br>"); die($conn->error);}
+                
+                //remove list element from list
+                for ($j = 1; $j < count($this->comments); ++$j) {
+                    if ($this->comments[$j] == $commentID) {
+                        unset($this->comments[$j]);
+                    }
+                }
+                
             }
+            
+            elseif ($itemCreator == $userID) {
+                $query = "DELETE FROM item_comments WHERE commentID = $commentID";
+                $result = $conn ->query($query);
+                if(!$result) {echo("$conn->error <br>"); die($conn->error);}
+                
+                //remove list element from list
+                for ($j = 1; $j < count($this->comments); ++$j) {
+                    if ($this->comments[$j] == $ratingID) {
+                        unset($this->comments[$j]);
+                    }
+                    
+                }   
+            }
+            //disconnect from database;
+           $conn->close();
         }
-        //disconnect from database;
-        $conn->close();
     }
 }
+
 ?>
