@@ -50,7 +50,7 @@ class User{
 		$password = hash('ripemd128',"$salt1$password$salt2");
 		$instance->password = $password;
 	   //require_once 'login.php';
-        $conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'],  $GLOBALS['db']);
         if($conn->connect_error) die($conn->connect_error);
         $query1 = "SELECT * FROM user ORDER BY userID DESC LIMIT 1 ";
         $result1 = $conn->query($query1);
@@ -70,8 +70,8 @@ class User{
 		
         $instance->userID = $userID;
 
-        //require_once 'login.php';
-        $conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
+        require_once 'login.php';
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'],  $GLOBALS['db']);
         if($conn->connect_error) die($conn->connect_error);
         $query1 = "SELECT * FROM user WHERE userID = " .$userID;
         $result = $conn->query($query1);
@@ -222,7 +222,7 @@ class User{
 	
     public function deleteUser($userID){
         //require_once 'login.php';
-        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'],  $GLOBALS['db']);
         if($conn->connect_error) die($conn->connect_error);
 
         $query1 = "SELECT * FROM user WHERE userID = ".$userID;

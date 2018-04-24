@@ -120,7 +120,7 @@ a{
 	}
 	else{
 		echo"<center>";
-		echo'<a href="../webpages/titanic_login.php">Please login</a>';
+		echo'<a href="../webpages/firstPage.php">Your Cart is Empty... You should fill it!</a>';
 		
 	}
 	}

@@ -378,10 +378,10 @@ img {vertical-align: middle;}
 
 
 <div class="topnav">
-  <a href="titanic_logout.php">Logout</a>
-  <a href="view_cart.php">Cart</a>
-  <a href="#">Orders</a>
-  <a href="titanic_login.php">Account</a>
+  <a href="../webpages/titanic_logout.php">Logout</a>
+  <a href="../webpages/view_cart.php">Cart</a>
+  <a href="../webpages/view_orders.php">Orders</a>
+  <a href="../webpages/titanic_login.php">Account</a>
   
   <div class="search-container">
     <form method= "get" action="searchStore.php">

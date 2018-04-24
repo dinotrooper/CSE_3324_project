@@ -149,7 +149,7 @@ function saltThat($dataToHash){
 	function forwardUserPage(){
 		if(isset($_SESSION["sessionID"])){
 		if($_SESSION["sessionID"]){
-			header("Location: http://localhost/last%20ride/webpages/view_profile.php");
+			header("Location: ../webpages/view_profile.php");
 			
 	}
 		}
@@ -158,7 +158,7 @@ function saltThat($dataToHash){
 		function forwardFirstPage(){
 		if(isset($_SESSION["sessionID"])){
 		if($_SESSION["sessionID"]){
-			header("Location: http://localhost/last%20ride/webpages/firstPage.php");
+			header("Location: /firstPage.php");
 			
 	}
 		}
@@ -168,8 +168,8 @@ function saltThat($dataToHash){
 		echo $password;
 		$salt1 = "kate";
 		$salt2 = "leo";
-		require_once 'login.php';
-		$connection = new mysqli($hn, $un, $pw, $db);
+		require_once '../backend/login.php';
+		$connection = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
 		if($connection->connect_error)
 			die($connection->connect_error);
 

@@ -78,12 +78,12 @@ span.psw {
 	$emailerror= $nameerror= "";
 	$valid = true;
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
-		require_once 'login.php';
-		$conn = new mysqli($hn, $un, $pw, $db);
+		require_once '../backend/login.php';
+		$conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
 		if($conn->connect_error)
 			die($conn->connect_error);
 		
-		require_once 'user.php';
+		require_once '../backend/user.php';
 		$picture = $_POST['filename'];
 		$uname = $_POST['uname'];
 		$query = "SELECT * FROM user WHERE username = '$uname'";
