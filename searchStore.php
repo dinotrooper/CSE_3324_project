@@ -406,8 +406,15 @@ img {vertical-align: middle;}
 		<div  id='navbar'>
 			<div class='card'>
 				<h3>Search Filters</h3><hr>
-				<form action="http://pluto.cse.msstate.edu/~jjc52/get_test.php" method="get">
-				    
+				<form action="#" method="get">
+				      Sort By: &emsp;&emsp;&emsp;&emsp;<select name="alphaNumeric">
+					  <option value="alpha" selected>Alphabetical</option>
+					  <option value="numeric">Numeric</option>
+					  </select><br><br>
+					  Order By: &emsp;&emsp;&emsp;&nbsp;<select name="ascDesc">
+					  <option value="desc" selected>Descending</option>
+					  <option value="asc">Ascending</option>
+					  </select><br><br>
 				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="electronicMedia" value="y"><br><br>
 					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="literature" value="y"><br><br>
 					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="artwork" value="y"><br><br>
