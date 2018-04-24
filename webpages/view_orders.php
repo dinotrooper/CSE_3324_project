@@ -14,10 +14,9 @@ form {border: 3px solid #f1f1f1;}
 
 input[type=text], input[type=password] {
     width: 25%;
-    padding: 12px 12px;
-    margin: 4px 0;
+    padding: 12px 20px;
+    margin: 8px 0;
     display: inline-block;
-    color: black;
     font-family: "Bubbler One";
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -26,13 +25,14 @@ input[type=text], input[type=password] {
 button {
     background-color: #f4da70;
     color: black;
-    padding: 14px 12px;
+    padding: 14px 20px;
     margin: 8px 0;
-    font-family: "Bubbler One";
     border: none;
+    font-family: "Bubbler One";
     cursor: pointer;
-    width: 100px;
+    width: 15%;
 }
+
 button:hover {
     opacity: 0.8;
 }
@@ -45,6 +45,7 @@ button:hover {
 
 img.avatar {
     width: 20%;
+    height: 20%;
     border-radius: 20%;
 }
 
@@ -69,21 +70,31 @@ span.psw {
 <body>
 
 
-<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Winslet Art</font></h2>  <!-- php inject item name -->
+<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Orders</font></h2>
 
+<!-- php inject a while loop to check database -->
 <form action="/action_page.php">
-  <div class="imgcontainer">
+  <div class="imgcontainer" style="display: flex">
     <img src="NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
-  </div>
-  <div class="container">
+    
   <center>
-  <h2 style="text-align:center"><font face="Bubbler One" size ="5" >Item Price: $5666.82 </font></h2>  <!-- php inject item price -->
-    <p>Description: Beautiful. Wow.  <br>  </p><!-- php inject item description -->
-    <p>Amount Left:  34 </p><!-- php inject item quantity -->
-    <p>Category:  Other </p><!-- php inject item category -->
-    <button type="submit">Add Item To Cart</button>
+  <div class = "container">
+  <br>
+    <p>Item: </p><!-- php inject item name -->
+    <p>Price: </p><!-- php inject item price -->
+    <p>Shipping Address: </p><!-- php inject shipping address -->
+    <p>Quantity Remaining in Stock:  </p><!-- php inject item quantity -->
+    <p>Date Shipped:  </p><!-- php inject date -->
+    <p>Seller:  </p><!-- php inject seller userid -->
+    <textarea name="comment" rows="10" cols="48">Leave a comment!</textarea>  
+    <br> 
+    <br> 
     <br>
+    <!-- php inject check if image has been rated and change to goldberg -->
+    Rating:  <br><a href="view_orders.php"><img src="noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate2" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate5" height="48" width="48"></a>
+    </div>
     </center>
+    <br>
   </div>
 </form>
 

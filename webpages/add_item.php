@@ -10,7 +10,13 @@ body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
     color: white;
     }
     
-form {border: 3px solid #f1f1f1;}
+form {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 700px;
+    border: 16px solid #f1f1f1;
+    background-color: #333;
+    margin: auto;
+}
 
 input[type=text], input[type=password] {
     width: 25%;
@@ -121,7 +127,7 @@ span.psw {
 
 <form action="/action_page.php">
   <div class="imgcontainer">
-    <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
+    <img src="NewItemBerg.png" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">
@@ -130,15 +136,7 @@ span.psw {
     Upload a JPG file for your Item: <input type='file' name='filename' size='10'>
     <input type='submit' value='Upload File'>
     <br>
-    <input type="text" placeholder="Item Name" name="itemName" required>
-    <br>
-    <input type="text" placeholder="Item Description" name="itemDesc" required>
-    <br>
-    <input type="text" placeholder="Item Quantity" name="itemQuan" required>
-    <br>
-    Enter Item Price:  <input type="number" placeholder="0.00" step="0.01">
-    <br>
-  <p>Category:  <select name="itemCateg">
+    <p>Category: <br> <select name="itemCateg">
 		<option value="elecMedia">Electronic Media</option>
 		<option value="liter">Literature</option>
 		<option value="art">Artwork</option>
@@ -146,7 +144,18 @@ span.psw {
 		<option value="merch">Merchandise</option>
 		<option value="otheritem">Other</option>
 	</select></p>
-
+    <br>
+    <input type="text" placeholder="Item Name" name="itemName" required>
+    <br>
+    <input type="text" placeholder="Item Description" name="itemDesc" required>
+    <br>
+    <input type="text" placeholder="Item Quantity" name="itemQuan" required>
+    <br>
+    <br>
+    Enter Item Price:  
+    <br>
+    <input type="number" placeholder="0.00" step="0.01">
+    <br>
 <p>
 <?php
 

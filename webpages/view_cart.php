@@ -9,16 +9,13 @@ body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
     background-color: #333;
     color: white;
     }
-
 form {border: 3px solid #f1f1f1;}
 
 input[type=text], input[type=password] {
     width: 25%;
-    padding: 12px 12px;
-    margin: 4px 0;
+    padding: 12px 20px;
+    margin: 8px 0;
     display: inline-block;
-    color: black;
-    font-family: "Bubbler One";
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
@@ -27,24 +24,27 @@ button {
     background-color: #f4da70;
     color: black;
     padding: 14px 20px;
-    margin: 8px 0;
     font-family: "Bubbler One";
+    margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100px;
 }
+
 button:hover {
     opacity: 0.8;
 }
 
 
 .imgcontainer {
-    text-align: center;
+    width: 50%;
+    text-align: left;
     margin: 24px 0 12px 0;
 }
 
 img.avatar {
     width: 20%;
+    height: 20%;
     border-radius: 20%;
 }
 
@@ -68,22 +68,26 @@ span.psw {
 </head>
 <body>
 
-<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Random User</font></h2>  <!-- php inject user name -->
 
+<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Cart</font></h2>
+
+<!-- php inject a while loop to check database -->
 <form action="/action_page.php">
-  <div class="imgcontainer">
-    <img src="greyAvatar.jpg" alt="Avatar" class="avatar">  <!-- php inject user avatar -->
-  </div>
-  <div class="container">
+  <div class="imgcontainer" style="display: flex">
+    <img src="NewItemBerg.png" alt="Avatar" class="avatar" height="200" >  <!-- php inject item image -->
   <center>
-    <p>Username: Leo1 </p><!-- php inject username -->
-    <p>Email: ColdGuy@BottomOfTheOcean.com </p><!-- php inject email -->
-    <p>Billing Address: Atlantic Ocean </p><!-- php inject address stuff -->
-
-    <button type="submit">Edit Profile</button>
-    <br>
+  <div class = "container">
+    <p>Item: 3</p><!-- php inject item name -->
+    <p>Price: $5.29 </p><!-- php inject item price -->
+    <p>Quantity Remaining in Stock: 1 </p><!-- php inject item quantity -->
+    <p>Seller: KatKit57 </p><!-- php inject seller userid -->
+    <button type ="submit">Delete Item</button>
+   </div>
     </center>
+    <br>
   </div>
+  <h2 style="text-align:center"><font face="Bubbler One" size ="5" >Total: $5.29 </font></h2><!-- php add all item prices -->
+   <center><button type="submit">Checkout</button></center>
 </form>
 
 </body>
