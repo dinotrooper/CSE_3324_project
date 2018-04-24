@@ -20,10 +20,10 @@ $hashTwo = hash('ripemd128',"$salt1$passwordTwo$salt2");
 $hashThree = hash('ripemd128',"$salt1$passwordThree$salt2");
 $hashFour = hash('ripemd128',"$salt1$passwordFour$salt2");
 
-$gato_userID = createUser($connection, 'spacegato', $passwordOne, 'gato@gmail.com', '123 Fire Rd', 'Starkville', 'MS', 98765, 12345678, '3/3000', 134, 1);
-$wrekk_userID = createUser($connection, 'wrekker', $passwordTwo, 'wrekker@gmail.com', '123 Water Rd', 'Memphis', 'TN', 65478, 98765432, '8/2045', 753, 0);
-$lee_userID = createUser($connection, 'lee-thegreat', $passwordThree, 'greatlee@gmail.com', '123 Grass Rd', 'Huntsville', 'AL', 45218, 12378965, '4/2075', 367, 0);
-$steven_userID = createUser($connection, 'steveromo', $passwordFour, 'steve@gmail.com', '123 Rock Rd', 'Southaven', 'MS', 74161, 78965413, '08/2018', 854, 0);
+$gato_userID = createUser($connection, 'spacegato', $hashOne, 'gato@gmail.com', '123 Fire Rd', 'Starkville', 'MS', 98765, 12345678, '3/3000', 134, 1);
+$wrekk_userID = createUser($connection, 'wrekker', $hashTwo, 'wrekker@gmail.com', '123 Water Rd', 'Memphis', 'TN', 65478, 98765432, '8/2045', 753, 0);
+$lee_userID = createUser($connection, 'lee-thegreat', $hashThree, 'greatlee@gmail.com', '123 Grass Rd', 'Huntsville', 'AL', 45218, 12378965, '4/2075', 367, 0);
+$steven_userID = createUser($connection, 'steveromo', $hashFour, 'steve@gmail.com', '123 Rock Rd', 'Southaven', 'MS', 74161, 78965413, '08/2018', 854, 0);
 
 $gato_orderID = createOrder($connection,'spacegato', $gato_userID, '123 Fire Rd', 'Starkville', 'MS', 98765, '2018-04-20 10:08:45', 92.97);
 $wrekk_orderID = createOrder($connection,'wrekker', $wrekk_userID, '123 Water Rd', 'Memphis', 'TN', 65478, '2013-07-16 07:18:24', 1199.97);
