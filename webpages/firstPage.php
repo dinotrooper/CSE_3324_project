@@ -512,7 +512,7 @@ function showSlides() {
 	$counter = 0;
 	$randomItemList = [];
 	$conn = new mysqli("localhost","root","","group7_project_database");
-	while($counter < 10){
+	while($counter < 2){
 		$query = "SELECT * FROM items ORDER BY RAND() LIMIT 1";
 		$result = $conn->query($query);
 		$result->data_seek(0);
@@ -569,7 +569,7 @@ function myFunction() {
   }
 }
 </script>
-}
+
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
