@@ -119,7 +119,7 @@ Class Search {
                 $result->data_seek($j);
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $tempItemName = $row['itemName'];
-                if (strpos($tempItemName, $keyword) !== false) {
+                if (stripos($tempItemName, $keyword) !== false) {
                     $matchedItemIDs[] = $row['itemID'];
                 }
             }
