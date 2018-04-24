@@ -5,7 +5,7 @@
 <?php
 //include_once "test_index.php";
 ?>
-<title>Titanic Treasures | Home</title>
+<title>Titanic Treasures | Search Results</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 * {
@@ -17,48 +17,14 @@ body {
     padding: 10px;
     background: #f1f1f1;
 }
-.sidenav {
-	border: 2px solid black;
-    border-radius: 12px;
-    width: 130px;
-    position: fixed;
-    z-index: 1;
-    top: 250px;
-    left: 10px;
-    background: #333;
-    overflow-x: hidden;
-    padding: 8px 0;
-}
 
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-.sidenav a:hover {
-    color: #064579;
-}
-
-.main {
-    margin-left: 140px; /* Same width as the sidebar + left position in px */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-}
 /* Header */
 .header {
-    padding: 1px;
     text-align: center;
     background: #333;
-	height: 175px;
+	height: 160px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 .header a {
@@ -66,10 +32,12 @@ body {
 }
 
 .header img{
+  position: absolute;
   width: 165x;
   height: 165px;
-  background: #333;
-  padding: 15px;
+  padding: 0px;
+  margin: 0px;
+
 }
   
 .header h1 {
@@ -82,6 +50,10 @@ body {
     overflow: hidden;
     background-color: #333;
 	width: 100%;
+	vertical-align: center;
+	padding: 50px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 /* Style the topnav links */
@@ -92,10 +64,12 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+	vertical-align: center;
 }
 
 .topnav .search-container {
   float: right;
+  vertical-align: center;
   
 }
 
@@ -104,7 +78,7 @@ body {
   margin-top: 8px;
   font-size: 17px;
   border: none;
-  width: 800px;
+  width: 580px;
 }
 
 .topnav .search-container button {
@@ -123,7 +97,7 @@ body {
 }
 
 .dropdown:hover .dropbtn {
-  background: #333;
+  background: #cccccc;
 }
 
 @media screen and (max-width: 600px) {
@@ -151,7 +125,7 @@ body {
     font-size: 16px;    
     border: none;
     outline: none;
-    color: white;
+    color: #f2f2f2;
     padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
@@ -217,6 +191,8 @@ img {vertical-align: middle;}
   max-width: 10000px;
   position: relative;
   margin: auto;
+  border: 2px solid #333;  
+  border-radius: 12px;
 }
 
 /* Next & previous buttons */
@@ -291,15 +267,30 @@ img {vertical-align: middle;}
 /* Left column */
 .leftcolumn {   
     float: right;
-    width: 75%;
+    width: 37%;
+	padding: 10px;
 }
 
 /* Right column */
 .rightcolumn {
-    float: right;
+    float: left;
     width: 25%;
-    background-color: #f1f1f1;
-    padding-left: 20px;
+    padding-right: 20px;
+  
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: inherit;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 /* Add a card effect for articles */
@@ -307,6 +298,8 @@ img {vertical-align: middle;}
     background-color: white;
     padding: 20px;
     margin-top: 20px;
+	border: 2px solid #ccc;  
+	border-radius: 12px;
 }
 
 /* Clear floats after the columns */
@@ -376,11 +369,9 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
-  
-  <h1>Titanic Treasures</h1>
-  <p style="color:white;">A World Where It Is Titanic (the movie) All Day, Everyday...</p>
-</div>
+    <a href="#.html"><img  src="WhiteLogoRedo.png" alt="logo"/></a>
+
+
 
 <div class="topnav">
   <a href="#">Cart</a>
@@ -406,17 +397,31 @@ img {vertical-align: middle;}
     </div>
   </div> 
 </div>
+</div>
 <br>
 
-<div class="sidenav">
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#clients">Clients</a>
-  <a href="#contact">Contact</a>
+<div class='row'>
+		  <h2 style = float:right;>Search Results</h2><br><br><br><br><hr width="75%" align="right">
+<div class='rightcolumn'>
+		<div  id='navbar'>
+			<div class='card'>
+				<h3>Search Filters</h3><hr>
+				<form action="http://pluto.cse.msstate.edu/~jjc52/get_test.php" method="get">
+				    
+				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="electronicMedia" value="y"><br><br>
+					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="literature" value="y"><br><br>
+					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="artwork" value="y"><br><br>
+					  Clothing & Accessories: <input type="checkbox" name="clothing" value="y"><br><br>
+					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="y"><br><br>
+					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="y"><br><br>
+				      Price: <input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
+				  <br><br>
+				  <input type="submit" value="Filter">                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+				  <input type="reset" value="Reset">
+				</form> 
 </div>
-
-	<div class='row'>
-		  <h2 style = float:right;>Search Results</h2><br><br><br><br>
+			</div>
+		</div>
 		
 <?php	
 	for($i=0;$i<10;++$i)
@@ -431,28 +436,56 @@ img {vertical-align: middle;}
 		$result->data_seek(0);
 				
 		$home_item = Item::existingItem($result->fetch_array(MYSQLI_ASSOC)["itemID"]);
-		echo "<div class='leftcolumn'>
+		echo "
+		<div class='leftcolumn'>
 		<div class='card'>
 		<!Item Name Goes Here>
 		  <h2>".$home_item->getitemName()."</h2>
 		  <!Item Image Goes Here>
 		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <pre class='alignright'>
+		  <p class='alignright'>
 		  <!Item Data Goes Here>
-		  <b>Description:</b> Something, something, something...
-		  
-		  <b>Category:</b> Erotic-literature
-		  
-		  <b>Price:</b> $24.99
-		  
-		  <b>Avg. Rating:</b> 4.5 Icebergs
-		  </pre>
+		  <p><b>Description:</b> Something, something, something...</p>
+		  <p><b>Category:</b> Erotic-literature</p>
+		  <p><b>Price:</b> $24.99</p>
+		  <p><b>Avg. Rating:</b> 4.5 Icebergs</p>
+		  </p>
 		</div>
 	</div>";
 	}
 	?>
-	  </div>
-	 
+</div>
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
+</script>
+
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
