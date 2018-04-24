@@ -421,7 +421,7 @@ img {vertical-align: middle;}
 					  Clothing & Accessories: <input type="checkbox" name="clothing" value="y"><br><br>
 					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="y"><br><br>
 					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="y"><br><br>
-				      Price: <input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
+				      Price: &emsp;&emsp;&emsp;<input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
 				  <br><br>
 				  <input type="submit" value="Filter">                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 				  <input type="reset" value="Reset">
