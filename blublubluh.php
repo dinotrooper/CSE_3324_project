@@ -149,6 +149,24 @@ body {
     display: block;
 }
 
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 80%;
+    opacity: 0.6;
+    border-radius: 20%;
+}
+
+img.logo {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 35%;
+    border-radius: 5%;
+}
+
 a {
     text-decoration: none;
     display: inline-block;
@@ -322,7 +340,9 @@ img {vertical-align: middle;}
 <body>
 
 <div class="header">
-  <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
+
+    <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
+  
   <h1>Titanic Treasures</h1>
   <p style="color:white;">A World Where It Is Titanic (the movie) All Day, Everyday...</p>
 </div>
@@ -430,7 +450,9 @@ function showSlides() {
 				<h2>Account Snapshot</h2>
 				<?php 
 				
-				echo "<img src='avatar-placeholder.gif' alt='tit' style='height:200px;'/>";
+				echo "<div class='imgcontainer'>
+					<img src='greyAvatar.jpg' alt='Avatar' class='avatar'>
+					</div>";
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
 			</div>
 		</div>
