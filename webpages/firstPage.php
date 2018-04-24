@@ -382,7 +382,7 @@ img {vertical-align: middle;}
   <a href="#">Orders</a>
   <a href="titanic_login.php">Account</a>
   <div class="search-container">
-    <form action="/action_page.php">
+	<form method="get" action="searchStore.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>

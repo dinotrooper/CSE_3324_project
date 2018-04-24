@@ -109,11 +109,11 @@ span.psw {
 ?>
 <!-- <h2 style="text-align:center"><font face="Bowlby One SC" size ="8" ><b>Titanic Treasures</b></font></h2> -->
 <div class="imgcontainer">
-    <img src="WhiteLogoRedo.png" alt="Avatar" class="logo">
+    <img src="../images/WhiteLogoRedo.png" alt="Avatar" class="logo">
   </div>
 <form method = "POST" form action="titanic_login.php">
   <div class="imgcontainer">
-    <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
+    <img src="../images/greyAvatar.jpg" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">

@@ -146,7 +146,7 @@ span.psw {
 
 <form action="titanic_createprofile.php" method = "POST">
 <div class="imgcontainer">
-    <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
+    <img src="../images/greyAvatar.jpg" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">

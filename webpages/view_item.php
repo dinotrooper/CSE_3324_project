@@ -73,7 +73,7 @@ span.psw {
 
 <form action="/action_page.php">
   <div class="imgcontainer">
-    <img src="NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
+    <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
   </div>
   <div class="container">
   <center>

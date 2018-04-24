@@ -428,14 +428,14 @@ span.psw {
 
 <div class="header">
 
-    <a href="/git/webpages/firstPage.php"><img  src="/git/images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="../webpages/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
   <a href="#">Cart</a>
   <a href="#">Orders</a>
-  <a href="/git/webpages/titanic_login.php">Account</a>
+  <a href="../webpages/titanic_login.php">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
@@ -483,7 +483,7 @@ span.psw {
     <br> 
     <br>
     <!-- php inject check if image has been rated and change to goldberg -->
-    Rating:  <br><a href="view_orders.php"><img src="git/images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate5" height="48" width="48"></a>
+    Rating:  <br><a href="view_orders.php"><img src="../images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate5" height="48" width="48"></a>
     </form>
 	</div>
     </center>
