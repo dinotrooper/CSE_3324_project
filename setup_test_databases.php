@@ -10,7 +10,7 @@ if ($connection->connect_error) {
 }
 
 
-//deleteDB($connection);
+deleteDB($connection);
 
 $query = "CREATE DATABASE group7_project_database";
 
@@ -62,7 +62,7 @@ $query = "CREATE TABLE orders (
     shippingState VARCHAR(32) NOT NULL,
     shippingZip VARCHAR(32) NOT NULL,
     orderDate DATETIME NOT NULL,
-    orderTotal FLOAT(64) NOT NULL,
+    orderTotal FLOAT(32) NOT NULL,
     PRIMARY KEY (orderID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";
@@ -103,7 +103,7 @@ $query = "CREATE TABLE orders_items (
     userID INT UNSIGNED NOT NULL,
     itemName VARCHAR(1024) NOT NULL,
     orderQuantity INT(32) NOT NULL,
-    itemTotal FLOAT(64) NOT NULL,
+    itemTotal FLOAT(32) NOT NULL,
     FOREIGN KEY (orderID) REFERENCES orders(orderID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";
@@ -174,17 +174,17 @@ function checkTableColumns($connection, $table, $num_columns) {
 }
 $connection->close();
 
-function sendQuery($connection, $query) {
-    $result = $connection->query($query);
-    if (!$result) {
-        echo("Query failed. <br>");
-        echo("The contents of the query is as follows. <br><br>");
-        echo("$query <br><br>");
-        echo("Error message: $connection->error. <br>");
-        die();
-    }
-    //else echo("Query successfully sent. <br>");
-    return $result;
-}
+// function sendQuery($connection, $query) {
+//     $result = $connection->query($query);
+//     if (!$result) {
+//         echo("Query failed. <br>");
+//         echo("The contents of the query is as follows. <br><br>");
+//         echo("$query <br><br>");
+//         echo("Error message: $connection->error. <br>");
+//         die();
+//     }
+//     //else echo("Query successfully sent. <br>");
+//     return $result;
+// }
 
 ?>
