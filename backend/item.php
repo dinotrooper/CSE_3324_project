@@ -33,7 +33,8 @@ class Item {
         $instance->comments = [];
         
         //connect to database
-        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        require_once 'login.php';
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
         if($conn->connect_error) die($conn->connect_error);
         
         //if item is in items table, get class values

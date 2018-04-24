@@ -86,7 +86,7 @@ span.psw {
 </head>
 <body>
 <?php 
-		forwardPage();
+		forwardUserPage();
 		$loginError = "";
           // Is someone already logged in? If so, forward them to the correct
           // page. (HINT: Implement this last, you cannot test this until
@@ -97,7 +97,7 @@ span.psw {
 			  $password = $_POST["password"];
 			  if(checkLogin($username,$password)){
 				$loginError="";
-				forwardPage();
+				forwardFirstPage();
 
 				}
 			
@@ -127,7 +127,7 @@ span.psw {
     <input type="password" placeholder="Password" name="password" required value="<?php echo isset($_POST["password"]) ? $_POST["password"] :'';?>">
     <br>
     <button type="submit">Login</button>
-    <button type="submit">New User</button>
+    <button type="button" onclick="window.location.href='titanic_createprofile.php'">New User</button>
     <br>
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
@@ -141,33 +141,45 @@ span.psw {
 </form>
 <?php
 function saltThat($dataToHash){
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$salt1 = "kate";
+		$salt2 = "leo";
 		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
 		return $hashedValue;
 	}
-	function forwardPage(){
-		if($_SESSION["sessionID"]>0){
+	function forwardUserPage(){
+		if(isset($_SESSION["sessionID"])){
+		if($_SESSION["sessionID"]){
+			header("Location: http://localhost/last%20ride/webpages/view_profile.php");
+			
+	}
+		}
+	}
+	
+		function forwardFirstPage(){
+		if(isset($_SESSION["sessionID"])){
+		if($_SESSION["sessionID"]){
 			header("Location: http://localhost/last%20ride/webpages/firstPage.php");
 			
 	}
-	
+		}
 	}
 	function checkLogin($username, $password){
 		echo $username;
 		echo $password;
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$salt1 = "kate";
+		$salt2 = "leo";
 		require_once 'login.php';
 		$connection = new mysqli($hn, $un, $pw, $db);
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		//$checkPassword = saltThat($password);
-		$query = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$password."'";
+		$checkPassword = saltThat($password);
+		$query = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$checkPassword."'";
 		$result = $connection->query($query);
 		$rows = $result->num_rows;
-
+		$result->data_seek(0);
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		echo $row['userID'];
 		$queryType = "SELECT isAdmin FROM user WHERE username = '".$username."'
 		AND password = '".$password."'";
 		$resultType = $connection->query($queryType);
@@ -175,8 +187,7 @@ function saltThat($dataToHash){
 
 		if($rows > 0)
 		{
-			$_SESSION["sessionID"] = $username;
-			echo $_SESSION["sessionID"];
+			$_SESSION["sessionID"] = $row['userID'];
 			$_SESSION["sessionType"] = $rowType['isAdmin'];
 			return true;
 		}

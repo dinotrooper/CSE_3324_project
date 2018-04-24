@@ -104,7 +104,7 @@ Class Search {
         
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $db, $un, $pw);
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
         if ($conn->connect_error) die($conn->connect_error);
         
         //collect all of the items in the items table
@@ -117,9 +117,10 @@ Class Search {
         foreach ($this->keywords as $keyword) {
             for ($j = 0; $j < $rows; ++$j) {
                 $result->data_seek($j);
-                $tempItemName = $result->fetch_array(MYSQLI_ASSOC)['itemName'];
+                $row = $result->fetch_array(MYSQLI_ASSOC);
+                $tempItemName = $row['itemName'];
                 if (strpos($tempItemName, $keyword) !== false) {
-                    $matchedItemIDs[] = $result->fetch_array(MYSQLI_ASSOC)['itemID'];
+                    $matchedItemIDs[] = $row['itemID'];
                 }
             }
         }
