@@ -141,8 +141,8 @@ span.psw {
 </form>
 <?php
 function saltThat($dataToHash){
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$salt1 = "h7tA5d2";
+		$salt2 = "7dh!HDGg%";
 		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
 		return $hashedValue;
 	}
@@ -157,8 +157,8 @@ function saltThat($dataToHash){
 	}
 	}*/
 	function checkLogin($username, $password){
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$salt1 = "h7tA5d2";
+		$salt2 = "7dh!HDGg%";
 		require_once 'login.php';
 		$connection = new mysqli($hn, $un, $pw, $db);
 		if($connection->connect_error)
