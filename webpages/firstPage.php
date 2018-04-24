@@ -516,7 +516,7 @@ function showSlides() {
 	$counter = 0;
 	$randomItemList = [];
 	$conn = new mysqli("localhost","root","","group7_project_database");
-	while($counter < 8){
+	while($counter < 2){
 		$query = "SELECT * FROM items ORDER BY RAND() LIMIT 1";
 		$result = $conn->query($query);
 		$result->data_seek(0);
