@@ -148,8 +148,10 @@ function saltThat($dataToHash){
 	}
 	function forwardPage(){
 		if($_SESSION["sessionID"]){
-			header("Location: /git/blublubluh.php");
+			header("Location: home.php");
 			
+	}
+	
 	}
 	function checkLogin($username, $password){
 		$salt1 = "https://walkoffwin55.files.wordpress.com";
@@ -167,6 +169,7 @@ function saltThat($dataToHash){
 		AND password = '".$checkPassword."'";
 		$resultType = $connection->query($queryType);
 		$rowType = $resultType->fetch_assoc();
+		echo $rows;
 		if($rows > 0)
 		{
 			$_SESSION["sessionId"] = $username;

@@ -381,7 +381,7 @@ img {vertical-align: middle;}
 <div class="topnav">
   <a href="#">Cart</a>
   <a href="#">Orders</a>
-  <a href="#">Account</a>
+  <a href="titanic_login.php">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
