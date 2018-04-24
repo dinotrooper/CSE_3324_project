@@ -28,20 +28,6 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button {
-    background-color: #f4da70;
-    color: black;
-    padding: 14px 20px;
-    font-family: "Bubbler One";
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 15%;
-}
-
-button:hover {
-    opacity: 0.8;
-}
 
 
 .imgcontainer {

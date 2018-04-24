@@ -30,22 +30,7 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button {
-    background-color: #333;
-    color: white;
-    font-family: "Bubbler One";
-    padding: 14px 20px;
-    margin: 4px 0;
-    border: none;
-    cursor: pointer;
-    width: 90px;
-}
 
-button:hover {
-    background-color: #636363;
-    opacity: 0.8;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
 
 
 .imgcontainer {
@@ -128,7 +113,7 @@ span.psw {
     <br>
     <button type="submit">Login</button>
     <button type="button" onclick="window.location.href='titanic_createprofile.php'">New User</button>
-    <br>
+    <br><br>
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
     </label>
@@ -136,7 +121,7 @@ span.psw {
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <span class="psw"><a href="#">Forgot password?</a></span><br>
+    <!<span class="psw"<a href="#"Forgot password?</a</span<br>
   </div>
 </form>
 <?php

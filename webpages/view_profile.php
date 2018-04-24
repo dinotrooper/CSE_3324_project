@@ -365,19 +365,7 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
-button {
-    background-color: #333;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    font-family: "Bubbler One";
-    border: none;
-    cursor: pointer;
-    width: 100px;
-}
-button:hover {
-     background: #cccccc;
-}
+
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
