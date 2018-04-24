@@ -11,14 +11,14 @@ class Cart{
 	    $this->cartTotal = 0;
 		
 		//connect to database
-	    require_once 'login.php';
-		$conn = new mysqli($hn, $un, $pw, $db);
+	    //require_once 'login.php';
+		$conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
 		if($conn->connect_error) die($conn->connect_error);
 		
 		//query database to see if the cart already exists
-		$query = "SELECT cartID FROM cart WHERE userID = $userID";
+		$query = "SELECT cartID FROM cart WHERE userID = '$userID'";
 		$cartIDExists = $conn->query($query);
-		if(!$cartIDEXists)
+		if(!$cartIDExists)
 		{
 		    //if it doesn't, create a new cart w/ the userID
 			$query = "INSERT INTO cart VALUES ($userID)"; //TODO: verify this is the right way to format the variable into the insert query
@@ -26,23 +26,26 @@ class Cart{
 			if(!$result) die($conn->error);
 			
 			//grab new cartID from database using userID
-			$query = "SELECT cartID FROM cart WHERE userID = $userID";
+			$query = "SELECT cartID FROM cart WHERE userID = '$userID'";
 			$result = $conn->query($query);
 			$result->data_seek(0);
-			$cartID = $result->fetch_array(MYSQLI_ASSOC)['cartID'];
+			$this->cartID = $result->fetch_array(MYSQLI_ASSOC)['cartID'];
 		}
 		else
 		{
 		    //grab cartID from datbase using userID
 		    $result = $cartIDExists;
             $result->data_seek(0);
-		    $cartID = $result->fetch_array(MYSQLI_ASSOC)['cartID'];
-			
+		    $this->cartID = $result->fetch_array(MYSQLI_ASSOC)['cartID'];
 		    //create elements for itemsInCart associative array
 		    //using itemIDs as indexes and quantities as values
 		    //calculate the total cost of the cart
-		    $query = "SELECT itemID FROM cart_items WHERE cartID = $this->cartID";
+
+		    $query = "SELECT * FROM cart_items WHERE cartID = $this->cartID";
+
 		    $result = $conn->query($query);
+			if(!$result)
+				die($conn->error);
 			$rows = $result->num_rows;
 
 			for ($j = 0 ; $j < $rows ; ++$j)
@@ -51,8 +54,8 @@ class Cart{
 				$row = $result->fetch_array(MYSQLI_ASSOC);
                 $itemID = $row['itemID'];
                 $quantity = $row['cartQuantity'];
-                $itemsInCart[$itemID] = $quantity;
-                $cartTotal += $row['priceTotal'];
+                $this->itemsInCart[$itemID] = $quantity;
+                $this->cartTotal += $row['priceTotal'];
 			}
 		}
 		//disconnect from database
@@ -62,27 +65,35 @@ class Cart{
     public function deleteCart($userID)
 	{
         //connect to database
-        require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        //require_once 'login.php';
+        $conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
 		//check to see if the userID is an admin
 		//grab the isAdmin value from the user table
-		$query = "SELECT isAdmin FROM user WHERE userID = ".$userID;
+
+		$query = "SELECT * FROM user WHERE userID = '$userID'";
+
 		$result = $conn ->query($query);
 		if(!$result) die($conn->error);
 	
 		$result = $conn->query($query);
 		$result->data_seek(0);
-		$isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		$isAdmin = $row['isAdmin'];
+		
 				
 		if($isAdmin)
 		{
+
 		    //TODO: remove all items associated with this cartID
 		    //from the cart_items table
-		    
+			$query = "DELETE FROM cart_items WHERE cartID = $this->cartID";
+			$result = $conn->query($query);
+			if(!$result) die($conn->error);		    
 		    //finally delete row from cart table
-			$query = "DELETE FROM cart WHERE cartID = $this->cartID";
+			
+			$query = "DELETE FROM cart WHERE cartID = '$this->cartID'";
 			$result = $conn ->query($query);
 			if(!$result) die($conn->error);
 			
@@ -92,18 +103,23 @@ class Cart{
 		else
 		{
 		    //grab the original userID associated with the cart
-		    $query = "SELECT userID FROM cart WHERE cartID = $this->cartID";
+
+		    $query = "SELECT userID FROM cart WHERE cartID = '$this->cartID'";
+
 		    $result = $conn->query($query);
 		    if(!$result) die($conn->error);
 		    $result->data_seek(0);
-		    $cartUser = $result->fetch_array(MYSQLI_ASSOC)['userID'];
-		    
+			$row = $result->fetch_array(MYSQLI_ASSOC);
+		    $cartUser = $row['userID'];
 		    //compare the user of the cart and cartID
 			if($cartUser == $userID)
 			{
 			    //TODO: remove all items associated with this cartID
 			    //from the cart_items table
-			    
+			    $query = "DELETE FROM cart_items WHERE cartID = $this->cartID";
+				$result = $conn->query($query);
+				if(!$result) die($conn->error);
+				
 			    //finally delete row from cart table
 			    $query = "DELETE FROM cart WHERE cartID = $this->cartID";
 			    $result = $conn ->query($query);
@@ -123,7 +139,7 @@ class Cart{
     
     public function getCartID()
 	{
-        return($this->itemsInCart);
+        return($this->cartID);
     }
     
     public function getCartTotal()
@@ -164,7 +180,7 @@ class Cart{
             $itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
             //get the quantity of the item from the itemsInCart associate array
             $quantity = $this->itemsInCart[$itemID];
-            $cartTotal -= ($itemPrice * $quantity);
+            $this->cartTotal -= ($itemPrice * $quantity);
             
             //not delete the item from the cart_items table
             $query = "DELETE FROM cart_items WHERE itemID = $itemID";
