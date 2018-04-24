@@ -3,7 +3,20 @@
 <html>
 <head>
 <?php
-//include_once "test_index.php";
+require_once '../backend/search.php';
+require_once '../backend/login.php';
+require_once '../backend/item.php';
+
+//get keywords from get request
+
+try{
+    
+    $string = $_GET['search'];
+    
+} catch(Exception $e) {
+    $keywords = [];
+}
+    
 ?>
 <title>Titanic Treasures | Search Results</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -369,7 +382,7 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="#.html"><img  src="WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="#.html"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
@@ -378,7 +391,7 @@ img {vertical-align: middle;}
   <a href="#">Orders</a>
   <a href="#">Account</a>
   <div class="search-container">
-    <form action="/action_page.php">
+    <form method="get" action="searchStore.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -406,21 +419,21 @@ img {vertical-align: middle;}
 		<div  id='navbar'>
 			<div class='card'>
 				<h3>Search Filters</h3><hr>
-				<form action="#" method="get">
+				<form action="searchStore.php" method="POST">
 				      Sort By: &emsp;&emsp;&emsp;&emsp;<select name="alphaNumeric">
-					  <option value="alpha" selected>Alphabetical</option>
-					  <option value="numeric">Numeric</option>
+					  <option value="1" selected>Alphabetical</option>
+					  <option value="0">Numeric</option>
 					  </select><br><br>
 					  Order By: &emsp;&emsp;&emsp;&nbsp;<select name="ascDesc">
-					  <option value="desc" selected>Descending</option>
-					  <option value="asc">Ascending</option>
+					  <option value="1" selected>Descending</option>
+					  <option value="0">Ascending</option>
 					  </select><br><br>
-				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="electronicMedia" value="y"><br><br>
-					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="literature" value="y"><br><br>
-					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="artwork" value="y"><br><br>
-					  Clothing & Accessories: <input type="checkbox" name="clothing" value="y"><br><br>
-					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="y"><br><br>
-					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="y"><br><br>
+				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="electMedia" value="Electronic Media"><br><br>
+					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="lit" value="Literature"><br><br>
+					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="artwork" value="Artwork"><br><br>
+					  Clothing & Accessories: <input type="checkbox" name="clothing" value="Clothing and Accessories"><br><br>
+					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="Merchandise"><br><br>
+					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="Other"><br><br>
 				      Price: &emsp;&emsp;&emsp;<input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
 				  <br><br>
 				  <input type="submit" value="Filter">                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -431,34 +444,67 @@ img {vertical-align: middle;}
 		</div>
 		
 <?php	
-	for($i=0;$i<10;++$i)
-	{
-		include_once "item.php";
+$mainSearch = new Search($keywords);
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    if ($_POST['ascDesc']) $mainSearch->setDescending($_POST['ascDesc']);
+    
+    if ($_POST['alphaNumeric'] == 1) $mainSearch->setAlphabetical(1);
+    else $mainSearch->setNumerical(1);
+    
+    if ($_POST['minPrice']) $mainSearch->setPriceRangeNumOne($_POST['minPrice']);
+    if ($_POST['maxPrice']) $mainSearch->setPriceRangeNumOne($_POST['maxPrice']);
+    
+    $listCategories = [];
+    if ($_POST['electMedia']) $listCategories[] = $_POST['electMedia'];
+    if ($_POST['lit']) $listCategories[] = $_POST['lit'];
+    if ($_POST['artwork']) $listCategories[] = $_POST['artwork'];
+    if ($_POST['clothing']) $listCategories[] = $_POST['clothing'];
+    if ($_POST['merch']) $listCategories[] = $_POST['merch'];
+    if ($_POST['other']) $listCategories[] = $_POST['other'];
+    
+    $mainSearch->setCategories($listCategories);
+    $mainSearch->applyFilter();
+}
+
+foreach($mainSearch->getFoundItemIDs() as $itemID)
+{
 				
-		$conn = new mysqli("localhost","root","","group7_project_database");
-		$query = "SELECT itemID FROM items ORDER BY RAND() LIMIT 1";
-		$result = $conn->query($query);
-		if(!$result) die ($conn->error);
-				
-		$result->data_seek(0);
-				
-		$home_item = Item::existingItem($result->fetch_array(MYSQLI_ASSOC)["itemID"]);
-		echo "
-		<div class='leftcolumn'>
+    $tempItem = Item::existingItem($itemID);
+		
+	//calculate average item ratings
+	$numRatings = count($tempItem->getRatings());
+	$totalRatings = 0;
+		
+	foreach ($tempItem->getRatings() as $ratingID) {
+	    $query = "SELECT * FROM item_ratings WHERE ratingID = $ratingID";
+	    $result = $conn->query($query);
+	    if (!$result) die($conn-error);
+		   
+	    $ratingNum = $result->fetch_array(MYSQLI_ASSO)['ratingNum'];
+	    $totalRatings += $ratingNum;
+	}
+		
+		if($numRatings == 0)$averageRating = 3;
+		else $averageRating = $totalRatings / $numRatings;
+		
+    echo "
+        <div class='leftcolumn'>
 		<div class='card'>
 		<!Item Name Goes Here>
-		  <h2>".$home_item->getitemName()."</h2>
-		  <!Item Image Goes Here>
-		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <p class='alignright'>
-		  <!Item Data Goes Here>
-		  <p><b>Description:</b> Something, something, something...</p>
-		  <p><b>Category:</b> Erotic-literature</p>
-		  <p><b>Price:</b> $24.99</p>
-		  <p><b>Avg. Rating:</b> 4.5 Icebergs</p>
-		  </p>
+		<h2>".$tempItem->getitemName()."</h2>
+		<!Item Image Goes Here>
+		<img src='../images/".$tempItem->getItemImage()."' alt='itemImage' style='height:200px;'/>
+		<p class='alignright'>
+		<!Item Data Goes Here>
+		<p><b>Description:</b> ".$tempItem->getItemDescription()."</p>
+		<p><b>Category:</b> ".$tempItem->getItemCategory()."</p>
+	    <p><b>Price:</b> ".$tempItem->getItemPrice()."</p>
+		<p><b>Avg. Rating:</b>".$averageRating."</p>
+		</p>
 		</div>
-	</div>";
+	   </div>";
 	}
 	?>
 </div>

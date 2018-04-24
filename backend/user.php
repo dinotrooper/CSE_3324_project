@@ -34,19 +34,23 @@ class User{
     public static function createNewUser($username,$password,$email,$billingStreetOne,$billingStreetTwo,$billingCity,$billingState,$billingZip,$avatarImg,$cardNumber,$cardExpDate,$cardSecureCode){
 		$instance = new self();
 		$instance->username = $username;
-		$instance->password = $password;
+		
 		$instance->email = $email;
 		$instance->billingStreetOne = $billingStreetOne;
 		$instance->billingStreetTwo = !empty($billingStreetTwo)?"'$billingStreetTwo'" : "NULL";
 		$instance->billingcity = $billingCity;
 		$instance->billingState = $billingState;
 		$instance->billingZip = $billingZip;
-		$instance->avatarImg = $avatarImg;
+		$instance->avatarImg = !empty($avatarImg)?"'$avatarImg'": "Default Location";
 		$instance->cardNumber = $cardNumber;
 		$instance->cardExpDate = $cardExpDate;
 		$instance->cardSecureCode = $cardSecureCode;
+		$salt1 = "kate";
+		$salt2 = "leo";
+		$password = hash('ripemd128',"$salt1$password$salt2");
+		$instance->password = $password;
 	   //require_once 'login.php';
-        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        $conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         $query1 = "SELECT * FROM user ORDER BY userID DESC LIMIT 1 ";
         $result1 = $conn->query($query1);
@@ -67,7 +71,7 @@ class User{
         $instance->userID = $userID;
 
         //require_once 'login.php';
-        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
+        $conn = new mysqli('localhost', 'root', 'YES', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         $query1 = "SELECT * FROM user WHERE userID = " .$userID;
         $result = $conn->query($query1);

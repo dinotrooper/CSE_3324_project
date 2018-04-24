@@ -149,7 +149,7 @@ span.psw {
 
 <h2 style="text-align:center"><font face="Bubbler One" size ="8" >Add Item</font></h2>
 
-<form action="/webpages/inventory_page.php">
+<form action="/inventory_page.php">
   <div class="imgcontainer">
     <img src="NewItemBerg.png" alt="Avatar" class="avatar">
   </div>
@@ -186,7 +186,7 @@ span.psw {
 if ($_FILES)
 {
     $name = basename($_FILES['filename']['name']);
-    $target_dir = 'uploads/';
+    $target_dir = '../images/';
     
     if (is_dir($target_dir)){
     

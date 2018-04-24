@@ -1,6 +1,6 @@
 <?php
-  $hn = 'localhost'; 
-  $db = 'group7_project_database'; // your NetID
-  $un = 'root';  // your NetID
-  $pw = ''; // your MySQL password on pluto  
+    $GLOBALS['hn'] = 'localhost'; 
+    $GLOBALS['db'] = 'group7_project_database'; // your NetID
+    $GLOBALS['un'] = 'root';  // your NetID
+    $GLOBALS['pw'] = ''; // your MySQL password on pluto  
 ?>

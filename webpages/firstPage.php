@@ -1,6 +1,5 @@
 <?php
-session_start()
-
+session_start();
 
 ?>
 <!DOCTYPE html>
@@ -374,14 +373,14 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="/git/webpages/firstPage.php"><img  src="/git/images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
   <a href="#">Cart</a>
   <a href="#">Orders</a>
-  <a href="/git/webpages/titanic_login.php">Account</a>
+  <a href="titanic_login.php">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
@@ -407,17 +406,17 @@ img {vertical-align: middle;}
 <div class="slideshow-container">
 
 <div class="mySlides fade">
-  <img src="/git/images/titanicMain.jpg" style="width:100%" height = "250">
+  <img src="../images/titanicMain.jpg" style="width:100%" height = "250">
   <div class="text">Win a trip to Eat Brunch with Kate and Leo</div>
 </div>
 
 <div class="mySlides fade">
-  <img src="/git/images/titanicIce.jpg" style="width:100%" height = "250">
+  <img src="../images/titanicIce.jpg" style="width:100%" height = "250">
   <div class="text">Iceberg Ice Cubes: Best Selling Item 3 Months Running</div>
 </div>
 
 <div class="mySlides fade">
-  <img src="/git/images/titanicNeck.jpg" style="width:100%" height = "250">
+  <img src="../images/titanicNeck.jpg" style="width:100%" height = "250">
   <div class="text">Own the Heart of the Sea! Only 3 payments of $74.99</div>
 </div>
 
@@ -482,7 +481,7 @@ function showSlides() {
 			<div class='card'>
 				<h2>Account Snapshot</h2>
 				<?php 
-				if($_SESSION["sessionID"]){
+				if(isset($_SESSION["sessionID"])){
 					$sessionID = $_SESSION["sessionID"];
 				}
 				else{
@@ -495,13 +494,13 @@ function showSlides() {
 				$userID = $result->fetch_array(MYSQLI_ASSOC)["userID"];
 				
 				echo "<div class='imgcontainer'>
-					<img src='greyAvatar.jpg' alt='Avatar' class='avatar'>
+					<img src='../images/greyAvatar.jpg' alt='Avatar' class='avatar'>
 					</div>";
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";
 				}
 				else{
 					echo "<div class='imgcontainer'>
-					<img src='greyAvatar.jpg' alt='Avatar' class='avatar'>
+					<img src='../images/greyAvatar.jpg' alt='Avatar' class='avatar'>
 					</div>";
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";
 				}
@@ -513,7 +512,7 @@ function showSlides() {
 	$counter = 0;
 	$randomItemList = [];
 	$conn = new mysqli("localhost","root","","group7_project_database");
-	while($counter < 2){
+	while($counter < 10){
 		$query = "SELECT * FROM items ORDER BY RAND() LIMIT 1";
 		$result = $conn->query($query);
 		$result->data_seek(0);
@@ -526,15 +525,10 @@ function showSlides() {
 	}
 	foreach($randomItemList as $listItemID)
 	{
-		include_once "C:\xampp\htdocs\git\backend\item.php";
+	    include_once "../backend/item.php";
 				
-		
-		
 		$home_item = Item::existingItem($listItemID);
 				
-		
-		
-		
 		$itemID = $home_item->getItemID();
 		$query = "SELECT * FROM item_ratings WHERE itemID = $itemID";
 		$result = $conn-> query($query);
