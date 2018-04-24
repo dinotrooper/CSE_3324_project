@@ -65,8 +65,21 @@ function createItem($connection, $un, $userID, $image, $name, $description, $qua
                         VALUES ($userID, '$image', '$name', '$description', $quantity, '$category', $price)";
     
     sendQuery($connection, $query);
+    
+    $query = "SELECT itemID FROM items WHERE userID = $userID";
+    $itemIDResult = sendQuery($connection, $query);
+    $rows = $itemIDResult->num_rows;
+    $itemID = 0;
+ 
+    for ($j = 0 ; $j < $rows ; ++$j)
+    {
+        $itemIDResult->data_seek($j);
+        $row = $itemIDResult->fetch_array(MYSQLI_ASSOC);
+        $tempItemID = $row['itemID'];
+        if ($tempItemID > $itemID) $itemID = $tempItemID;
+    }
 
-    return selectValueFromTable($connection, 'itemID', 'items', 'userID', $userID);
+    return $itemID;
 }
 
 function createCart($connection, $un, $userID) {

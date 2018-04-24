@@ -75,7 +75,7 @@ $query = "CREATE TABLE items (
     itemID INT UNSIGNED AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL,
     itemImage VARCHAR(64) DEFAULT 'default item image',
-    itemName VARCHAR(32) NOT NULL,
+    itemName VARCHAR(1024) NOT NULL,
     itemDescription VARCHAR(1024) NOT NULL,
     itemQuantity INT(32) NOT NULL,
     itemCategory VARCHAR(64) NOT NULL,
