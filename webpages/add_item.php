@@ -125,7 +125,7 @@ span.psw {
 
 <h2 style="text-align:center"><font face="Bubbler One" size ="8" >Add Item</font></h2>
 
-<form action="/action_page.php">
+<form action="/webpages/inventory_page.php">
   <div class="imgcontainer">
     <img src="NewItemBerg.png" alt="Avatar" class="avatar">
   </div>
