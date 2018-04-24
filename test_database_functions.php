@@ -1,7 +1,5 @@
 <?php
 
-include_once "setup_test_databases.php";
-
 function deleteDB($connection)
 {
 	$query = "DROP DATABASE group7_project_database";

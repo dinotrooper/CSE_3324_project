@@ -2,6 +2,7 @@
 
 require_once 'login.php';
 require_once 'test_database_functions.php';
+
 $connection = new mysqli('localhost', 'root', '', '');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>"); 
@@ -54,12 +55,14 @@ checkTableColumns($connection, "user", 13);
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL UNIQUE,
+    shippingName VARCHAR(64) NOT NULL,
     shippingStreetOne VARCHAR(64) NOT NULL,
     shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,
     shippingState VARCHAR(32) NOT NULL,
     shippingZip VARCHAR(32) NOT NULL,
     orderDate DATETIME NOT NULL,
+    orderTotal FLOAT(64) NOT NULL,
     PRIMARY KEY (orderID),
     FOREIGN KEY (userID) REFERENCES user(userID)
 )";
@@ -97,12 +100,12 @@ checkTableColumns($connection, "cart", 2);
 
 $query = "CREATE TABLE orders_items (
     orderID INT UNSIGNED NOT NULL,
-    itemID INT UNSIGNED NOT NULL,
     userID INT UNSIGNED NOT NULL,
+    itemName VARCHAR(1024) NOT NULL,
     orderQuantity INT(32) NOT NULL,
+    itemTotal FLOAT(64) NOT NULL,
     FOREIGN KEY (orderID) REFERENCES orders(orderID),
-    FOREIGN KEY (userID) REFERENCES user(userID),
-    FOREIGN KEY (itemID) REFERENCES items(itemID)
+    FOREIGN KEY (userID) REFERENCES user(userID)
 )";
 
 //create orders_items table
