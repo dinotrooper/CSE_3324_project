@@ -23,19 +23,7 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button {
-    background-color: #f4da70;
-    color: black;
-    padding: 14px 12px;
-    margin: 8px 0;
-    font-family: "Bubbler One";
-    border: none;
-    cursor: pointer;
-    width: 100px;
-}
-button:hover {
-    opacity: 0.8;
-}
+
 
 
 .imgcontainer {
