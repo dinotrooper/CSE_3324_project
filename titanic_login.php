@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html>
 <!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
 <head>
@@ -79,23 +82,46 @@ span.psw {
 </style>
 </head>
 <body>
+<?php 
+//forwardPage();
+		$loginError = "";
+          // Is someone already logged in? If so, forward them to the correct
+          // page. (HINT: Implement this last, you cannot test this until
+          //              someone can log in.)
+          if($_SERVER["REQUEST_METHOD"] =="POST"){
+			  $loginError = "";
+			  $username = $_POST["username"];
+			  $password = $_POST["password"];
+			  if(checkLogin($username,$password)){
+				$loginError="";
+				forwardPage();
 
+				}
+			
+				else{
+			  $loginError = "The username / password combination is not correct";
+		  }
+		  
+          }
+?>
 <!-- <h2 style="text-align:center"><font face="Bowlby One SC" size ="8" ><b>Titanic Treasures</b></font></h2> -->
 <div class="imgcontainer">
     <img src="logo.jpg" alt="Avatar" class="logo">
   </div>
-<form action="/action_page.php">
+<form method = "POST" form action="/git/blublubluh.php">
   <div class="imgcontainer">
     <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">
   <center>
-    
-    <input type="text" placeholder="Username" name="uname" required>
+     <p style="color: red">
+        <?php echo $loginError?>
+     </p>
+    <input type="text" placeholder="Username" name="username" required value="<?php echo isset($_POST["username"]) ? $_POST["username"] :'';?>">
     <br>
     
-    <input type="password" placeholder="Password" name="psw" required>
+    <input type="password" placeholder="Password" name="password" required value="<?php echo isset($_POST["password"]) ? $_POST["password"] :'';?>">
     <br>
     <button type="submit">Login</button>
     <button type="submit">New User</button>
@@ -110,6 +136,56 @@ span.psw {
     <span class="psw"><a href="#">Forgot password?</a></span><br>
   </div>
 </form>
+<?php
+function saltThat($dataToHash){
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
+		return $hashedValue;
+	}
+	/*function forwardPage(){
+		if($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'admin'){
+			header("Location: /git/blublubluh.php");
+			
+		}
+		elseif($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'user'){
+			header("Location: /git/blublubluh.php");
+			
+	}
+	}*/
+	function checkLogin($username, $password){
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		require_once 'login.php';
+		$connection = new mysqli($hn, $un, $pw, $db);
+		if($connection->connect_error)
+			die($connection->connect_error);
 
+		$checkPassword = saltThat($password);
+		$query = "SELECT username,password FROM user WHERE username = '".$username."' AND password = '".$checkPassword."'";
+		$result = $connection->query($query);
+		$rows = $result->num_rows;
+		$queryType = "SELECT type FROM user WHERE username = '".$username."'
+		AND password = '".$checkPassword."'";
+		$resultType = $connection->query($queryType);
+		$rowType = $resultType->fetch_assoc();
+		if($rows > 0)
+		{
+			$_SESSION["loggedIn"] = true;
+			$_SESSION["sessionId"] = $username;
+			$_SESSION["sessionType"] = $rowType['type'];
+			return true;
+		}
+		else
+		{
+			$_SESSION["loggedIn"] = false;
+			return false;
+		}
+
+		$result->close();
+		$resultType->close();
+		$connection->close();
+	}
+?>
 </body>
 </html>
