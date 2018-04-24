@@ -86,7 +86,7 @@ span.psw {
 </head>
 <body>
 <?php 
-//forwardPage();
+		forwardPage();
 		$loginError = "";
           // Is someone already logged in? If so, forward them to the correct
           // page. (HINT: Implement this last, you cannot test this until
@@ -141,24 +141,19 @@ span.psw {
 </form>
 <?php
 function saltThat($dataToHash){
-		$salt1 = "h7tA5d2";
-		$salt2 = "7dh!HDGg%";
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
 		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
 		return $hashedValue;
 	}
-	/*function forwardPage(){
-		if($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'admin'){
-			header("Location: /git/blublubluh.php");
-			
-		}
-		elseif($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'user'){
+	function forwardPage(){
+		if($_SESSION["sessionID"]){
 			header("Location: /git/blublubluh.php");
 			
 	}
-	}*/
 	function checkLogin($username, $password){
-		$salt1 = "h7tA5d2";
-		$salt2 = "7dh!HDGg%";
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
 		require_once 'login.php';
 		$connection = new mysqli($hn, $un, $pw, $db);
 		if($connection->connect_error)
@@ -174,9 +169,8 @@ function saltThat($dataToHash){
 		$rowType = $resultType->fetch_assoc();
 		if($rows > 0)
 		{
-			$_SESSION["loggedIn"] = true;
 			$_SESSION["sessionId"] = $username;
-			$_SESSION["sessionType"] = $rowType['type'];
+			$_SESSION["sessionType"] = $rowType['isAdmin'];
 			return true;
 		}
 		else
