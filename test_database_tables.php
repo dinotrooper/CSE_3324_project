@@ -1,6 +1,14 @@
 <?php
-$connection = new mysqli('localhost', 'root', '', 'group7_project_database');
 
+require_once 'test_database_functions.php';
+
+$conn= new mysqli('localhost', 'root', '', 'group7_project_database');
+if ($connection->connect_error) {
+    echo("Connection to database failed. <br>");
+die();}
+//deleteDB($connection);
+
+$connection = new mysqli('localhost', 'root', '', 'group7_project_database');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>");
     die();
@@ -26,13 +34,6 @@ sendQuery($connection, $query);
 $query = "INSERT INTO orders(userID, shippingStreetOne, shippingCity, shippingState, shippingZip, orderDate) 
                     VALUES(1, '123 Fire Rd', 'Starkville', 'MS', 98765, '4-20-2018 10:08:45')";
 
-/*
-- * Sorry I couldn't finish all the test data for the database.
-- * It shouldn't be too hard to create more using what I did as a template.
-- * I recomment having setup_test_databases.php up as a guide for the tables/values
-- * 
-- * Thanks!
-- */
 
 function sendQuery($connection, $query) {
     $result = $connection->query($query);
