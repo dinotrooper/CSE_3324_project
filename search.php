@@ -113,7 +113,7 @@ Class Search {
         if (!$result) die($conn->error);
         $rows = $result->num_rows;
         
-        //loop through each keyword and item in tables to collect a list of items with matched keywords
+        //loop through each keyword and item in items table to collect a list of items with matched keywords
         foreach ($this->keywords as $keyword) {
             for ($j = 0; $j < $rows; ++$j) {
                 $result->data_seek($j);

@@ -87,26 +87,24 @@ class Item {
         //create new instance of class
         $instance = new self();    
         
-        //initialize class members
-        $instance->itemName = $itemName;
-        $instance->itemCategory = $itemCategory;
-        $instance->itemDescription = $itemDescription;
-        $instance->itemImage = $itemImageSrc;
-        $instance->itemPrice = $itemPrice;
-        $instance->itemQuantity = $itemQuantity;
-        $instance->ratings = [];
-        $instance->comments = [];
-        
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
+        $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
         //create new item in the items table
         $query = "INSERT INTO items(userID, itemImage, itemName, itemDescription, itemQuantity, itemCategory, itemPrice) 
-                 VALUES ($userID, '$itemName', '$itemDescription', '$itemCategory', '$itemImage', $itemQuantity, $itemPrice)";
+                             VALUES ($userID, '$itemImage', '$itemName', '$itemDescription', $itemQuantity, '$itemCategory', $itemPrice)";
         $result = $conn->query($query);
         if (!$result) die($conn->error);
+        
+        //initialize class members
+        $instance->setItemName($itemName);
+        $instance->setItemCategory($itemCategory);
+        $instance->setItemDescription($itemDescription);
+        $instance->setItemImage($itemImage);
+        $instance->setItemPrice($itemPrice);
+        $instance->setItemQuantity($itemQuantity);
         
         //get itemID from the items table using the userID 
         //since users can make multiple items we grab the largest item id associated with userID
@@ -115,8 +113,8 @@ class Item {
         $result = $conn->query($query);
         if (!$result) die($conn->error);
         
-        $rows = $num_rows;
-        $this->itemID = 0;
+        $rows = $result->num_rows;
+        $instance->itemID = 0;
         
         for ($j = 0 ; $j < $rows ; ++$j)
         {
@@ -189,11 +187,11 @@ class Item {
         $conn->close();
     }
     
-    public function getItemImageSrc() {
+    public function getItemImage() {
         return $this->itemImage;
     }
     
-    public function setItemImageSrc($itemImage) {
+    public function setItemImage($itemImage) {
         
         $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
@@ -202,7 +200,7 @@ class Item {
         $result = $conn->query($query);
         if (!$result) {echo("$conn->error <br>"); die($conn->error);}
         
-        $this->itemImageSrc = $itemImage;
+        $this->itemImage = $itemImage;
         
         $conn->close();
     }
@@ -380,7 +378,7 @@ class Item {
             if ($tempID > $ratingID) $ratingID = $tempID;
         }
         
-        $this->ratings[] = $ratingID;
+        $this->ratings[] = $ratingID;  
         
         //disconnect from database
         $conn->close();
@@ -391,6 +389,9 @@ class Item {
         require_once 'login.php';
         $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
+        
+        echo("userID in deleteItemRating: $userID <br>");
+        echo("ratingID in deleteItemRating: $ratingID <br>");
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
@@ -411,9 +412,11 @@ class Item {
             //remove list element from list
             //find element with ratingID
             
+            echo("Rating deleted form table. <br>");
+            
             for ($j = 1; $j < count($this->ratings); ++$j) {
                 if ($this->ratings[$j] == $ratingID) {
-                   unset($this->ratings[$j]);
+                    $this->ratings[$j] = NULL;
                 }
             }
         }
@@ -441,10 +444,12 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
                 
+                echo("Rating deleted form table. <br>");
+                
                 //remove list element from list
                 for ($j = 1; $j < count($this->ratings); ++$j) {
                     if ($this->rating[$j] == $ratingID) {
-                        unset($this->ratings[$j]);
+                        $this->ratings[$j] = NULL;
                     }
                 }
             }
@@ -453,10 +458,12 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
                 
+                echo("Rating deleted form table. <br>");
+                
                 //remove list element from list
                 for ($j = 0; $j < count($this->ratings); ++$j) {
                     if ($this->rating[$j] == $ratingID) {
-                        unset($this->ratings[$j]);
+                        $this->rating[$j] = NULL;
                     }
                 }
             }
@@ -493,6 +500,7 @@ class Item {
             if ($tempID > $commentID) $commentID = $tempID;
         }
         
+
         $this->comments[] = $commentID;
         
         //disconnect from database
@@ -504,6 +512,9 @@ class Item {
         require_once 'login.php';
         $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
+        
+        echo("userID in deleteItemRating: $userID. <br>");
+        echo("CommentID in deleteItemComment: $commentID. <br>");
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
@@ -520,10 +531,12 @@ class Item {
             $result = $conn ->query($query);
             if(!$result) {echo("$conn->error <br>"); die($conn->error);}
             
+            echo("Comment deleted form table. <br>");
+            
             //remove list element from list
             for ($j = 1; $j < count($this->comments); ++$j) {
                 if ($this->comments[$j] == $commentID) {
-                    unset($this->comments[$j]);
+                    $this->comments[$j] = NULL;
                 }
             }
         }
@@ -551,10 +564,12 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) {echo("$conn->error <br>"); die($conn->error);}
                 
+                echo("Comment deleted form table. <br>");
+                
                 //remove list element from list
                 for ($j = 1; $j < count($this->comments); ++$j) {
                     if ($this->comments[$j] == $commentID) {
-                        unset($this->comments[$j]);
+                        $this->comments[$j] = NULL;
                     }
                 }
                 
@@ -565,10 +580,12 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) {echo("$conn->error <br>"); die($conn->error);}
                 
+                echo("Comment deleted form table. <br>");
+                
                 //remove list element from list
                 for ($j = 1; $j < count($this->comments); ++$j) {
                     if ($this->comments[$j] == $ratingID) {
-                        unset($this->comments[$j]);
+                        $this->comments[$j] = NULL;
                     }
                     
                 }   
