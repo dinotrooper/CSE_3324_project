@@ -318,7 +318,7 @@ img {vertical-align: middle;}
 <body>
 
 <div class="header">
-  <a href="index.html"><img src="iceberg.jpg" alt="logo"/></a>
+  <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
   <h1>Titanic Treasures</h1>
   <p style="color:white;">A World Where It Is Titanic (the movie) All Day, Everyday...</p>
 </div>
