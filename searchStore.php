@@ -17,12 +17,48 @@ body {
     padding: 10px;
     background: #f1f1f1;
 }
+.sidenav {
+	border: 2px solid black;
+    border-radius: 12px;
+    width: 130px;
+    position: fixed;
+    z-index: 1;
+    top: 250px;
+    left: 10px;
+    background: #333;
+    overflow-x: hidden;
+    padding: 8px 0;
+}
 
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.sidenav a:hover {
+    color: #064579;
+}
+
+.main {
+    margin-left: 140px; /* Same width as the sidebar + left position in px */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
 /* Header */
 .header {
+    padding: 1px;
     text-align: center;
     background: #333;
-	height: 160px;
+	height: 175px;
 }
 
 .header a {
@@ -30,12 +66,10 @@ body {
 }
 
 .header img{
-  position: absolute;
   width: 165x;
   height: 165px;
-  padding: 0px;
-  margin: 0px;
-
+  background: #333;
+  padding: 15px;
 }
   
 .header h1 {
@@ -48,8 +82,6 @@ body {
     overflow: hidden;
     background-color: #333;
 	width: 100%;
-	vertical-align: center;
-	padding: 50px;
 }
 
 /* Style the topnav links */
@@ -60,12 +92,10 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-	vertical-align: center;
 }
 
 .topnav .search-container {
   float: right;
-  vertical-align: center;
   
 }
 
@@ -74,7 +104,7 @@ body {
   margin-top: 8px;
   font-size: 17px;
   border: none;
-  width: 580px;
+  width: 800px;
 }
 
 .topnav .search-container button {
@@ -93,7 +123,7 @@ body {
 }
 
 .dropdown:hover .dropbtn {
-  background: #cccccc;
+  background: #333;
 }
 
 @media screen and (max-width: 600px) {
@@ -121,7 +151,7 @@ body {
     font-size: 16px;    
     border: none;
     outline: none;
-    color: #f2f2f2;
+    color: white;
     padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
@@ -260,7 +290,7 @@ img {vertical-align: middle;}
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
-    float: left;
+    float: right;
     width: 75%;
 }
 
@@ -346,9 +376,11 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="#.html"><img  src="Finallogo.png" alt="logo"/></a>
-
-
+    <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
+  
+  <h1>Titanic Treasures</h1>
+  <p style="color:white;">A World Where It Is Titanic (the movie) All Day, Everyday...</p>
+</div>
 
 <div class="topnav">
   <a href="#">Cart</a>
@@ -374,91 +406,18 @@ img {vertical-align: middle;}
     </div>
   </div> 
 </div>
-</div>
-<div class="slideshow-container">
-
-<div class="mySlides fade">
-  <img src="titanicMain.jpg" style="width:100%" height = "250">
-  <div class="text">Win a trip to Eat Brunch with Kate and Leo</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="titanicIce.jpg" style="width:100%" height = "250">
-  <div class="text">Iceberg Ice Cubes: Best Selling Item 3 Months Running</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="titanicNeck.jpg" style="width:100%" height = "250">
-  <div class="text">Own the Heart of the Sea! Only 3 payments of $74.99</div>
-</div>
-
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-</div>
 <br>
 
-<script>
-/*var slideIndex = 1;
-showSlides1(slideIndex);
-*/
-function plusSlides(n) {
-  showSlides1(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides1(slideIndex = n);
-}
-
-function showSlides1(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  
-}
-
-var slideIndex = 0;
-showSlides();
-
-function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none"; 
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1} 
-    slides[slideIndex-1].style.display = "block"; 
-    setTimeout(showSlides, 4000); // Change image every 2 seconds
-}
-
-
-</script>
+<div class="sidenav">
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#clients">Clients</a>
+  <a href="#contact">Contact</a>
+</div>
 
 	<div class='row'>
-		  <h2>Items of the Day</h2>
+		  <h2 style = float:right;>Search Results</h2><br><br><br><br>
 		
-	<div class='rightcolumn'>
-			<div class='card'>
-				<h2>Account Snapshot</h2>
-				<?php 
-				
-				echo "<div class='imgcontainer'>
-					<img src='greyAvatar.jpg' alt='Avatar' class='avatar'>
-					</div>";
-				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
-			</div>
-		</div>
 <?php	
 	for($i=0;$i<10;++$i)
 	{

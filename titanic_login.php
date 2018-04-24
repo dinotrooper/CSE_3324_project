@@ -58,8 +58,8 @@ img.avatar {
 }
 
 img.logo {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 35%;
+    
+    width: 22%;
     border-radius: 5%;
 }
 
@@ -106,7 +106,7 @@ span.psw {
 ?>
 <!-- <h2 style="text-align:center"><font face="Bowlby One SC" size ="8" ><b>Titanic Treasures</b></font></h2> -->
 <div class="imgcontainer">
-    <img src="logo.jpg" alt="Avatar" class="logo">
+    <img src="Finallogo.png" alt="Avatar" class="logo">
   </div>
 <form method = "POST" form action="/git/blublubluh.php">
   <div class="imgcontainer">
