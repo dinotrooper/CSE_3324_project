@@ -12,10 +12,17 @@ require_once '../backend/item.php';
 try{
     
     $string = $_GET['search'];
+    $keywords = [];
+    $stringExplosion = explode(" ", $string);
+    
+    foreach ($stringExplosion as $keyword) {
+        $keywords[] = $keyword;
+    }
     
 } catch(Exception $e) {
     $keywords = [];
 }
+
     
 ?>
 <title>Titanic Treasures | Search Results</title>
@@ -419,7 +426,7 @@ img {vertical-align: middle;}
 		<div  id='navbar'>
 			<div class='card'>
 				<h3>Search Filters</h3><hr>
-				<form action="searchStore.php" method="POST">
+				<form action="searchStore.php?search=<?php echo($string);?>" method="POST">
 				      Sort By: &emsp;&emsp;&emsp;&emsp;<select name="alphaNumeric">
 					  <option value="1" selected>Alphabetical</option>
 					  <option value="0">Numeric</option>
@@ -428,18 +435,18 @@ img {vertical-align: middle;}
 					  <option value="1" selected>Descending</option>
 					  <option value="0">Ascending</option>
 					  </select><br><br>
-				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="electMedia" value="Electronic Media"><br><br>
-					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="lit" value="Literature"><br><br>
-					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="artwork" value="Artwork"><br><br>
-					  Clothing & Accessories: <input type="checkbox" name="clothing" value="Clothing and Accessories"><br><br>
-					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="Merchandise"><br><br>
-					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="Other"><br><br>
+				      Electronic Media: &emsp;&emsp;&emsp;<input type="checkbox" name="media" value="checked" <?php  if (isset($_POST['media'])) echo($_POST['media']);?>><br><br>
+					  Literature: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="lit" value="checked"<?php  if (isset($_POST['lit'])) echo($_POST['lit']);?>><br><br>
+					  Artwork: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox" name="art" value="checked"<?php  if (isset($_POST['art'])) echo($_POST['art']);?>><br><br>
+					  Clothing & Accessories: <input type="checkbox" name="cloth" value="checked" <?php  if (isset($_POST['cloth'])) echo($_POST['cloth']);?>><br><br>
+					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="checked" <?php  if (isset($_POST['merch'])) echo($_POST['merch']);?>><br><br>
+					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="checked" <?php  if (isset($_POST['other'])) echo($_POST['other']);?>><br><br>
 				      Price: &emsp;&emsp;&emsp;<input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
 				  <br><br>
 				  <input type="submit" value="Filter">                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 				  <input type="reset" value="Reset">
 				</form> 
-</div>
+				</div>
 			</div>
 		</div>
 		
@@ -457,12 +464,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST['maxPrice']) $mainSearch->setPriceRangeNumOne($_POST['maxPrice']);
     
     $listCategories = [];
-    if ($_POST['electMedia']) $listCategories[] = $_POST['electMedia'];
-    if ($_POST['lit']) $listCategories[] = $_POST['lit'];
-    if ($_POST['artwork']) $listCategories[] = $_POST['artwork'];
-    if ($_POST['clothing']) $listCategories[] = $_POST['clothing'];
-    if ($_POST['merch']) $listCategories[] = $_POST['merch'];
-    if ($_POST['other']) $listCategories[] = $_POST['other'];
+
+    if (isset($_POST['media'])) $listCategories[] = 'Electronic Media';
+    if (isset($_POST['lit'])) $listCategories[] = 'Literature';
+    if (isset($_POST['art'])) $listCategories[] = 'Artwork';
+    if (isset($_POST['cloth'])) $listCategories[] = 'Clothing and Accessories';
+    if (isset($_POST['merch'])) $listCategories[] = 'Merchandise';
+    if (isset($_POST['other'])) $listCategories[] = 'Other';
     
     $mainSearch->setCategories($listCategories);
     $mainSearch->applyFilter();
@@ -470,33 +478,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 foreach($mainSearch->getFoundItemIDs() as $itemID)
 {
-				
-    $tempItem = Item::existingItem($itemID);
+    if ($itemID !== NULL) {
+        $tempItem = Item::existingItem($itemID);
 		
-	//calculate average item ratings
-	$numRatings = count($tempItem->getRatings());
-	$totalRatings = 0;
+	   //calculate average item ratings
+	   $numRatings = count($tempItem->getRatings());
+	   $totalRatings = 0;
 		
-	foreach ($tempItem->getRatings() as $ratingID) {
-	    $query = "SELECT * FROM item_ratings WHERE ratingID = $ratingID";
-	    $result = $conn->query($query);
-	    if (!$result) die($conn-error);
+	   foreach ($tempItem->getRatings() as $ratingID) {
+	       $query = "SELECT * FROM item_ratings WHERE ratingID = $ratingID";
+	       $result = $conn->query($query);
+	       if (!$result) die($conn-error);
 		   
-	    $ratingNum = $result->fetch_array(MYSQLI_ASSO)['ratingNum'];
-	    $totalRatings += $ratingNum;
-	}
+	       $ratingNum = $result->fetch_array(MYSQLI_ASSOC)['ratingNum'];
+	       $totalRatings += $ratingNum;
+	   }
 		
 		if($numRatings == 0)$averageRating = 3;
 		else $averageRating = $totalRatings / $numRatings;
 		
-    echo "
+		echo "
         <div class='leftcolumn'>
 		<div class='card'>
 		<!Item Name Goes Here>
 		<h2>".$tempItem->getitemName()."</h2>
 		<!Item Image Goes Here>
 		<img src='../images/".$tempItem->getItemImage()."' alt='itemImage' style='height:200px;'/>
-		<p class='alignright'>
+		<p class='aligncenter'>
 		<!Item Data Goes Here>
 		<p><b>Description:</b> ".$tempItem->getItemDescription()."</p>
 		<p><b>Category:</b> ".$tempItem->getItemCategory()."</p>
@@ -506,7 +514,9 @@ foreach($mainSearch->getFoundItemIDs() as $itemID)
 		</div>
 	   </div>";
 	}
-	?>
+	
+}
+?>
 </div>
 <script>
 window.onscroll = function() {myFunction()};
