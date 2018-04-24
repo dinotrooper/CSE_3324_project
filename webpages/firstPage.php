@@ -374,14 +374,14 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="#.html"><img  src="WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="/git/webpages/firstPage.php"><img  src="/git/images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
   <a href="#">Cart</a>
   <a href="#">Orders</a>
-  <a href="titanic_login.php">Account</a>
+  <a href="/git/webpages/titanic_login.php">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
@@ -407,17 +407,17 @@ img {vertical-align: middle;}
 <div class="slideshow-container">
 
 <div class="mySlides fade">
-  <img src="titanicMain.jpg" style="width:100%" height = "250">
+  <img src="/git/images/titanicMain.jpg" style="width:100%" height = "250">
   <div class="text">Win a trip to Eat Brunch with Kate and Leo</div>
 </div>
 
 <div class="mySlides fade">
-  <img src="titanicIce.jpg" style="width:100%" height = "250">
+  <img src="/git/images/titanicIce.jpg" style="width:100%" height = "250">
   <div class="text">Iceberg Ice Cubes: Best Selling Item 3 Months Running</div>
 </div>
 
 <div class="mySlides fade">
-  <img src="titanicNeck.jpg" style="width:100%" height = "250">
+  <img src="/git/images/titanicNeck.jpg" style="width:100%" height = "250">
   <div class="text">Own the Heart of the Sea! Only 3 payments of $74.99</div>
 </div>
 
@@ -512,7 +512,7 @@ function showSlides() {
 <?php	
 	$counter = 0;
 	$randomItemList = [];
-	$conn = new mysqli("localhost","root","YES","group7_project_database");
+	$conn = new mysqli("localhost","root","","group7_project_database");
 	while($counter < 2){
 		$query = "SELECT * FROM items ORDER BY RAND() LIMIT 1";
 		$result = $conn->query($query);
@@ -526,7 +526,7 @@ function showSlides() {
 	}
 	foreach($randomItemList as $listItemID)
 	{
-		include_once "item.php";
+		include_once "C:\xampp\htdocs\git\backend\item.php";
 				
 		
 		
