@@ -83,7 +83,11 @@ body {
   cursor: pointer;
 }
 
-.topnav .search-container button:hover, .dropdown:hover .dropbtn {
+.topnav .search-container button:hover{
+  background: #cccccc;
+}
+
+.dropdown:hover .dropbtn {
   background: #333;
 }
 
@@ -329,7 +333,7 @@ img {vertical-align: middle;}
   <a href="#">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
-      <input type="text" placeholder="Search.." name="search">
+      <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
