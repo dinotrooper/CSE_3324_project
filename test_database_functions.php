@@ -1,6 +1,12 @@
 <?php
 
-include_once "setup_test_databases.php";
+//include_once "setup_test_databases.php";
+require_once 'login.php';
+$connection = new mysqli('localhost', 'root', '', 'group7_project_database');
+if ($connection->connect_error) {
+    echo("Connection to database failed. <br>"); 
+    die();
+}
 
 function deleteDB($connection)
 {

@@ -87,7 +87,7 @@ forwardPage();
 ?>
 <h2 style="text-align:center"><font face="garamond" size ="8" >Titanic Treasures</font></h2>
 
-<form method = "POST" form action="/PAGE_HOME.php">
+<form method = "POST" form action="/git/blublubluh.php">
   <div class="imgcontainer">
     <img src="iceberg.jpg" alt="Avatar" class="avatar">
   </div>
@@ -137,10 +137,10 @@ function saltThat($dataToHash){
 			die($connection->connect_error);
 
 		$checkPassword = saltThat($password);
-		$query = "SELECT username,password FROM lab5_users WHERE username = '".$username."' AND password = '".$checkPassword."'";
+		$query = "SELECT username,password FROM user WHERE username = '".$username."' AND password = '".$checkPassword."'";
 		$result = $connection->query($query);
 		$rows = $result->num_rows;
-		$queryType = "SELECT type FROM lab5_users WHERE username = '".$username."'
+		$queryType = "SELECT type FROM user WHERE username = '".$username."'
 		AND password = '".$checkPassword."'";
 		$resultType = $connection->query($queryType);
 		$rowType = $resultType->fetch_assoc();

@@ -3,11 +3,11 @@
 require_once 'test_database_functions.php';
 require_once 'login.php';
 
-$conn = new mysqli ('localhost','root', '', '');
+$conn= new mysqli('localhost', 'root', '', 'group7_project_database');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>");
 die();}
-deleteDB();
+//deleteDB($connection);
 
 $connection = new mysqli('localhost', 'root', '', 'group7_project_database');
 if ($connection->connect_error) {

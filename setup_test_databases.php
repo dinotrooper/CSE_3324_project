@@ -1,7 +1,8 @@
 <?php
 
 require_once 'login.php';
-require_once 'test_database_functions.php';
+//require_once 'test_database_functions.php';
+
 $connection = new mysqli('localhost', 'root', '', '');
 if ($connection->connect_error) {
     echo("Connection to database failed. <br>"); 
@@ -9,7 +10,7 @@ if ($connection->connect_error) {
 }
 
 
-deleteDB($connection);
+//deleteDB($connection);
 
 $query = "CREATE DATABASE group7_project_database";
 
@@ -54,6 +55,7 @@ checkTableColumns($connection, "user", 13);
 $query = "CREATE TABLE orders (
     orderID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     userID INT UNSIGNED NOT NULL UNIQUE,
+	shippingName VARCHAR(64) NOT NULL,
     shippingStreetOne VARCHAR(64) NOT NULL,
     shippingStreetTwo VARCHAR(64) NULL,
     shippingCity VARCHAR(32) NOT NULL,
@@ -171,7 +173,7 @@ function checkTableColumns($connection, $table, $num_columns) {
 }
 $connection->close();
 
-/*function sendQuery($connection, $query) {
+function sendQuery($connection, $query) {
     $result = $connection->query($query);
     if (!$result) {
         echo("Query failed. <br>");
@@ -182,6 +184,6 @@ $connection->close();
     }
     //else echo("Query successfully sent. <br>");
     return $result;
-}*/
+}
 
 ?>
