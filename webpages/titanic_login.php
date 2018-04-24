@@ -121,7 +121,7 @@ span.psw {
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <!<span class="psw"<a href="#"Forgot password?</a</span<br>
+    <span class="psw"><!--<a href="#">Forgot password!--></a></span><br>
   </div>
 </form>
 <?php
