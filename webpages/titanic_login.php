@@ -111,7 +111,7 @@ span.psw {
 <div class="imgcontainer">
     <img src="WhiteLogoRedo.png" alt="Avatar" class="logo">
   </div>
-<form method = "POST" form action="/git/blublubluh.php">
+<form method = "POST" form action="titanic_login.php">
   <div class="imgcontainer">
     <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
   </div>
@@ -147,13 +147,15 @@ function saltThat($dataToHash){
 		return $hashedValue;
 	}
 	function forwardPage(){
-		if($_SESSION["sessionID"]){
-			header("Location: home.php");
+		if($_SESSION["sessionID"]>0){
+			header("Location: http://localhost/last%20ride/webpages/firstPage.php");
 			
 	}
 	
 	}
 	function checkLogin($username, $password){
+		echo $username;
+		echo $password;
 		$salt1 = "https://walkoffwin55.files.wordpress.com";
 		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
 		require_once 'login.php';
@@ -161,24 +163,26 @@ function saltThat($dataToHash){
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$checkPassword = saltThat($password);
-		$query = "SELECT username,password FROM user WHERE username = '".$username."' AND password = '".$checkPassword."'";
+		//$checkPassword = saltThat($password);
+		$query = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$password."'";
 		$result = $connection->query($query);
 		$rows = $result->num_rows;
-		$queryType = "SELECT type FROM user WHERE username = '".$username."'
-		AND password = '".$checkPassword."'";
+
+		$queryType = "SELECT isAdmin FROM user WHERE username = '".$username."'
+		AND password = '".$password."'";
 		$resultType = $connection->query($queryType);
 		$rowType = $resultType->fetch_assoc();
-		echo $rows;
+
 		if($rows > 0)
 		{
-			$_SESSION["sessionId"] = $username;
+			$_SESSION["sessionID"] = $username;
+			echo $_SESSION["sessionID"];
 			$_SESSION["sessionType"] = $rowType['isAdmin'];
 			return true;
 		}
 		else
 		{
-			$_SESSION["loggedIn"] = false;
+			
 			return false;
 		}
 

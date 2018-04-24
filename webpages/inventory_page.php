@@ -81,6 +81,8 @@ span.psw {
     <p>Price: $5.56</p><!-- php inject item price -->
     <p>Quantity Remaining in Stock:  17</p><!-- php inject item quantity -->
     <p>Category: Artwork </p><!-- php inject item category -->
+    <button type ="submit">Edit Item</button>
+    
     <button type ="submit">Delete Item</button>
    </div>
     </center>
@@ -91,4 +93,3 @@ span.psw {
 
 </body>
 </html>
- 

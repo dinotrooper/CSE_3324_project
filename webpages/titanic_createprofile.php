@@ -4,13 +4,19 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif; 
+    background-color: #333;}
+form {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 700px;
+    border: 16px solid #f1f1f1;
+    background-color: white;
+    margin: auto;}
 
 input[type=text], input[type=password] {
     width: 25%;
-    padding: 12px 20px;
+    padding: 12px 12px;
     margin: 8px 0;
+    font-family: "Bubbler One";
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -20,6 +26,7 @@ button {
     background-color: #f4da70;
     color: black;
     padding: 14px 20px;
+    font-family: "Bubbler One";
     margin: 8px 0;
     border: none;
     cursor: pointer;
@@ -61,15 +68,16 @@ span.psw {
 </head>
 <body>
 
-<h2 style="text-align:center"><font face="garamond" size ="8" >Titanic Treasures</font></h2>
 
 <form action="/action_page.php">
-  <div class="imgcontainer">
-    <img src="iceberg.jpg" alt="Avatar" class="avatar">
+<div class="imgcontainer">
+    <img src="greyAvatar.jpg" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">
   <center>
+  Upload a JPG file for your Avatar: <input type='file' name='filename' size='10'>
+    <input type='submit' value='Upload'>
     <input type="text" placeholder="Username" name="uname" required>
     <br>
     <input type="password" placeholder="Password" name="psw" required>
@@ -91,9 +99,6 @@ span.psw {
     <input type="password" placeholder="Card Expiration Date" name="cardexp" required>
     <br>
     <input type="password" placeholder="Card Security Code" name="cardsec" required>
-    <br>
-    Upload a JPG file for your Avatar: <input type='file' name='filename' size='10'>
-    <input type='submit' value='Upload'>
 <br>
 <p>
 <?php
