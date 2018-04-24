@@ -365,7 +365,7 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
-button1 {
+button {
     background-color: #333;
     color: white;
     padding: 14px 20px;
@@ -375,7 +375,7 @@ button1 {
     cursor: pointer;
     width: 100px;
 }
-button1:hover {
+button:hover {
      background: #cccccc;
 }
 .imgcontainer {
@@ -441,7 +441,7 @@ img.logo {
 		  <h2>My Account</h2><hr width="75%" align="left">
 		<div class='leftcolumn'>
 		<div class='card'>
-		<form action="../webpages/edit_profile.php">
+		<form action="edit_profile.php">
 		<?php
 		if(isset($_SESSION["sessionID"])){
 			if($_SESSION["sessionID"]){
@@ -463,7 +463,7 @@ img.logo {
 									echo"<p>Username: ".$userItem->getUsername()."</p>";
 										echo"<p>Email: ".$userItem->getEmail()."</p>";
 										echo"<p>Billing Address: ".$userItem->getBillingStreetOne()."</p><br><br><br><br><br>";
-										echo'<button1 type="submit">Edit Profile</button1>';
+										echo'<button type="submit" script = "background-color: #333;" >Edit Profile</button>';
 									}
 								}
 								else{
