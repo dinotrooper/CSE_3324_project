@@ -7,8 +7,8 @@ echo("Deleting any rows that may be in the database. <br>");
 deleteAllDataFromTables($connection);
 
 
-$salt1 = 'leo';
-$salt2 = 'kate';
+$salt1 = 'kate';
+$salt2 = 'leo';
 
 $passwordOne = 'abc';
 $passwordTwo = '123';
