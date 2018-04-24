@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
@@ -60,21 +63,44 @@ span.psw {
 </style>
 </head>
 <body>
+<?php 
+forwardPage();
+		$loginError = "";
+          // Is someone already logged in? If so, forward them to the correct
+          // page. (HINT: Implement this last, you cannot test this until
+          //              someone can log in.)
+          if($_SERVER["REQUEST_METHOD"] =="POST"){
+			  $loginError = "";
+			  $username = $_POST["username"];
+			  $password = $_POST["password"];
+			  if(checkLogin($username,$password)){
+				$loginError="";
+				forwardPage();
 
+				}
+			
+				else{
+			  $loginError = "The username / password combination is not correct";
+		  }
+		  
+          }
+?>
 <h2 style="text-align:center"><font face="garamond" size ="8" >Titanic Treasures</font></h2>
 
-<form action="/action_page.php">
+<form method = "POST" form action="/PAGE_HOME.php">
   <div class="imgcontainer">
     <img src="iceberg.jpg" alt="Avatar" class="avatar">
   </div>
-
+        <p style="color: red">
+        <?php echo $loginError?>
+        </p>
   <div class="container">
   <center>
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <label for="username"><b>Username</b></label>
+    <input type="text" value="<?php echo isset($_POST["username"]) ? $_POST["username"] :'';?> " placeholder="Enter Username" name="username" required>
     <br>
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <label for="password"><b>Password</b></label>
+    <input type="password" value="<?php echo isset($_POST["password"]) ? $_POST["password"] :'';?>" placeholder="Enter Password" name="password" required>
     <br>
     <button type="submit">Login</button>
     <br>
@@ -85,7 +111,57 @@ span.psw {
     </label>
     </center>
   </div>
+<?php
+function saltThat($dataToHash){
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
+		return $hashedValue;
+	}
+	function forwardPage(){
+	/*	if($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'admin'){
+			header("Location: http://pluto.cse.msstate.edu/~car602/lab05/admin_page.php");
+			
+		}
+		elseif($_SESSION["loggedIn"] && $_SESSION["sessionType"] == 'user'){
+			header("Location: http://pluto.cse.msstate.edu/~car602/lab05/user_page.php");
+			
+	}*/
+	}
+	function checkLogin($username, $password){
+		$salt1 = "https://walkoffwin55.files.wordpress.com";
+		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
+		require_once 'login.php';
+		$connection = new mysqli($hn, $un, $pw, $db);
+		if($connection->connect_error)
+			die($connection->connect_error);
 
+		$checkPassword = saltThat($password);
+		$query = "SELECT username,password FROM lab5_users WHERE username = '".$username."' AND password = '".$checkPassword."'";
+		$result = $connection->query($query);
+		$rows = $result->num_rows;
+		$queryType = "SELECT type FROM lab5_users WHERE username = '".$username."'
+		AND password = '".$checkPassword."'";
+		$resultType = $connection->query($queryType);
+		$rowType = $resultType->fetch_assoc();
+		if($rows > 0)
+		{
+			$_SESSION["loggedIn"] = true;
+			$_SESSION["sessionId"] = $username;
+			$_SESSION["sessionType"] = $rowType['type'];
+			return true;
+		}
+		else
+		{
+			$_SESSION["loggedIn"] = false;
+			return false;
+		}
+
+		$result->close();
+		$resultType->close();
+		$connection->close();
+	}
+?>
   <div class="container" style="background-color:#f1f1f1">
     <span class="psw"><a href="#">Forgot password?</a></span><br>
   </div>
