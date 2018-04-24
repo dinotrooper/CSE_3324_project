@@ -141,14 +141,14 @@ span.psw {
   Upload a JPG file for your Avatar: <input type='file' name='filename' size='10'>
     <input type='submit' value='Upload'>
     <input type="text" placeholder="Username" name="uname" value="<?php echo isset($_POST["uname"]) ? $_POST["uname"] :'';?>" required>
-	<span class="error"><?php echo $nameerror;?></span>
+	<span class="error"><?php  echo "<br> ".$nameerror;?></span>
     <br>
     <input type="password" placeholder="Password" name="psw"value="<?php echo isset($_POST["psw"]) ? $_POST["psw"] :'';?>" required>
 	
     <br>
     <input type="text" placeholder="Email" name="email" value="<?php echo isset($_POST["email"]) ? $_POST["email"] :'';?>"required>
 
-	<span class="error"><?php echo $emailerror;?></span>
+	<span class="error"><?php echo "<br> ". $emailerror;?></span>
     <br>
     <input type="text" placeholder="Street Address 1" name="stradd1"value="<?php echo isset($_POST["stradd1"]) ? $_POST["stradd1"] :'';?>" required>
 
