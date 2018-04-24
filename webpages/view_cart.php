@@ -74,7 +74,7 @@ span.psw {
 <!-- php inject a while loop to check database -->
 <form action="/action_page.php">
   <div class="imgcontainer" style="display: flex">
-    <img src="NewItemBerg.png" alt="Avatar" class="avatar" height="200" >  <!-- php inject item image -->
+    <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar" height="200" >  <!-- php inject item image -->
   <center>
   <div class = "container">
     <p>Item: 3</p><!-- php inject item name -->

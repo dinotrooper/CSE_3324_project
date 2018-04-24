@@ -425,14 +425,14 @@ span.psw {
 
 <div class="header">
 
-    <a href="/git/webpages/firstPage.php"><img  src="/git/images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="../images/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
   <a href="#">Cart</a>
   <a href="#">Orders</a>
-  <a href="/git/webpages/titanic_login.php">Account</a>
+  <a href="../webpages/titanic_login.php">Account</a>
   <div class="search-container">
     <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
@@ -464,8 +464,8 @@ span.psw {
 					<div class='card'>
 		
 						<form action="/action_page.php">
-							<div class="imgcontainer">
-								<img src="/git/images/greyAvatar.jpg" alt="Avatar" class="avatar">  <!-- php inject user avatar -->
+							<div class="../images/imgcontainer">
+								<img src="../images/greyAvatar.jpg" alt="Avatar" class="avatar">  <!-- php inject user avatar -->
 							</div>
 							<div class="container">
 								<center>
