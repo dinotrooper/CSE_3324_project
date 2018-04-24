@@ -263,13 +263,6 @@ class Item {
         $result->data_seek(0);
         $isAdmin = $result->fetch_array(MYSQLI_ASSOC)['isAdmin'];
         
-        foreach ($this->comments as $getCommentID) {
-            echo("CommentID: $getCommentID <br>");
-        }
-        foreach ($this->ratings as $getRatingID) {
-            echo("RatingID: $getRatingID <br>");
-        }
-        
         if($isAdmin)
         {
             //delete item comments from item_comments table
@@ -390,8 +383,8 @@ class Item {
         $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
-        echo("userID in deleteItemRating: $userID <br>");
-        echo("ratingID in deleteItemRating: $ratingID <br>");
+//         echo("userID in deleteItemRating: $userID <br>");
+//         echo("ratingID in deleteItemRating: $ratingID <br>");
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
@@ -412,9 +405,7 @@ class Item {
             //remove list element from list
             //find element with ratingID
             
-            echo("Rating deleted form table. <br>");
-            
-            for ($j = 1; $j < count($this->ratings); ++$j) {
+            for ($j = 0; $j < count($this->ratings); ++$j) {
                 if ($this->ratings[$j] == $ratingID) {
                     $this->ratings[$j] = NULL;
                 }
@@ -444,11 +435,9 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) die($conn->error);
                 
-                echo("Rating deleted form table. <br>");
-                
                 //remove list element from list
-                for ($j = 1; $j < count($this->ratings); ++$j) {
-                    if ($this->rating[$j] == $ratingID) {
+                for ($j = 0; $j < count($this->ratings); ++$j) {
+                    if ($this->ratings[$j] == $ratingID) {
                         $this->ratings[$j] = NULL;
                     }
                 }
@@ -456,13 +445,11 @@ class Item {
             else if ($itemCreator == $userID) {
                 $query = "DELETE FROM item_ratings WHERE ratingID = $ratingID";
                 $result = $conn ->query($query);
-                if(!$result) die($conn->error);
-                
-                echo("Rating deleted form table. <br>");
+                if(!$result) die($conn->error);               
                 
                 //remove list element from list
                 for ($j = 0; $j < count($this->ratings); ++$j) {
-                    if ($this->rating[$j] == $ratingID) {
+                    if ($this->ratings[$j] == $ratingID) {
                         $this->rating[$j] = NULL;
                     }
                 }
@@ -500,7 +487,6 @@ class Item {
             if ($tempID > $commentID) $commentID = $tempID;
         }
         
-
         $this->comments[] = $commentID;
         
         //disconnect from database
@@ -513,8 +499,8 @@ class Item {
         $conn = new mysqli('localhost', 'root', '', 'group7_project_database');
         if($conn->connect_error) die($conn->connect_error);
         
-        echo("userID in deleteItemRating: $userID. <br>");
-        echo("CommentID in deleteItemComment: $commentID. <br>");
+//         echo("userID in deleteItemRating: $userID. <br>");
+//         echo("CommentID in deleteItemComment: $commentID. <br>");
         
         //check to see if the userID is an admin
         //grab the isAdmin value from the user table
@@ -531,10 +517,8 @@ class Item {
             $result = $conn ->query($query);
             if(!$result) {echo("$conn->error <br>"); die($conn->error);}
             
-            echo("Comment deleted form table. <br>");
-            
             //remove list element from list
-            for ($j = 1; $j < count($this->comments); ++$j) {
+            for ($j = 0; $j < count($this->comments); ++$j) {
                 if ($this->comments[$j] == $commentID) {
                     $this->comments[$j] = NULL;
                 }
@@ -564,10 +548,9 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) {echo("$conn->error <br>"); die($conn->error);}
                 
-                echo("Comment deleted form table. <br>");
                 
                 //remove list element from list
-                for ($j = 1; $j < count($this->comments); ++$j) {
+                for ($j = 0; $j < count($this->comments); ++$j) {
                     if ($this->comments[$j] == $commentID) {
                         $this->comments[$j] = NULL;
                     }
@@ -580,11 +563,10 @@ class Item {
                 $result = $conn ->query($query);
                 if(!$result) {echo("$conn->error <br>"); die($conn->error);}
                 
-                echo("Comment deleted form table. <br>");
                 
                 //remove list element from list
-                for ($j = 1; $j < count($this->comments); ++$j) {
-                    if ($this->comments[$j] == $ratingID) {
+                for ($j = 0; $j < count($this->comments); ++$j) {
+                    if ($this->comments[$j] == $commentID) {
                         $this->comments[$j] = NULL;
                     }
                     
