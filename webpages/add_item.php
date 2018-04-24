@@ -173,31 +173,41 @@ span.psw {
 <body>
 
 <?php 
-if (isset($_POST['filename'])) $itemImage = $_POST['filename'];
-if (isset($_POST['itemCateg'])) {
-    switch($_POST['itemCateg']) {
-        case 0:
-            $itemCategory = 'Electronic Media';
-            break;
-        case 1:
-            $itemCategory = 'Literature';
-            break;
-        case 2:
-            $itemCategory = 'Artwork';
-            break;
-        case 3:
-            $itemCategory = 'Clothing and Accessories';
-            break;
-        case 4:
-            $itemCategory = 'Merchandise';
-            break;
-        default:
-            $itemCategory = 'Other';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['filename'])) $itemImage = $_POST['filename'];
+    if (isset($_POST['itemCateg'])) {
+        switch($_POST['itemCateg']) {
+            case 0:
+                $itemCategory = 'Electronic Media';
+                break;
+            case 1:
+                $itemCategory = 'Literature';
+                break;
+            case 2:
+                $itemCategory = 'Artwork';
+                break;
+            case 3:
+                $itemCategory = 'Clothing and Accessories';
+                break;
+            case 4:
+                $itemCategory = 'Merchandise';
+                break;
+            default:
+                $itemCategory = 'Other';
             
+        }
     }
+
+    if (isset($_POST['itemName'])) $itemName = $_POST['itemName']; 
+    if (isset($_POST['itemDesc'])) $itemDesc = $_POST['itemDesc'];
+    if (isset($_POST['itemQuan'])) $itemQuan = $_POST['itemQuan'];
+    if (isset($_POST['itemDesc'])) $itemDesc = $_POST['itemDesc'];
+    if (isset($_POST['itemPrice'])) $itemPrice = $_POST['itemPrice'];
+
+$localItem = Item::newItem($userItem->getUserID(), $itemName, $itemDesc, $itemCategory, $itemImage, $itemQuantity, $itemPrice);
 }
 
-   
 
 
 ?>
@@ -232,7 +242,7 @@ if (isset($_POST['itemCateg'])) {
     <br>
     Enter Item Price:  
     <br>
-    <input type="number" placeholder="0.00" step="0.01" value="<?php echo isset($_POST["itemPrice"]) ? $_POST["itemPrice"] :'';?>">
+    <input type="number" placeholder="0.00" name = "itemPrice" step="0.01" value="<?php echo isset($_POST["itemPrice"]) ? $_POST["itemPrice"] :'';?>">
     <br>
 <p>
     <button type="submit">Add Item</button>

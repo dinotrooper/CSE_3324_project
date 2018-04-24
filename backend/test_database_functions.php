@@ -1,11 +1,5 @@
 <?php
 
-$connection = new mysqli('localhost', 'root', '', 'group7_project_database');
-if ($connection->connect_error) {
-    echo("Connection to database failed. <br>"); 
-    die();
-}
-
 function deleteDB($connection)
 {
 	$query = "DROP DATABASE group7_project_database";

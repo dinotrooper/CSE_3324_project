@@ -10,10 +10,7 @@ if ($connection->connect_error) {
 }
 
 
-deleteDB($connection);
-
 $query = "CREATE DATABASE group7_project_database";
-
 sendQuery($connection, $query);
 
 
