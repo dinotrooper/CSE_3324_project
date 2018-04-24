@@ -158,7 +158,7 @@ function saltThat($dataToHash){
 		function forwardFirstPage(){
 		if(isset($_SESSION["sessionID"])){
 		if($_SESSION["sessionID"]){
-			header("Location: /firstPage.php");
+			header("Location: ../webpages/firstPage.php");
 			
 	}
 		}

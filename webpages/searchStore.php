@@ -453,6 +453,8 @@ img {vertical-align: middle;}
 <?php	
 $mainSearch = new Search($keywords);
 
+$conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']); 
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($_POST['ascDesc']) $mainSearch->setDescending($_POST['ascDesc']);
@@ -485,16 +487,19 @@ foreach($mainSearch->getFoundItemIDs() as $itemID)
 	   $numRatings = count($tempItem->getRatings());
 	   $totalRatings = 0;
 		
-	   foreach ($tempItem->getRatings() as $ratingID) {
-	       $query = "SELECT * FROM item_ratings WHERE ratingID = $ratingID";
-	       $result = $conn->query($query);
-	       if (!$result) die($conn-error);
+	   
+	    foreach ($tempItem->getRatings() as $ratingID) {
+	        if ($ratingID != 0) {
+	           $query = "SELECT * FROM item_ratings WHERE ratingID = $ratingID";
+	           $result = $conn->query($query);
+	           if (!$result) die($conn-error);
 		   
-	       $ratingNum = $result->fetch_array(MYSQLI_ASSOC)['ratingNum'];
-	       $totalRatings += $ratingNum;
+	           $ratingNum = $result->fetch_array(MYSQLI_ASSOC)['ratingNumber'];
+	           $totalRatings += $ratingNum;
+	       }
 	   }
 		
-		if($numRatings == 0)$averageRating = 3;
+		if($numRatings == 0 or $totalRatings == 0) $averageRating = 3;
 		else $averageRating = $totalRatings / $numRatings;
 		
 		echo "
