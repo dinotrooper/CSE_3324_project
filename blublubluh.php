@@ -275,7 +275,6 @@ img {vertical-align: middle;}
 .rightcolumn {
     float: right;
     width: 25%;
-    background-color: #f1f1f1;
     padding-left: 20px;
   
 }
