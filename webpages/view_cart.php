@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
@@ -57,6 +60,10 @@ span.psw {
     padding-top: 16px;
 }
 
+a{
+	color: hotpink;
+}
+
 /* Change styles for span button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {
@@ -71,23 +78,57 @@ span.psw {
 
 <h2 style="text-align:center"><font face="Bubbler One" size ="8" >Cart</font></h2>
 
-<!-- php inject a while loop to check database -->
 <form action="/action_page.php">
-  <div class="imgcontainer" style="display: flex">
-    <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar" height="200" >  <!-- php inject item image -->
-  <center>
-  <div class = "container">
-    <p>Item: 3</p><!-- php inject item name -->
-    <p>Price: $5.29 </p><!-- php inject item price -->
-    <p>Quantity Remaining in Stock: 1 </p><!-- php inject item quantity -->
-    <p>Seller: KatKit57 </p><!-- php inject seller userid -->
-    <button type ="submit">Delete Item</button>
-   </div>
-    </center>
-    <br>
-  </div>
-  <h2 style="text-align:center"><font face="Bubbler One" size ="5" >Total: $5.29 </font></h2><!-- php add all item prices -->
-   <center><button type="submit">Checkout</button></center>
+	<?php
+	if(isset($_SESSION["sessionID"])){
+		if($_SESSION["sessionID"]){
+			$sessionID = $_SESSION["sessionID"];
+			require_once '../backend/user.php';
+		$userItem = User::getExistingUser($sessionID);
+		}else{
+			$sessionID=0;
+		}
+	
+	require_once '../backend/login.php';
+	$connection = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
+	$query = "SELECT * FROM CART_ITEMS WHERE userID = $sessionID";
+	$result = $connection->query($query);
+	$rows = $result->num_rows;
+	if($rows){
+	  for($j = 0; $j<$rows ; ++$j){
+	  $result->data_seek($j);
+	  $row= $result->fetch_array(MYSQLI_ASSOC);
+	  $singlePrice = $row['priceTotal']/$row['cartQuantity'];
+  echo'<div class="imgcontainer" style="display: flex">';
+    echo'<img src="NewItemBerg.png" alt="Avatar" class="avatar" height="200" >';  
+  echo'<center>';
+  echo'<div class = "container">';
+
+   echo' <p>Item: '.$row['itemID'].'</p><';
+    echo'<p>Price: '.$singlePrice.' </p>';
+    echo'<p>Quantity '.$row['cartQuantity'].' </p>';
+    echo'<button type ="submit">Delete Item</button>';
+  echo' </div>';
+    echo'</center>';
+    echo'<br>';
+  echo'</div>';
+  }
+  echo'<h2 style="text-align:center"><font face="Bubbler One" size ="5" >'.$row['priceTotal'].' </font></h2>';
+   echo"<center>";
+  echo'<button type="submit">Checkout</button>';
+  echo'</center>';
+	}
+	else{
+		echo"<center>";
+		echo'<a href="../webpages/titanic_login.php">Please login</a>';
+		
+	}
+	}
+	else{
+		echo"<center>";
+		echo'  <a href="../webpages/titanic_login.php">Please login</a>';
+	}
+	?>
 </form>
 
 </body>

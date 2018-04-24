@@ -138,7 +138,7 @@ span.psw {
 	
 			$_SESSION["sessionID"] = $row['userID'];
 
-			header("Location: http://localhost/last%20ride/webpages/firstPage.php");
+			header("Location: firstPage.php");
 		}
 		
 	}
@@ -194,7 +194,7 @@ span.psw {
 if ($_FILES)
 {
     $name = basename($_FILES['filename']['name']);
-    $target_dir = 'uploads/';
+    $target_dir = '../images/';
     
     if (is_dir($target_dir)){
     

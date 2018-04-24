@@ -1,6 +1,52 @@
 <!DOCTYPE html>
 <?php
 session_start();
+
+if(isset($_SESSION["sessionID"])){
+    if($_SESSION["sessionID"]){
+        $sessionID = $_SESSION["sessionID"];
+    }
+    else{
+        $sessionID = 0;
+    }
+    if($sessionID>0){
+        require_once '../backend/user.php';
+        $userItem = User::getExistingUser($sessionID);
+    }
+} else {
+    forwardLoginPage();
+}
+
+function forwardLoginPage() {
+    header("Location: titanic_login.php");
+}
+
+function forwardInventoryPage() {
+    header("Location :titanic_login.php");
+}
+
+require_once './backend/item.php';
+
+if ($_FILES)
+{
+    $name = basename($_FILES['filename']['name']);
+    $target_dir = '../images/';
+    
+    if (is_dir($target_dir)){
+        
+        if($_FILES['filename']['type']=='application/jpg')
+        {
+            $file_location = $target_dir.$name;
+            if (file_exists($file_location)){
+                echo "The file '$name' already exists.";
+            }
+            else move_uploaded_file($_FILES['filename']['tmp_name'], $file_location);
+        }
+        
+    }
+    
+}
+
 ?>
 <html>
 <!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
@@ -127,29 +173,38 @@ span.psw {
 <body>
 
 <?php 
-		forwardPage();
-		$loginError = "";
-          // Is someone already logged in? If so, forward them to the correct
-          // page. 
-          if($_SERVER["REQUEST_METHOD"] =="POST"){
-			  $loginError = "";
-			  $username = $_POST["username"];
-			  $password = $_POST["password"];
-			  if(checkLogin($username,$password)){
-				$loginError="";
+if (isset($_POST['filename'])) $itemImage = $_POST['filename'];
+if (isset($_POST['itemCateg'])) {
+    switch($_POST['itemCateg']) {
+        case 0:
+            $itemCategory = 'Electronic Media';
+            break;
+        case 1:
+            $itemCategory = 'Literature';
+            break;
+        case 2:
+            $itemCategory = 'Artwork';
+            break;
+        case 3:
+            $itemCategory = 'Clothing and Accessories';
+            break;
+        case 4:
+            $itemCategory = 'Merchandise';
+            break;
+        default:
+            $itemCategory = 'Other';
+            
+    }
+}
 
-				}
-			
-				else{
-				forwardPage();
-				}
-		  
-          }	
+   
+
+
 ?>
 
 <h2 style="text-align:center"><font face="Bubbler One" size ="8" >Add Item</font></h2>
 
-<form action="/inventory_page.php">
+<form method= "post" action="add_item.php">
   <div class="imgcontainer">
     <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">
   </div>
@@ -158,15 +213,14 @@ span.psw {
   <center>
     <br>
     Upload a JPG file for your Item: <input type='file' name='filename' size='10'>
-    <input type='submit' value='Upload File'>
     <br>
     <p>Category: <br> <select name="itemCateg" value="<?php echo isset($_POST["cat"]) ? $_POST["cat"] :'';?>">
-		<option value="elecMedia" >Electronic Media</option>
-		<option value="liter">Literature</option>
-		<option value="art">Artwork</option>
-        <option value="clothes">Clothing and Accessories</option>
-		<option value="merch">Merchandise</option>
-		<option value="otheritem">Other</option>
+		<option value="0" >Electronic Media</option>
+		<option value="1">Literature</option>
+		<option value="2">Artwork</option>
+        <option value="3">Clothing and Accessories</option>
+		<option value="4">Merchandise</option>
+		<option value="5">Other</option>
 	</select></p>
     <br>
     <input type="text" placeholder="Item Name" name="itemName" required value="<?php echo isset($_POST["itemName"]) ? $_POST["itemName"] :'';?>">
@@ -181,84 +235,6 @@ span.psw {
     <input type="number" placeholder="0.00" step="0.01" value="<?php echo isset($_POST["itemPrice"]) ? $_POST["itemPrice"] :'';?>">
     <br>
 <p>
-<?php
-
-if ($_FILES)
-{
-    $name = basename($_FILES['filename']['name']);
-    $target_dir = '../images/';
-    
-    if (is_dir($target_dir)){
-    
-    if($_FILES['filename']['type']=='application/jpg')
-    {
-        $file_location = $target_dir.$name;
-        if (file_exists($file_location)){
-            echo "The file '$name' already exists.";
-        }
-        else move_uploaded_file($_FILES['filename']['tmp_name'], $file_location);
-
-    }
-
-}
-
-}
-
-
-function saltThat($dataToHash){
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
-		$hashedValue = hash('ripemd128', "$salt1$dataToHash$salt2");
-		return $hashedValue;
-	}
-	function forwardPage(){
-		/*
-		if($_SESSION["sessionID"]>0){
-			header("Location: http://localhost/last%20ride/webpages/firstPage.php");
-			
-	}*/
-	
-	}
-	function checkLogin($username, $password){
-		echo $username;
-		echo $password;
-		$salt1 = "https://walkoffwin55.files.wordpress.com";
-		$salt2 = "/2012/11/kate-drawinga-e1354056007277.jpg";
-		require_once 'login.php';
-		$connection = new mysqli($hn, $un, $pw, $db);
-		if($connection->connect_error)
-			die($connection->connect_error);
-
-		//$checkPassword = saltThat($password);
-		$query = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$password."'";
-		$result = $connection->query($query);
-		$rows = $result->num_rows;
-
-		$queryType = "SELECT isAdmin FROM user WHERE username = '".$username."'
-		AND password = '".$password."'";
-		$resultType = $connection->query($queryType);
-		$rowType = $resultType->fetch_assoc();
-
-		if($rows > 0)
-		{
-			$_SESSION["sessionID"] = $username;
-			echo $_SESSION["sessionID"];
-			$_SESSION["sessionType"] = $rowType['isAdmin'];
-			return true;
-		}
-		else
-		{
-			
-			return false;
-		}
-		
-		
-
-		$result->close();
-		$resultType->close();
-		$connection->close();
-	}
-?>
     <button type="submit">Add Item</button>
     <br>
     </center>
