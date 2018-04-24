@@ -54,23 +54,26 @@ if ($_FILES)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href='https://fonts.googleapis.com/css?family=Bubbler One' rel='stylesheet'>
 <style>
-body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif; 
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
     background-color: #333;
+    color: white;
     }
-
+    
 form {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 700px;
     border: 16px solid #f1f1f1;
-    background-color: white;
+    background-color: #333;
     margin: auto;
 }
+
 input[type=text], input[type=password] {
     width: 25%;
     padding: 12px 12px;
-    margin: 8px 0;
-    font-family: "Bubbler One";
+    margin: 4px 0;
     display: inline-block;
+    color: black;
+    font-family: "Bubbler One";
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
@@ -79,17 +82,65 @@ button {
     background-color: #f4da70;
     color: black;
     padding: 14px 20px;
-    font-family: "Bubbler One";
     margin: 8px 0;
+    font-family: "Bubbler One";
     border: none;
     cursor: pointer;
-    width: 15%;
+    width: 100px;
 }
 
 button:hover {
     opacity: 0.8;
 }
 
+/* Dropdown Button */
+.dropbtn {
+    width:100%;
+    background-color: #f4da70;
+    color: black;
+    padding: 14px;
+    font-family: "Bubbler One";
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    color: black;
+    font-family: "Bubbler One";
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
 
 .imgcontainer {
     text-align: center;
@@ -97,7 +148,7 @@ button:hover {
 }
 
 img.avatar {
-    width: 20%;
+    width: 300px;
     border-radius: 20%;
 }
 
@@ -161,6 +212,8 @@ $localItem = Item::newItem($userItem->getUserID(), $itemName, $itemDesc, $itemCa
 
 ?>
 
+<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Add Item</font></h2>
+
 <form method= "post" action="add_item.php">
   <div class="imgcontainer">
     <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">
@@ -197,30 +250,6 @@ $localItem = Item::newItem($userItem->getUserID(), $itemName, $itemDesc, $itemCa
     </center>
   </div>
 </form>
-<?php
-
-if ($_FILES)
-{
-    $name = basename($_FILES['filename']['name']);
-    $target_dir = 'uploads/';
-    
-    if (is_dir($target_dir)){
-    
-    if($_FILES['filename']['type']=='application/jpg')
-    {
-        $file_location = $target_dir.$name;
-        if (file_exists($file_location)){
-            echo "The file '$name' already exists.";
-        }
-        else move_uploaded_file($_FILES['filename']['tmp_name'], $file_location);
-
-    }
-
-}
-
-}
-
-?>
 
 </body>
 </html>
