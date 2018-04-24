@@ -471,7 +471,7 @@ function showSlides() {
 </script>
 
 	<div class='row'>
-		  <h2>Items of the Day</h2>
+		  <h2>Items of the Day</h2><hr>
 		
 	<div class='rightcolumn'>
 		<div  id='navbar'>
