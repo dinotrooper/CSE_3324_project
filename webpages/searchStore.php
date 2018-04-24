@@ -442,7 +442,7 @@ img {vertical-align: middle;}
 					  Clothing & Accessories: <input type="checkbox" name="cloth" value="checked" <?php  if (isset($_POST['cloth'])) echo($_POST['cloth']);?>><br><br>
 					  Merchandise:&emsp;&emsp;&emsp;&emsp;&emsp; <input type="checkbox" name="merch" value="checked" <?php  if (isset($_POST['merch'])) echo($_POST['merch']);?>><br><br>
 					  Other:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; <input type="checkbox" name="other" value="checked" <?php  if (isset($_POST['other'])) echo($_POST['other']);?>><br><br>
-				      Price: &emsp;&emsp;&emsp;<input type="text" name="minPrice" placeholder="$$$" size=3> - <input type="text" name="maxPrice" placeholder="$$$" size=3>
+				      Price: &emsp;&emsp;&emsp;<input type="text" name="minPrice" placeholder="$$$" value="<?php if(isset($_POST['minPrice'])) echo($_POST['minPrice']); ?>" size=3> - <input type="text" name="maxPrice" placeholder="$$$" value="<?php if(isset($_POST['maxPrice'])) echo($_POST['maxPrice']); ?>" size=3>
 				  <br><br>
 				  <input type="submit" value="Filter">                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 				  <input type="reset" value="Reset">
@@ -464,7 +464,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     else $mainSearch->setNumerical(1);
     
     if ($_POST['minPrice']) $mainSearch->setPriceRangeNumOne($_POST['minPrice']);
-    if ($_POST['maxPrice']) $mainSearch->setPriceRangeNumOne($_POST['maxPrice']);
+    if ($_POST['maxPrice']) $mainSearch->setPriceRangeNumTwo($_POST['maxPrice']);
     
     $listCategories = [];
 
@@ -500,7 +500,7 @@ foreach($mainSearch->getFoundItemIDs() as $itemID)
 	       }
 	   }
 		
-		if($numRatings == 0 or $totalRatings == 0) $averageRating = 3;
+		if($numRatings == 0 or $totalRatings == 0) $averageRating = 'N/A';
 		else $averageRating = $totalRatings / $numRatings;
 		
 		echo "
