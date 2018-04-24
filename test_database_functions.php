@@ -43,11 +43,11 @@ function createUser($connection, $un, $pw, $email, $billStreetOne, $billCity, $b
     return selectValueFromTable($connection, 'userID', 'user', 'username', $un);
 }
 
-function createOrder($connection, $un, $userID, $shipStreetOne, $shipCity, $shipState, $shipZip, $orderDate) {
+function createOrder($connection, $un, $userID, $shipStreetOne, $shipCity, $shipState, $shipZip, $orderDate, $orderTotal) {
     //creates a query using the function's parameters to insert a new order into the order table
     //then returns the orderID of the newly created order
-    $query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingCity, shippingState, shippingZip, orderDate)
-                    VALUES ($userID, '$un', '$shipStreetOne', '$shipCity', '$shipState', $shipZip, '$orderDate')";
+    $query = "INSERT INTO orders(userID, shippingName, shippingStreetOne, shippingCity, shippingState, shippingZip, orderDate, orderTotal)
+                    VALUES ($userID, '$un', '$shipStreetOne', '$shipCity', '$shipState', $shipZip, '$orderDate', $orderTotal)";
     
     sendQuery($connection, $query);
 
@@ -75,12 +75,12 @@ function createCart($connection, $un, $userID) {
     return selectValueFromTable($connection, 'cartID', 'cart', 'userID', $userID);
 }
 
-function createOrderItem($connection, $orderID, $itemID, $userID, $quantity) {
+function createOrderItem($connection, $orderID, $itemName, $userID, $quantity, $itemTotal) {
     //create a query using the function's parameters to insert a item into the orders_items table
-    $query = "INSERT INTO orders_items (orderID, itemID, userID, orderQuantity) 
-                                VALUES ($orderID, $itemID, $userID, $quantity)";
+    $query = "INSERT INTO orders_items (orderID, userID, itemName, orderQuantity, itemTotal) 
+                                VALUES ($orderID, $userID, '$itemName', $quantity, $itemTotal)";
     sendQuery($connection, $query);
-
+    
 }
 
 function createCartItem($connection, $cartID, $itemID, $userID, $quantity, $priceTotal) {

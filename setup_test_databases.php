@@ -29,7 +29,7 @@ if ($connection->connect_error) {
 $query = "CREATE TABLE user (
     userID INT UNSIGNED AUTO_INCREMENT,
     username  VARCHAR(32) NOT NULL UNIQUE,
-    password  VARCHAR(10) NOT NULL,
+    password  VARCHAR(6000) NOT NULL,
     email VARCHAR(32) NOT NULL UNIQUE,
     billingStreetOne VARCHAR(64),
     billingStreetTwo VARCHAR(64),
