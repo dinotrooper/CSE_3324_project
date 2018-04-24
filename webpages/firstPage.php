@@ -67,7 +67,7 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 100px 16px;
     text-decoration: none;
 	vertical-align: center;
 }
