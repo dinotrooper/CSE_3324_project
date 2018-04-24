@@ -373,7 +373,7 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="../webpages/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
