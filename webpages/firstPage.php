@@ -378,11 +378,13 @@ img {vertical-align: middle;}
 
 
 <div class="topnav">
-  <a href="#">Cart</a>
+  <a href="titanic_logout.php">Logout</a>
+  <a href="view_cart.php">Cart</a>
   <a href="#">Orders</a>
   <a href="titanic_login.php">Account</a>
+  
   <div class="search-container">
-	<form method="get" action="searchStore.php">
+    <form method= "get" action="searchStore.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -482,27 +484,28 @@ function showSlides() {
 				<h2>Account Snapshot</h2>
 				<?php 
 				if(isset($_SESSION["sessionID"])){
+				if($_SESSION["sessionID"]){
 					$sessionID = $_SESSION["sessionID"];
 				}
 				else{
 					$sessionID = 0;
 				}
 				if($sessionID>0){
-				$query = "SELECT * FROM users WHERE userID = $sessionID";
-				$result = $conn->query($query);
-				$result->data_seek(0);
-				$userID = $result->fetch_array(MYSQLI_ASSOC)["userID"];
+				require_once '../backend/user.php';
+				$userItem = User::getExistingUser($sessionID);
 				
 				echo "<div class='imgcontainer'>
-					<img src='../images/greyAvatar.jpg' alt='Avatar' class='avatar'>
+					<img src='../images/".$userItem->getAvatarImg()."' alt='Avatar' class='avatar'>
 					</div>";
-				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";
+				echo "<p>".$userItem->getEmail()."</p>";
+				}
+				
 				}
 				else{
 					echo "<div class='imgcontainer'>
 					<img src='../images/greyAvatar.jpg' alt='Avatar' class='avatar'>
 					</div>";
-				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";
+				echo "<p>You are a guest. Please Log in</p>";
 				}
 				?>
 			</div>
