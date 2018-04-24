@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <!Source code researched on www.w3schools.com>
 <html>
@@ -266,7 +270,6 @@ img {vertical-align: middle;}
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
-    float: left;
     width: 37%;
 	padding: 10px;
 }
@@ -362,82 +365,56 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
-body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
+button1 {
     background-color: #333;
     color: white;
-    }
-
-form {border: 3px solid #f1f1f1;}
-
-input[type=text], input[type=password] {
-    width: 25%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    font-family: "Bubbler One";
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #f4da70;
-    color: black;
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
     font-family: "Bubbler One";
+    border: none;
     cursor: pointer;
-    width: 15%;
+    width: 100px;
 }
-
-button:hover {
-    opacity: 0.8;
+button1:hover {
+     background: #cccccc;
 }
-
-
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
 }
 
 img.avatar {
-    width: 20%;
-    height: 20%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 40%;
+    opacity: 0.6;
     border-radius: 20%;
+	text-align: center;
 }
 
-.container {
-    padding: 16px;
+img.logo {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 35%;
+    border-radius: 5%;
 }
 
-span.psw {
-    float: right;
-    padding-top: 16px;
-}
-
-/* Change styles for span button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-       display: block;
-       float: none;
-    }
-}
 </style>
 </head>
 <body>
 
 <div class="header">
 
-    <a href="../webpages/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
-  <a href="#">Cart</a>
-  <a href="#">Orders</a>
+  <a href="../webpages/titanic_logout.php">Logout</a>
+  <a href="../webpages/view_cart.php">Cart</a>
+  <a href="../webpages/view_orders.php">Orders</a>
   <a href="../webpages/titanic_login.php">Account</a>
+  
   <div class="search-container">
-    <form action="/action_page.php">
+    <form method= "get" action="searchStore.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -459,15 +436,15 @@ span.psw {
 </div>
 <br>
 
-<div class='row'>
+
+	<div class='row'>
+		  <h2>My Orders</h2><hr width="75%" align="left">
 		<div class='leftcolumn'>
 		<div class='card'>
-		<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Orders</font></h2>
-
-			<!-- php inject a while loop to check database -->
+				<!-- php inject a while loop to check database -->
 			<form action="/action_page.php">
-				<div class="imgcontainer" style="display: flex">
-					<img src="NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
+				<div class="imgcontainer">
+					<img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
 				</div>
   <center>
   <div class = "container">
@@ -478,18 +455,22 @@ span.psw {
     <p>Quantity Remaining in Stock:  </p><!-- php inject item quantity -->
     <p>Date Shipped:  </p><!-- php inject date -->
     <p>Seller:  </p><!-- php inject seller userid -->
-    <textarea name="comment" rows="10" cols="48">Leave a comment!</textarea>  
+    <textarea name="comment" rows="10" cols="48" placeholder = "Leave a comment..."></textarea>  
     <br> 
     <br> 
     <br>
     <!-- php inject check if image has been rated and change to goldberg -->
-    Rating:  <br><a href="view_orders.php"><img src="../images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate5" height="48" width="48"></a>
+    Rating:  <br><a href="view_orders.php"><img src="../images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate5" height="48" width="48"></a>
     </form>
 	</div>
     </center>
     <br>
-  			</div>
+		</div>
+	</div>
 	  </div>
+
+<div class="footer">
+  <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
 
 </body>

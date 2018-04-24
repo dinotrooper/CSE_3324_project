@@ -1,7 +1,3 @@
-<?php
-session_start();
-
-?>
 <!DOCTYPE html>
 <!Source code researched on www.w3schools.com>
 <html>
@@ -270,6 +266,7 @@ img {vertical-align: middle;}
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
+    float: left;
     width: 37%;
 	padding: 10px;
 }
@@ -365,56 +362,82 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
-button {
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
     background-color: #333;
     color: white;
+    }
+
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    font-family: "Bubbler One";
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #f4da70;
+    color: black;
     padding: 14px 20px;
     margin: 8px 0;
-    font-family: "Bubbler One";
     border: none;
+    font-family: "Bubbler One";
     cursor: pointer;
-    width: 100px;
+    width: 15%;
 }
+
 button:hover {
-     background: #cccccc;
+    opacity: 0.8;
 }
+
+
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
 }
 
 img.avatar {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 80%;
-    opacity: 0.6;
+    width: 20%;
+    height: 20%;
     border-radius: 20%;
-	text-align: center;
 }
 
-img.logo {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 35%;
-    border-radius: 5%;
+.container {
+    padding: 16px;
 }
 
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+}
 </style>
 </head>
 <body>
 
 <div class="header">
 
-    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="../webpages/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
-  <a href="../webpages/titanic_logout.php">Logout</a>
-  <a href="../webpages/view_cart.php">Cart</a>
-  <a href="../webpages/view_orders.php">Orders</a>
+  <a href="#">Cart</a>
+  <a href="#">Orders</a>
   <a href="../webpages/titanic_login.php">Account</a>
-  
   <div class="search-container">
-    <form method= "get" action="searchStore.php">
+    <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -436,50 +459,37 @@ img.logo {
 </div>
 <br>
 
-
-	<div class='row'>
-		  <h2>My Account</h2><hr width="75%" align="left">
+<div class='row'>
 		<div class='leftcolumn'>
 		<div class='card'>
-		<form action="edit_profile.php">
-		<?php
-		if(isset($_SESSION["sessionID"])){
-			if($_SESSION["sessionID"]){
-				$sessionID = $_SESSION["sessionID"];
-				require_once '../backend/user.php';
-				$userItem = User::getExistingUser($sessionID);
-			}
-			else{
-				$sessionID = 0;
-			}
-			echo'<h2 style="text-align:left"><font face="Bubbler One" size ="8" >'.$userItem->getUsername().'</font></h2><hr width="75%" align="left">'; 
-			if($sessionID>0){	 
-				echo'
-							<div class="../images/imgcontainer">';
-								echo'<img src='.$userItem->getAvatarImg().' alt="Avatar" class="avatar">
-							</div>
-							<div class="container">
-								<center>';
-									echo"<p>Username: ".$userItem->getUsername()."</p>";
-										echo"<p>Email: ".$userItem->getEmail()."</p>";
-										echo"<p>Billing Address: ".$userItem->getBillingStreetOne()."</p><br><br><br><br><br>";
-										echo'<button type="submit" script = "background-color: #333;" >Edit Profile</button>';
-									}
-								}
-								else{
-									echo'<center>';
-									echo'  <a href="../webpages/titanic_login.php">Please login</a>';
-								}
-								?>
-								</center>
-							</div>
-						</form>
-		</div>
-	</div>
-	  </div>
+		<h2 style="text-align:center"><font face="Bubbler One" size ="8" >Orders</font></h2>
 
-<div class="footer">
-  <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
+			<!-- php inject a while loop to check database -->
+			<form action="/action_page.php">
+				<div class="imgcontainer" style="display: flex">
+					<img src="NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
+				</div>
+  <center>
+  <div class = "container">
+  <br>
+    <p>Item: </p><!-- php inject item name -->
+    <p>Price: </p><!-- php inject item price -->
+    <p>Shipping Address: </p><!-- php inject shipping address -->
+    <p>Quantity Remaining in Stock:  </p><!-- php inject item quantity -->
+    <p>Date Shipped:  </p><!-- php inject date -->
+    <p>Seller:  </p><!-- php inject seller userid -->
+    <textarea name="comment" rows="10" cols="48">Leave a comment!</textarea>  
+    <br> 
+    <br> 
+    <br>
+    <!-- php inject check if image has been rated and change to goldberg -->
+    Rating:  <br><a href="view_orders.php"><img src="../images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate5" height="48" width="48"></a>
+    </form>
+	</div>
+    </center>
+    <br>
+  			</div>
+	  </div>
 </div>
 
 </body>

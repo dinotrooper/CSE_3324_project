@@ -1,17 +1,16 @@
-<?php
-session_start();
-
-?>
 <!DOCTYPE html>
-<!Source code researched on www.w3schools.com>
 <html>
+<!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
 <head>
-<?php
-//include_once "test_index.php";
-?>
 <title>Titanic Treasures | Home</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
+    background-color: #333;
+    color: black;
+    }
+
 * {
     box-sizing: border-box;
 }
@@ -66,7 +65,7 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 10px 16px;
+    padding: 14px 10px;
     text-decoration: none;
 	vertical-align: center;
 }
@@ -172,6 +171,7 @@ img.avatar {
     width: 80%;
     opacity: 0.6;
     border-radius: 20%;
+	text-align: center;
 }
 
 img.logo {
@@ -270,7 +270,8 @@ img {vertical-align: middle;}
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
-    width: 37%;
+    float: left;
+    width: 66%;
 	padding: 10px;
 }
 
@@ -365,6 +366,19 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+    width: 25%;
+    padding: 12px 12px;
+    margin: 4px 0;
+    display: inline-block;
+    color: black;
+    font-family: "Bubbler One";
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
 button {
     background-color: #333;
     color: white;
@@ -378,43 +392,50 @@ button {
 button:hover {
      background: #cccccc;
 }
+
+
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
 }
 
 img.avatar {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 80%;
-    opacity: 0.6;
+    width: 20%;
     border-radius: 20%;
-	text-align: center;
 }
 
-img.logo {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 35%;
-    border-radius: 5%;
+.container {
+    padding: 16px;
 }
 
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+}
 </style>
 </head>
 <body>
 
 <div class="header">
 
-    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+    <a href="../images/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
 <div class="topnav">
-  <a href="../webpages/titanic_logout.php">Logout</a>
-  <a href="../webpages/view_cart.php">Cart</a>
-  <a href="../webpages/view_orders.php">Orders</a>
+  <a href="#">Cart</a>
+  <a href="#">Orders</a>
   <a href="../webpages/titanic_login.php">Account</a>
-  
   <div class="search-container">
-    <form method= "get" action="searchStore.php">
+    <form action="/action_page.php">
       <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -436,50 +457,30 @@ img.logo {
 </div>
 <br>
 
-
-	<div class='row'>
-		  <h2>My Account</h2><hr width="75%" align="left">
-		<div class='leftcolumn'>
-		<div class='card'>
-		<form action="edit_profile.php">
-		<?php
-		if(isset($_SESSION["sessionID"])){
-			if($_SESSION["sessionID"]){
-				$sessionID = $_SESSION["sessionID"];
-				require_once '../backend/user.php';
-				$userItem = User::getExistingUser($sessionID);
-			}
-			else{
-				$sessionID = 0;
-			}
-			echo'<h2 style="text-align:left"><font face="Bubbler One" size ="8" >'.$userItem->getUsername().'</font></h2><hr width="75%" align="left">'; 
-			if($sessionID>0){	 
-				echo'
-							<div class="../images/imgcontainer">';
-								echo'<img src='.$userItem->getAvatarImg().' alt="Avatar" class="avatar">
+<div class='row'>
+		
+			<h2 style="text-align:left"><font face="Bubbler One" size ="8" >Random User</font></h2><hr width="75%" align="left"> 
+				 
+				<div class='leftcolumn'>
+					<div class='card'>
+		
+						<form action="/action_page.php">
+							<div class="../images/imgcontainer">
+								<img src="../images/greyAvatar.jpg" alt="Avatar" class="avatar">  <!-- php inject user avatar -->
 							</div>
 							<div class="container">
-								<center>';
-									echo"<p>Username: ".$userItem->getUsername()."</p>";
-										echo"<p>Email: ".$userItem->getEmail()."</p>";
-										echo"<p>Billing Address: ".$userItem->getBillingStreetOne()."</p><br><br><br><br><br>";
-										echo'<button type="submit" script = "background-color: #333;" >Edit Profile</button>';
-									}
-								}
-								else{
-									echo'<center>';
-									echo'  <a href="../webpages/titanic_login.php">Please login</a>';
-								}
-								?>
+								<center>
+									<p>Username: Leo1 </p><!-- php inject username -->
+									<p>Email: ColdGuy@BottomOfTheOcean.com </p><!-- php inject email -->
+									<p>Billing Address: Atlantic Ocean </p><!-- php inject address stuff -->
+
+									<button type="submit">Edit Profile</button>
+									<br>
 								</center>
 							</div>
 						</form>
-		</div>
-	</div>
-	  </div>
-
-<div class="footer">
-  <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
+					</div>
+				</div>			
 </div>
 
 </body>
