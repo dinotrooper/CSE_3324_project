@@ -429,6 +429,7 @@ input[type=text], input[type=password] {
   <a href="../webpages/titanic_logout.php">Logout</a>
   <a href="../webpages/view_cart.php">Cart</a>
   <a href="../webpages/view_orders.php">Orders</a>
+  <a href="../webpages/inventory_page.php">Inventory</a>
   <a href="../webpages/titanic_login.php">Account</a>
   
   <div class="search-container">
