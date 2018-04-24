@@ -9,12 +9,15 @@ session_start();
 <link href='https://fonts.googleapis.com/css?family=Bubbler One' rel='stylesheet'>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;}
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
+	background-color: #333;
+}
 form {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 700px;
     border: 16px solid #f1f1f1;
     margin: auto;
+	background-color: white;
 }
 
 input[type=text], input[type=password] {
@@ -106,7 +109,7 @@ span.psw {
 ?>
 <!-- <h2 style="text-align:center"><font face="Bowlby One SC" size ="8" ><b>Titanic Treasures</b></font></h2> -->
 <div class="imgcontainer">
-    <img src="Finallogo.png" alt="Avatar" class="logo">
+    <img src="WhiteLogoRedo.png" alt="Avatar" class="logo">
   </div>
 <form method = "POST" form action="/git/blublubluh.php">
   <div class="imgcontainer">

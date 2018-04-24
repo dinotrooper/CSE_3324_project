@@ -23,6 +23,8 @@ body {
     text-align: center;
     background: #333;
 	height: 160px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 .header a {
@@ -50,6 +52,8 @@ body {
 	width: 100%;
 	vertical-align: center;
 	padding: 50px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 /* Style the topnav links */
@@ -187,6 +191,8 @@ img {vertical-align: middle;}
   max-width: 10000px;
   position: relative;
   margin: auto;
+  border: 2px solid #333;  
+  border-radius: 12px;
 }
 
 /* Next & previous buttons */
@@ -261,7 +267,8 @@ img {vertical-align: middle;}
 /* Left column */
 .leftcolumn {   
     float: left;
-    width: 75%;
+    width: 37%;
+	padding: 10px;
 }
 
 /* Right column */
@@ -270,6 +277,21 @@ img {vertical-align: middle;}
     width: 25%;
     background-color: #f1f1f1;
     padding-left: 20px;
+  
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: inherit;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 /* Add a card effect for articles */
@@ -277,6 +299,8 @@ img {vertical-align: middle;}
     background-color: white;
     padding: 20px;
     margin-top: 20px;
+	border: 2px solid #ccc;  
+	border-radius: 12px;
 }
 
 /* Clear floats after the columns */
@@ -346,7 +370,7 @@ img {vertical-align: middle;}
 
 <div class="header">
 
-    <a href="#.html"><img  src="Finallogo.png" alt="logo"/></a>
+    <a href="#.html"><img  src="WhiteLogoRedo.png" alt="logo"/></a>
 
 
 
@@ -375,6 +399,7 @@ img {vertical-align: middle;}
   </div> 
 </div>
 </div>
+<br>
 <div class="slideshow-container">
 
 <div class="mySlides fade">
@@ -449,6 +474,7 @@ function showSlides() {
 		  <h2>Items of the Day</h2>
 		
 	<div class='rightcolumn'>
+		<div  id='navbar'>
 			<div class='card'>
 				<h2>Account Snapshot</h2>
 				<?php 
@@ -458,6 +484,7 @@ function showSlides() {
 					</div>";
 				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
 			</div>
+		</div>
 		</div>
 <?php	
 	for($i=0;$i<10;++$i)
@@ -472,28 +499,40 @@ function showSlides() {
 		$result->data_seek(0);
 				
 		$home_item = Item::existingItem($result->fetch_array(MYSQLI_ASSOC)["itemID"]);
-		echo "<div class='leftcolumn'>
+		echo "
+		<div class='leftcolumn'>
 		<div class='card'>
 		<!Item Name Goes Here>
 		  <h2>".$home_item->getitemName()."</h2>
 		  <!Item Image Goes Here>
 		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <pre class='alignright'>
+		  <p class='alignright'>
 		  <!Item Data Goes Here>
-		  <b>Description:</b> Something, something, something...
-		  
-		  <b>Category:</b> Erotic-literature
-		  
-		  <b>Price:</b> $24.99
-		  
-		  <b>Avg. Rating:</b> 4.5 Icebergs
-		  </pre>
+		  <p><b>Description:</b> Something, something, something...</p>
+		  <p><b>Category:</b> Erotic-literature</p>
+		  <p><b>Price:</b> $24.99</p>
+		  <p><b>Avg. Rating:</b> 4.5 Icebergs</p>
+		  </p>
 		</div>
 	</div>";
 	}
 	?>
 	  </div>
-	 
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+</script>
+}
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
