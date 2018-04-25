@@ -54,7 +54,7 @@ Class Search {
         return ($this->priceRangeNumTwo);
     }
     
-    public function setPriceRangeTwo($priceRangeTwo) {
+    public function setPriceRangeNumTwo($priceRangeTwo) {
         $this->priceRangeNumTwo = $priceRangeTwo;
     }
     
@@ -104,7 +104,7 @@ Class Search {
         
         //connect to database
         require_once 'login.php';
-        $conn = new mysqli($hn, $db, $un, $pw);
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
         if ($conn->connect_error) die($conn->connect_error);
         
         //collect all of the items in the items table
@@ -117,36 +117,42 @@ Class Search {
         foreach ($this->keywords as $keyword) {
             for ($j = 0; $j < $rows; ++$j) {
                 $result->data_seek($j);
-                $tempItemName = $result->fetch_array(MYSQLI_ASSOC)['itemName'];
-                if (strpos($tempItemName, $keyword) !== false) {
-                    $matchedItemIDs[] = $result->fetch_array(MYSQLI_ASSOC)['itemID'];
+                $row = $result->fetch_array(MYSQLI_ASSOC);
+                $tempItemName = $row['itemName'];
+                if (stripos($tempItemName, $keyword) !== false) {
+                    $matchedItemIDs[] = $row['itemID'];
                 }
             }
         }
         
-        //clear list of any duplicates
-        for ($j = 0; $j < count($matchedItemIDs); ++$j) {
-            for ($i = $j + 1; $i < count($matchedItemIDs); ++$i) {
-                if ($matchedItemIDs[$i] != NULL and $matchedItemIDs[$j != NULL] ) {
-                    if ($matchedItemIDs[$i] == $matchedItemIDs[$j]) {
-                        $matchedItemIDs[$i] = NULL;
-                    }
-                }
-            }
-        }
+//         //clear list of any duplicates
+//         for ($j = 0; $j < count($matchedItemIDs); ++$j) {
+//             for ($i = $j + 1; $i < count($matchedItemIDs); ++$i) {
+//                 if ($matchedItemIDs[$i] !== NULL and $matchedItemIDs[$j] !== NULL ) {
+//                     if ($matchedItemIDs[$i] == $matchedItemIDs[$j]) {
+//                         $matchedItemIDs[$i] = NULL;
+//                     }
+//                 }
+//             }
+//         }
+        
+        
+        
         
         //cross reference categories list and category of each keyword-matched item
         if (count($this->categories) > 0) {
             for($j = 0; $j < count($matchedItemIDs); ++$j) {
-                $query = "SELECT itemCategory FROM items WHERE itemID = $matchedItemIDs[$j]";
-                $result = $conn->query($query);
-                if (!$result) die($conn->error);
+                if ($matchedItemIDs[$j] !== NULL) {
+                    $query = "SELECT itemCategory FROM items WHERE itemID = $matchedItemIDs[$j]";
+                    $result = $conn->query($query);
+                    if (!$result) die($conn->error);
                 
-                $result->data_seek(0);
-                $itemCategory = $result->fetch_array(MYSQLI_ASSOC)['itemCategory'];
+                    $result->data_seek(0);
+                    $itemCategory = $result->fetch_array(MYSQLI_ASSOC)['itemCategory'];
                 
-                if (($key = array_search($itemCategory, $this->categories)) === false) {
-                    $matchedItemIDs[$j] = NULL;
+                    if (($key = array_search($itemCategory, $this->categories)) === false) {
+                        $matchedItemIDs[$j] = NULL;
+                    }
                 }
             }
         }
@@ -154,15 +160,17 @@ Class Search {
         //cross reference the price of each remaining keyword-matched item and the minimum price
         if ($this->priceRangeNumOne > -1 and $this->priceRangeNumTwo > -1) {
             for($j = 0; $j < count($matchedItemIDs); ++$j) {
-                $query = "SELECT itemPrice FROM items WHERE itemID = $matchedItemIDs[$j]";
-                $result = $conn->query($query);
-                if (!$result) die($conn->error);
+                if ($matchedItemIDs[$j] !== NULL) {
+                    $query = "SELECT itemPrice FROM items WHERE itemID = $matchedItemIDs[$j]";
+                    $result = $conn->query($query);
+                    if (!$result) die($conn->error);
                 
-                $result->data_seek(0);
-                $itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
+                    $result->data_seek(0);
+                    $itemPrice = $result->fetch_array(MYSQLI_ASSOC)['itemPrice'];
                 
-                if ($itemPrice < $this->priceRangeNumOne or $itemPrice > $this->priceRangeNumTwo) {
-                    $matchedItemIDs[$j] = NULL;
+                    if ($itemPrice < $this->priceRangeNumOne or $itemPrice > $this->priceRangeNumTwo) {
+                        $matchedItemIDs[$j] = NULL;
+                    }
                 }
             }
         }
@@ -174,21 +182,24 @@ Class Search {
             //create an associate array 
             //the key being the itemPrice and the value being the itemID
             for($j = 0; $j < count($matchedItemIDs); ++$j) {
-                $query = "SELECT itemPrice FROM items WHERE itemID = $matchedItemIDs[$j]";
-                $result = $conn->query($query);
-                if (!$result) die($conn->error);
+                if ($matchedItemIDs[$j] !== NULL) {
+                    $query = "SELECT itemPrice FROM items WHERE itemID = $matchedItemIDs[$j]";
+                    $result = $conn->query($query);
+                    if (!$result) die($conn->error);
                 
-                $result->data_seek(0);
-                $sortingArray[$result->fetch_array(MYSQLI_ASSOC)['itemPrice']] = $matchedItemIDs[$j];
+                    $result->data_seek(0);
+                    $sortingArray[$result->fetch_array(MYSQLI_ASSOC)['itemPrice']] = $matchedItemIDs[$j];
+                
+                }
             }
             
             if ($this->descending == 1) {
                 //sort the keys of the array from high to low
-                krsort($sortingArray, 'SORT_NUMERIC');
+                krsort($sortingArray, SORT_NUMERIC);
             }
             else {
                 //sort the keys of the array from low to high
-                ksort($sortingArray, 'SORT_NUMERIC');
+                ksort($sortingArray, SORT_NUMERIC);
             }
         }
         
@@ -196,26 +207,31 @@ Class Search {
             //create an associate array
             //the key being the itemName and the value being the itemID
             for($j = 0; $j < count($matchedItemIDs); ++$j) {
-                $query = "SELECT itemName FROM items WHERE itemID = $matchedItemIDs[$j]";
-                $result = $conn->query($query);
-                if (!$result) die($conn->error);
+                if ($matchedItemIDs[$j] !== NULL) {
+                    
+                    $query = "SELECT itemName FROM items WHERE itemID = $matchedItemIDs[$j]";
+                    $result = $conn->query($query);
+                    if (!$result) die($conn->error);
                 
-                $result->data_seek(0);
-                $sortingArray[$result->fetch_array(MYSQLI_ASSOC)['itemName']] = $matchedItemIDs[$j];
+                    $result->data_seek(0);
+                    $sortingArray[$result->fetch_array(MYSQLI_ASSOC)['itemName']] = $matchedItemIDs[$j];
+                }
             }
             if ($this->descending == 1) {
                 //sort the keys of the array from z to a
-                krsort($sortingArray, 'SORT_STRING');
+                krsort($sortingArray, SORT_STRING);
             }
             else {
                 //sort the keys of the array from a to z
-                ksort($sortingArray, 'SORT_STRING');
+                ksort($sortingArray, SORT_STRING);
             }
         }
         
         //if the remaining keyword-matched items were sorted
         //transfer the value of the associate arrays into the class member $foundItemIDs
         if(count($sortingArray) > 0) {
+            $this->foundItemIDs = [];
+            
             foreach($sortingArray as $itemID) {
                 $this->foundItemIDs[] = $itemID;
             }

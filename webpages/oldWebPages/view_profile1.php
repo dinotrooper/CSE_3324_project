@@ -1,4 +1,16 @@
+<!DOCTYPE html>
+<html>
+<!-- Source code originates from https://www.w3schools.com/howto/howto_css_login_form.asp -->
+<head>
+<title>Titanic Treasures | Home</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+
+body {font-family: 'Bubbler One', Arial, Helvetica, sans-serif;
+    background-color: #333;
+    color: black;
+    }
+
 * {
     box-sizing: border-box;
 }
@@ -11,10 +23,11 @@ body {
 
 /* Header */
 .header {
-    padding: 1px;
     text-align: center;
     background: #333;
-	height: 175px;
+	height: 160px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 .header a {
@@ -22,10 +35,12 @@ body {
 }
 
 .header img{
+  position: absolute;
   width: 165x;
   height: 165px;
-  background: #333;
-  padding: 15px;
+  padding: 0px;
+  margin: 0px;
+
 }
   
 .header h1 {
@@ -38,6 +53,10 @@ body {
     overflow: hidden;
     background-color: #333;
 	width: 100%;
+	vertical-align: center;
+	padding: 50px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 /* Style the topnav links */
@@ -46,12 +65,14 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 14px 10px;
     text-decoration: none;
+	vertical-align: center;
 }
 
 .topnav .search-container {
   float: right;
+  vertical-align: center;
   
 }
 
@@ -60,7 +81,7 @@ body {
   margin-top: 8px;
   font-size: 17px;
   border: none;
-  width: 800px;
+  width: 580px;
 }
 
 .topnav .search-container button {
@@ -74,8 +95,12 @@ body {
   cursor: pointer;
 }
 
-.topnav .search-container button:hover, .dropdown:hover .dropbtn {
-  background: #333;
+.topnav .search-container button:hover{
+  background: #cccccc;
+}
+
+.dropdown:hover .dropbtn {
+  background: #cccccc;
 }
 
 @media screen and (max-width: 600px) {
@@ -103,7 +128,7 @@ body {
     font-size: 16px;    
     border: none;
     outline: none;
-    color: white;
+    color: #f2f2f2;
     padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
@@ -136,6 +161,25 @@ body {
     display: block;
 }
 
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 80%;
+    opacity: 0.6;
+    border-radius: 20%;
+	text-align: center;
+}
+
+img.logo {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 35%;
+    border-radius: 5%;
+}
+
 a {
     text-decoration: none;
     display: inline-block;
@@ -151,6 +195,8 @@ img {vertical-align: middle;}
   max-width: 10000px;
   position: relative;
   margin: auto;
+  border: 2px solid #333;  
+  border-radius: 12px;
 }
 
 /* Next & previous buttons */
@@ -225,15 +271,30 @@ img {vertical-align: middle;}
 /* Left column */
 .leftcolumn {   
     float: left;
-    width: 75%;
+    width: 66%;
+	padding: 10px;
 }
 
 /* Right column */
 .rightcolumn {
     float: right;
     width: 25%;
-    background-color: #f1f1f1;
     padding-left: 20px;
+  
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: inherit;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 /* Add a card effect for articles */
@@ -241,6 +302,8 @@ img {vertical-align: middle;}
     background-color: white;
     padding: 20px;
     margin-top: 20px;
+	border: 2px solid #ccc;  
+	border-radius: 12px;
 }
 
 /* Clear floats after the columns */
@@ -303,5 +366,122 @@ img {vertical-align: middle;}
 	float: right;
 	font-size: 15.75px;
 }
+form {border: 3px solid #f1f1f1;}
 
+input[type=text], input[type=password] {
+    width: 25%;
+    padding: 12px 12px;
+    margin: 4px 0;
+    display: inline-block;
+    color: black;
+    font-family: "Bubbler One";
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    font-family: "Bubbler One";
+    border: none;
+    cursor: pointer;
+    width: 100px;
+}
+button:hover {
+     background: #cccccc;
+}
+
+
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    width: 20%;
+    border-radius: 20%;
+}
+
+.container {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+}
 </style>
+</head>
+<body>
+
+<div class="header">
+
+    <a href="../images/firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+
+
+
+<div class="topnav">
+  <a href="#">Cart</a>
+  <a href="#">Orders</a>
+  <a href="../webpages/titanic_login.php">Account</a>
+  <div class="search-container">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search..." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">Categories 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#">Electronic Media</a>
+      <a href="#">Literature</a>
+      <a href="#">Artwork</a>
+	  <a href="#">Clothing & Accessories</a>
+	  <a href="#">Merchandise</a>
+	  <a href="#">Other</a>
+    </div>
+  </div> 
+</div>
+</div>
+<br>
+
+<div class='row'>
+		
+			<h2 style="text-align:left"><font face="Bubbler One" size ="8" >Random User</font></h2><hr width="75%" align="left"> 
+				 
+				<div class='leftcolumn'>
+					<div class='card'>
+		
+						<form action="/action_page.php">
+							<div class="../images/imgcontainer">
+								<img src="../images/greyAvatar.jpg" alt="Avatar" class="avatar">  <!-- php inject user avatar -->
+							</div>
+							<div class="container">
+								<center>
+									<p>Username: Leo1 </p><!-- php inject username -->
+									<p>Email: ColdGuy@BottomOfTheOcean.com </p><!-- php inject email -->
+									<p>Billing Address: Atlantic Ocean </p><!-- php inject address stuff -->
+
+									<button type="submit">Edit Profile</button>
+									<br>
+								</center>
+							</div>
+						</form>
+					</div>
+				</div>			
+</div>
+
+</body>
+</html>

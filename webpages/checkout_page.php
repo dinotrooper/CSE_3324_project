@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <!Source code researched on www.w3schools.com>
 <html>
@@ -20,10 +24,11 @@ body {
 
 /* Header */
 .header {
-    padding: 1px;
     text-align: center;
     background: #333;
-	height: 175px;
+	height: 160px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 .header a {
@@ -31,10 +36,12 @@ body {
 }
 
 .header img{
+  position: absolute;
   width: 165x;
   height: 165px;
-  background: #333;
-  padding: 15px;
+  padding: 0px;
+  margin: 0px;
+
 }
   
 .header h1 {
@@ -47,6 +54,10 @@ body {
     overflow: hidden;
     background-color: #333;
 	width: 100%;
+	vertical-align: center;
+	padding: 50px;
+	border: 2px solid #333;  
+	border-radius: 12px;
 }
 
 /* Style the topnav links */
@@ -55,12 +66,14 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 10px 16px;
     text-decoration: none;
+	vertical-align: center;
 }
 
 .topnav .search-container {
   float: right;
+  vertical-align: center;
   
 }
 
@@ -69,7 +82,7 @@ body {
   margin-top: 8px;
   font-size: 17px;
   border: none;
-  width: 800px;
+  width: 580px;
 }
 
 .topnav .search-container button {
@@ -83,8 +96,12 @@ body {
   cursor: pointer;
 }
 
-.topnav .search-container button:hover, .dropdown:hover .dropbtn {
-  background: #333;
+.topnav .search-container button:hover{
+  background: #cccccc;
+}
+
+.dropdown:hover .dropbtn {
+  background: #cccccc;
 }
 
 @media screen and (max-width: 600px) {
@@ -112,7 +129,7 @@ body {
     font-size: 16px;    
     border: none;
     outline: none;
-    color: white;
+    color: #f2f2f2;
     padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
@@ -145,6 +162,24 @@ body {
     display: block;
 }
 
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 80%;
+    opacity: 0.6;
+    border-radius: 20%;
+}
+
+img.logo {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 35%;
+    border-radius: 5%;
+}
+
 a {
     text-decoration: none;
     display: inline-block;
@@ -160,6 +195,8 @@ img {vertical-align: middle;}
   max-width: 10000px;
   position: relative;
   margin: auto;
+  border: 2px solid #333;  
+  border-radius: 12px;
 }
 
 /* Next & previous buttons */
@@ -233,16 +270,30 @@ img {vertical-align: middle;}
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
-    float: left;
-    width: 75%;
+  width: 44%;
+	padding: 10px;
 }
 
 /* Right column */
 .rightcolumn {
     float: right;
     width: 25%;
-    background-color: #f1f1f1;
     padding-left: 20px;
+  
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: inherit;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 /* Add a card effect for articles */
@@ -250,6 +301,8 @@ img {vertical-align: middle;}
     background-color: white;
     padding: 20px;
     margin-top: 20px;
+	border: 2px solid #ccc;  
+	border-radius: 12px;
 }
 
 /* Clear floats after the columns */
@@ -313,23 +366,75 @@ img {vertical-align: middle;}
 	font-size: 15.75px;
 }
 
+.imgcontainer {
+    text-align: left;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 40%;
+    opacity: 0.6;
+    border-radius: 20%;
+	text-align: center;
+}
+
+img.logo {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 25%;
+    border-radius: 5%;
+}
+
+.container1 {
+    padding: 16px;
+}
+.container2 {
+    padding: 16px;
+	float: right;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+}
+
+input[type=text], input[type=password] {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    font-family: "Bubbler One";
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <a href="index.html"><img src="clean.jpg" alt="logo"/></a>
-  <h1>Titanic Treasures</h1>
-  <p style="color:white;">A World Where It Is Titanic (the movie) All Day, Everyday...</p>
-</div>
+
+    <a href="firstPage.php"><img  src="../images/WhiteLogoRedo.png" alt="logo"/></a>
+
+
 
 <div class="topnav">
-  <a href="#">Cart</a>
-  <a href="#">Orders</a>
-  <a href="#">Account</a>
+  <a href="../webpages/titanic_logout.php">Logout</a>
+  <a href="../webpages/view_cart.php">Cart</a>
+  <a href="../webpages/view_orders.php">Orders</a>
+  <a href="../webpages/inventory_page.php">Inventory</a>
+  <a href="../webpages/titanic_login.php">Account</a>
+  
   <div class="search-container">
-    <form action="/action_page.php">
-      <input type="text" placeholder="Search.." name="search">
+    <form method= "get" action="searchStore.php">
+      <input type="text" placeholder="Search..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -347,124 +452,51 @@ img {vertical-align: middle;}
     </div>
   </div> 
 </div>
-
-<div class="slideshow-container">
-
-<div class="mySlides fade">
-  <img src="titanicMain.jpg" style="width:100%" height = "250">
-  <div class="text">Win a trip to Eat Brunch with Kate and Leo</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="titanicIce.jpg" style="width:100%" height = "250">
-  <div class="text">Iceberg Ice Cubes: Best Selling Item 3 Months Running</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="titanicNeck.jpg" style="width:100%" height = "250">
-  <div class="text">Own the Heart of the Sea! Only 3 payments of $74.99</div>
-</div>
-
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-
 </div>
 <br>
 
-<script>
-/*var slideIndex = 1;
-showSlides1(slideIndex);
-*/
-function plusSlides(n) {
-  showSlides1(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides1(slideIndex = n);
-}
-
-function showSlides1(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  
-}
-
-var slideIndex = 0;
-showSlides();
-
-function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none"; 
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1} 
-    slides[slideIndex-1].style.display = "block"; 
-    setTimeout(showSlides, 4000); // Change image every 2 seconds
-}
-
-
-</script>
 
 	<div class='row'>
-		  <h2>Items of the Day</h2>
-		
-	<div class='rightcolumn'>
-			<div class='card'>
-				<h2>Account Snapshot</h2>
-				<?php 
-				
-				echo "<img src='avatar-placeholder.gif' alt='tit' style='height:200px;'/>";
-				echo "<p>TEXT PERTNENT TO YOUR ACCOUNT</p>";?>
-			</div>
-		</div>
-<?php	
-	for($i=0;$i<10;++$i)
-	{
-		include_once "item.php";
-				
-		$conn = new mysqli("localhost","root","","group7_project_database");
-		$query = "SELECT itemID FROM items ORDER BY RAND() LIMIT 1";
-		$result = $conn->query($query);
-		if(!$result) die ($conn->error);
-				
-		$result->data_seek(0);
-				
-		$home_item = Item::existingItem($result->fetch_array(MYSQLI_ASSOC)["itemID"]);
-		echo "<div class='leftcolumn'>
+		  <h2>Checkout</h2><hr width="75%" align="left">
+		<div class='leftcolumn'>
 		<div class='card'>
-		<!Item Name Goes Here>
-		  <h2>".$home_item->getitemName()."</h2>
-		  <!Item Image Goes Here>
-		  <img src='titanicTit.jpg' alt='tit' style='height:200px;'/>
-		  <pre class='alignright'>
-		  <!Item Data Goes Here>
-		  <b>Description:</b> Something, something, something...
-		  
-		  <b>Category:</b> Erotic-literature
-		  
-		  <b>Price:</b> $24.99
-		  
-		  <b>Avg. Rating:</b> 4.5 Icebergs
-		  </pre>
+				<!-- php inject a while loop to check database -->
+			<!-- php inject a while loop to check database -->
+<form action="/action_page.php">
+  <div class="imgcontainer">
+    <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar" height="200" >  <!-- php inject item image -->
+  <center>
+  <div class = "container1">
+    <p>Item: 1</p><!-- php inject item name -->
+    <p>Price: $7.39</p><!-- php inject item price -->
+    <p>Quantity Remaining in Stock:  15</p><!-- php inject item quantity -->
+    <p>Seller: Leo1 </p><!-- php inject seller userid -->
+   </div>
+    </center>
+    <br>
+  </div>
+  <h2 style="text-align:center"><font face="Bubbler One" size ="5" >Total:  </font></h2><!-- php add all item prices -->
+   <center>
+   <button type="submit">Shipping Address Same as Billing Address</button><br>
+    <input type="text" placeholder="shipping Street Address 1" name="stradd1" required>
+    <br>
+    <input type="text" placeholder="Shipping Street Address 2 (optional)" name="stradd2">
+    <br>
+    <input type="text" placeholder="Shipping City" name="city" required>
+    <br>
+    <input type="text" placeholder="Shipping State" name="state" required>
+    <br>
+    <input type="text" placeholder="Shipping Zip" name="zip" required>
+    <br>
+   <button type="submit">Place Order</button></center>
+</form>
+	</div>
+    </center>
+    <br>
 		</div>
-	</div>";
-	}
-	?>
+	</div>
 	  </div>
-	 
+
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
 </div>
