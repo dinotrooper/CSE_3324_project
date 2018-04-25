@@ -472,7 +472,9 @@ function showSlides() {
     slides[slideIndex-1].style.display = "block"; 
     setTimeout(showSlides, 4000); // Change image every 2 seconds
 }
-
+audio { 
+   display:none;
+}
 
 </script>
 
@@ -582,9 +584,7 @@ function myFunction() {
 
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>
-  <audio controls autoplay>
-  <source src="../audio/my_heart_wil_go_on.mp3" type="audio/mpeg">
-</audio>
+  <audio autoplay="true" loop = "true" src="../audio/my_heart_wil_go_on.mp3" type="audio/mpeg"/>
 </div>
 
 </body>
