@@ -10,28 +10,15 @@ DCSP Project - Spring 2018
 ------------------------------------------------------------------------
 GENERAL
 
--write  Implementation Report
--create a powerpoint presentation
-
-
 BACKEND CLASSES THAT NEED TO BE DEBUGGED/TESTED:
 
 
-ADD BACKEND TO VIEW ORDERS
-ADD BACKEND TO INVENTORY PAGE
+ADD BACKEND TO INVENTORY PAGE - exists but will not support add item
 ADD BACKEND TO CHECKOUT PAGE
 ADD BACKEND TO EDIT ITEM
 ADD BACKEND TO EDIT PROFILE - Clayton
 ADD BACKEND TO VIEW ITEM
 ADD CATEGORY DROP DOWN FORM ON PAGES WITH SEARCH BAR
-
-
-
-WEBPAGES TO BE CREATED:
-
-
--personal_info_page
--personal_info_edit_page
 
 
 ## DONE ##
