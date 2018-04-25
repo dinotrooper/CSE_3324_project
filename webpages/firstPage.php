@@ -516,7 +516,7 @@ function showSlides() {
 	$counter = 0;
 	$randomItemList = [];
 	$conn = new mysqli("localhost","root","","group7_project_database");
-	while($counter < 2){
+	while($counter < 10){
 		$query = "SELECT * FROM items ORDER BY RAND() LIMIT 1";
 		$result = $conn->query($query);
 		$result->data_seek(0);
@@ -541,7 +541,7 @@ function showSlides() {
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		
 		if ($row['ratingNumber'] == 0) {
-			$itemRating = 4;
+			$itemRating = 'N/A';
 		} else {
 			$itemRating = $row['ratingNumber'];
 		}		
@@ -557,7 +557,7 @@ function showSlides() {
 		  <p><b>Description: </b>".$home_item->getItemDescription()." </p>
 		  <p><b>Category: </b>".$home_item->getItemCategory()."</p>
 		  <p><b>Price: </b>$".$home_item->getItemPrice()."</p>
-		  <p><b>Avg. Rating: </b>".$itemRating." Iceberg(s)</p>
+		  <p><b>Avg. Rating: </b>".$itemRating."</p>
 		  </p>
 		</div>
 	</div>";
