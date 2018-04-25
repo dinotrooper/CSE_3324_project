@@ -426,28 +426,54 @@ img.logo {
 <br>
 
 
-	<div class='row'>
-		  <h2>Winslet Art</h2><hr width="75%" align="left">
-		<div class='leftcolumn'>
-		<div class='card'>
-		<form action="/action_page.php">
-  <div class="imgcontainer">
-    <img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
-  </div>
-  <div class="container">
-  <center>
-  <h2 style="text-align:center"><font face="Bubbler One" size ="5" >Item Price: $5666.82 </font></h2>  <!-- php inject item price -->
-    <p>Description: Beautiful. Wow.  <br>  </p><!-- php inject item description -->
-    <p>Amount Left:  34 </p><!-- php inject item quantity -->
-    <p>Category:  Other </p><!-- php inject item category -->
-    <button type="submit">Add Item To Cart</button>
-    <br>
-    </center>
-  </div>
-</form>
-		</div>
-	</div>
-	  </div>
+<?php
+	if(isset($_SESSION["sessionID"])){
+		if($_SESSION["sessionID"]){
+			$sessionID = $_SESSION["sessionID"];
+			require_once '../backend/user.php';
+		$userItem = User::getExistingUser($sessionID);
+		}else{
+			$sessionID=0;
+		}
+	
+		require_once '../backend/login.php';
+		require_once '../backend/item.php';
+		
+		$connection = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
+		$query = "SELECT * FROM item WHERE itemID ='$_GET['itemID']'";
+		$result = $connection->query($query);
+		$rows = $result->num_rows;
+		
+		$result->data_seek($j);
+		$row= $result->fetch_array(MYSQLI_ASSOC);
+		$itemID = $row['itemID'];
+		$tempItem = Item::existingItem($itemID);
+		$itemName = $tempItem->getItemName();
+		$itemPrice = $tempItem->getItemPrice(); 
+		$itemImage = $tempItem->getItemImage();
+		$itemDesc = $tempItem->getItemDescription();
+		$itemQuan = $tempItem->getItemQuantity();
+		$itemCat = $tempItem->getItemCategory();
+		echo"<div class='row'>
+			<h2>".$itemName."</h2><hr width='75%' align='left'>";
+		echo"<div class='imgcontainer'>
+			<img src=".$itemImage."alt='Avatar' class='avatar'>
+			</div>
+				<div class='container'>
+					<center>
+					<h2 style='text-align:center'><font face='Bubbler One' size ='5' >Item Price: ".$itemPrice."</font></h2>
+					<p>Description: ".$itemDesc."  <br>  </p>
+					<p>Amount Left: ".$itemQuan." </p>
+					<p>Category: ".$itemCat."
+					<br>
+					</center>
+				</div>
+				</form>
+				<button onclick='window.location.href='../webpages/view_cart.php''>Add Item To Cart</button>
+				</div>";
+				}
+
+	?>
 
 <div class="footer">
   <h5>&copy; 2018<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Titanic Treasures. All rights resevered.</h5>

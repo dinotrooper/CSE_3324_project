@@ -509,7 +509,7 @@ foreach($mainSearch->getFoundItemIDs() as $itemID)
 		<!Item Name Goes Here>
 		<h2>".$tempItem->getitemName()."</h2>
 		<!Item Image Goes Here>
-		<img src='../images/".$tempItem->getItemImage()."' alt='itemImage' style='height:200px;'/>
+		<a href = '../webpages/view_item.php'?itemID=".$tempItem->getItemID()."><img src='../images/".$tempItem->getItemImage()."' alt='itemImage' style='height:200px;'/></a>
 		<p class='aligncenter'>
 		<!Item Data Goes Here>
 		<p><b>Description:</b> ".$tempItem->getItemDescription()."</p>
