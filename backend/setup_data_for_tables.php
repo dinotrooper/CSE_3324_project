@@ -46,17 +46,17 @@ $itemID_twelve = createItem($connection, 'lee', $steven_userID, 'image12', 'hear
 $itemID_thirten = createItem($connection, 'steveromo', $steven_userID, 'image13', 'the iconic titantic door replica', 'youll notice that they both can fit on there', 3, 'Merchandise', 69.99);
 $itemID_fourteen = createItem($connection, 'steveromo', $steven_userID, 'image14', 'iceberg keychain', 'have the iconic iceberg with you at all times', 9, 'Clothing and Accessories', 7.99);
 
-createOrderItem($connection, $gato_orderID, $itemID_six, $gato_userID, 1, 32.99);
-createOrderItem($connection, $gato_orderID, $itemID_seven, $gato_userID, 1, 45.99);
-createOrderItem($connection, $gato_orderID, $itemID_fourteen, $gato_userID, 2, 13.99);
+createOrderItem($connection, $gato_orderID, 'winslet painting', $gato_userID, 1, 32.99);
+createOrderItem($connection, $gato_orderID, 'titantic wheel replica', $gato_userID, 1, 45.99);
+createOrderItem($connection, $gato_orderID, 'iceberg keychain', $gato_userID, 2, 13.99);
 
-createOrderItem($connection, $wrekk_orderID, $itemID_twelve, $wrekk_userID, 1, 999.99);
-createOrderItem($connection, $wrekk_orderID, $itemID_three, $wrekk_userID, 1, 129.99);
-createOrderItem($connection, $wrekk_orderID, $itemID_thirten, $wrekk_userID, 1, 69.99);
+createOrderItem($connection, $wrekk_orderID, 'heart of the sea replica', $wrekk_userID, 1, 999.99);
+createOrderItem($connection, $wrekk_orderID, 'leos oscar replica', $wrekk_userID, 1, 129.99);
+createOrderItem($connection, $wrekk_orderID, 'the iconic titantic door replica', $wrekk_userID, 1, 69.99);
 
-createOrderItem($connection, $lee_orderID, $itemID_one, $lee_userID, 1, 1.99);
-createOrderItem($connection, $lee_orderID, $itemID_seven, $lee_userID, 1, 45.99);
-createOrderItem($connection, $lee_orderID, $itemID_four, $lee_userID, 1, 39.99);
+createOrderItem($connection, $lee_orderID, 'titantic t-shirt', $lee_userID, 1, 1.99);
+createOrderItem($connection, $lee_orderID, 'titantic wheel replica', $lee_userID, 1, 45.99);
+createOrderItem($connection, $lee_orderID, 'the mini iceberg that could', $lee_userID, 1, 39.99);
 
 createCartItem($connection, $gato_cartID, $itemID_eight, $gato_userID, 1, 28.99);
 createCartItem($connection, $gato_cartID, $itemID_ten, $gato_userID, 1, 199.99);

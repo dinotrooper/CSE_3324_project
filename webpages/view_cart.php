@@ -427,7 +427,7 @@ img.logo {
 
 
 	<div class='row'>
-		  <h2>My Orders</h2><hr width="75%" align="left">
+		  <h2>My Cart</h2><hr width="75%" align="left">
 		<div class='leftcolumn'>
 		<div class='card'>
 				<!-- php inject a while loop to check database -->
