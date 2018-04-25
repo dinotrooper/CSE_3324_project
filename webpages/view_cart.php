@@ -427,7 +427,7 @@ img.logo {
 
 
 	<div class='row'>
-		  <h2>My Orders</h2><hr width="75%" align="left">
+		  <h2>My Cart</h2><hr width="75%" align="left">
 		<div class='leftcolumn'>
 		<div class='card'>
 				<!-- php inject a while loop to check database -->
@@ -442,34 +442,45 @@ img.logo {
 			$sessionID=0;
 		}
 	
-	require_once '../backend/login.php';
-	$connection = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
-	$query = "SELECT * FROM CART_ITEMS WHERE userID = $sessionID";
-	$result = $connection->query($query);
-	$rows = $result->num_rows;
-	if($rows){
-	  for($j = 0; $j<$rows ; ++$j){
-	  $result->data_seek($j);
-	  $row= $result->fetch_array(MYSQLI_ASSOC);
-	  $singlePrice = $row['priceTotal']/$row['cartQuantity'];
-  echo'<div class="imgcontainer" style="display: flex">';
-    echo'<img src="NewItemBerg.png" alt="Avatar" class="avatar" height="200" >';  
-  echo'<center>';
-  echo'<div class = "container">';
-
-   echo' <p>Item: '.$row['itemID'].'</p><';
-    echo'<p>Price: '.$singlePrice.' </p>';
-    echo'<p>Quantity '.$row['cartQuantity'].' </p>';
-    echo'<button type ="submit">Delete Item</button>';
-  echo' </div>';
-    echo'</center>';
-    echo'<br>';
-  echo'</div>';
-  }
-  echo'<h2 style="text-align:center"><font face="Bubbler One" size ="5" >'.$row['priceTotal'].' </font></h2>';
-   echo"<center>";
-  echo'<button type="submit">Checkout</button>';
-  echo'</center>';
+		require_once '../backend/login.php';
+		require_once '../backend/item.php';
+		
+		$connection = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
+		$query = "SELECT * FROM CART_ITEMS WHERE userID = $sessionID";
+		$result = $connection->query($query);
+		$rows = $result->num_rows;
+		$priceTotal = 0;
+		if($rows){
+		    for($j = 0; $j<$rows ; ++$j){
+		        $result->data_seek($j);
+		        $row= $result->fetch_array(MYSQLI_ASSOC);
+		        $singlePrice = $row['priceTotal']/$row['cartQuantity'];
+		        
+		        $itemID = $row['itemID'];
+		        $tempItem = Item::existingItem($itemID);
+		        $itemName = $tempItem->getItemName();
+		        $itemPrice = $tempItem->getItemPrice();
+		        
+		        $priceTotal += $row['priceTotal'];
+		        
+		        echo'<div class="imgcontainer" style="display: flex">';
+		        echo'<img src="NewItemBerg.png" alt="Avatar" class="avatar" height="200" >';
+		        echo'<center>';
+		        echo'<div class = "container">';
+		        
+		        echo' <p>'.$itemName.'</p>';
+		        echo'<p>Price: $'.$singlePrice.' </p>';
+		        echo'<p>Quantity '.$row['cartQuantity'].' </p>';
+		        echo'<button type ="submit">Delete Item</button>';
+		        echo' </div>';
+		        echo'</center>';
+		        echo'<br>';
+		        echo'</div>';
+		    }
+		    echo'<h2 style="text-align:center"><font face="Bubbler One" size ="5" >$'.$priceTotal.' </font></h2>';
+		    echo"<center>";
+		    echo'<button type="submit">Checkout</button>';
+		    echo'</center>';
 	}
 	else{
 		echo"<center>";

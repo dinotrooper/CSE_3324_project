@@ -6,9 +6,6 @@ session_start();
 <!Source code researched on www.w3schools.com>
 <html>
 <head>
-<?php
-//include_once "test_index.php";
-?>
 <title>Titanic Treasures | Home</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
@@ -429,29 +426,64 @@ img.logo {
 	<div class='row'>
 		  <h2>My Orders</h2><hr width="75%" align="left">
 		<div class='leftcolumn'>
+		
+<?php
+		
+if(isset($_SESSION["sessionID"])){
+    if($_SESSION["sessionID"]) $sessionID = $_SESSION["sessionID"];
+    else $sessionID=0;
+    
+    if ($sessionID) {
+        require_once '../backend/login.php';
+        require_once '../backend/order.php';
+        $conn = new mysqli($GLOBALS['hn'], $GLOBALS['un'], $GLOBALS['pw'], $GLOBALS['db']);
+        $query = "SELECT orderID FROM orders WHERE userID = $sessionID";
+        $result = $conn->query($query);
+        if(!$result) die($conn->error);
+        $rows = $result->num_rows;
+        
+        for($j=0; $j < $rows; ++$j) {
+            $orderID = $result->fetch_array(MYSQLI_ASSOC)['orderID'];
+            if ($orderID > 0) {
+                $tempOrder = Order::existingOrder($orderID);
+                $orderDate = $tempOrder->getOrderDate();
+                $orderTotal = $tempOrder->getOrderTotal();
+                $orderShippingStreetOne = $tempOrder->getShippingStreetOne();
+                $orderShippingStreetTwo = $tempOrder->getShippingStreetTwo();
+                $orderShippingCity = $tempOrder->getShippingCity();
+                $orderShippingState = $tempOrder->getShippingState();
+                $itemsInOrder = $tempOrder->getItemsInOrder();
+                
+                echo "
 		<div class='card'>
 				<!-- php inject a while loop to check database -->
-			<form action="/action_page.php">
-				<div class="imgcontainer">
-					<img src="../images/NewItemBerg.png" alt="Avatar" class="avatar">  <!-- php inject item image -->
-				</div>
+			<form action='/action_page.php'>
   <center>
-  <div class = "container">
-  <br>
-    <p>Item: </p><!-- php inject item name -->
-    <p>Price: </p><!-- php inject item price -->
-    <p>Shipping Address: </p><!-- php inject shipping address -->
-    <p>Quantity Remaining in Stock:  </p><!-- php inject item quantity -->
-    <p>Date Shipped:  </p><!-- php inject date -->
-    <p>Seller:  </p><!-- php inject seller userid -->
-    <textarea name="comment" rows="10" cols="48" placeholder = "Leave a comment..."></textarea>  
-    <br> 
-    <br> 
-    <br>
-    <!-- php inject check if image has been rated and change to goldberg -->
-    Rating:  <br><a href="view_orders.php"><img src="../images/noberg.png" alt="rate1" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate2"	height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate3" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate4" height="48" width="48"></a><a href="view_orders.php"><img src="../images/noberg.png" alt="rate5" height="48" width="48"></a>
+  <div class = 'container'>
+    <p>Order Date: $orderDate </p>
+    <p>Order Total: $$orderTotal</p>
+    <p>Shipping Street: $orderShippingStreetOne $orderShippingStreetTwo</p>
+    <p>Items Purchased, Quantity, and Price: </p>";
+                
+                foreach($itemsInOrder as $itemName => $itemQuantity){
+                    $query = "SELECT * FROM orders_items WHERE orderID = $orderID";
+                    $result = $conn->query($query);
+                    if(!$result) die($conn-error);
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    $itemQuantity = $row['orderQuantity'];
+                    $itemTotal = $row['itemTotal'];
+                    $itemPrice = $itemTotal/$itemQuantity;
+    echo "
+    <p>$itemName   $itemQuantity   $$itemPrice</p> ";}
+    echo "
     </form>
 	</div>
+<!-- end of card -->"; }
+            }
+        }
+    }
+
+?>
     </center>
     <br>
 		</div>
