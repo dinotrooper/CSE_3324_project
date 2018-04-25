@@ -460,7 +460,7 @@ img.logo {
     </center>
     <br>
   </div>
-   <right><button type="submit">Add Another Item</button></right>
+   <right><button onclick="'window.location.href=../webpages/add_item.php'">Add Another Item</button></right>
 </form>
 	</div>
     </center>
