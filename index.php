@@ -1,7 +1,3 @@
-<?php
-session_start();
-
-?>
 <!DOCTYPE html>
 <!-- Source code researched on www.w3schools.com --> 
 <html>
@@ -10,6 +6,8 @@ session_start();
   <link rel="stylesheet" href="css/header_top_nav.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="text/javascript" src="js/slideshow.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 </head>
 
 <title>Titanic Treasures | Home</title>
@@ -48,90 +46,29 @@ session_start();
     </div> 
   </div>
 </div>
-
 <br>
+
 <div class="slideshow-container">
+  <div class="mySlides fade" style="display: block;">
+    <img src="images/titanicFirst.jpg" style="width:100%">
+  </div>
 
-<div class="mySlides fade">
-  <img src="images/titanicMain.jpg" style="width:100%" height = "250">
-  <div class="text">Win a trip to Eat Brunch with Kate and Leo</div>
+  <div class="mySlides fade">
+    <img src="images/titanicSecond.jpg" style="width:100%">
+  </div>
+
+  <div class="mySlides fade">
+    <img src="images/titanicThird.jpg" style="width:100%">
+  </div>
+
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
+<br>
 
-<div class="mySlides fade">
-  <img src="images/titanicIce.jpg" style="width:100%" height = "250">
-  <div class="text">Iceberg Ice Cubes: Best Selling Item 3 Months Running</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="images/titanicNeck.jpg" style="width:100%" height = "250">
-  <div class="text">Own the Heart of the Sea! Only 3 payments of $74.99</div>
-</div>
-
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-</div>
 <br>
 
 <script>
-/*var slideIndex = 1;
-showSlides1(slideIndex);
-*/
-function plusSlides(n) {
-  showSlides1(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides1(slideIndex = n);
-}
-
-function showSlides1(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  
-}
-
-var slideIndex = 0;
-showSlides();
-
-function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none"; 
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1} 
-    slides[slideIndex-1].style.display = "block"; 
-    setTimeout(showSlides, 4000); // Change image every 2 seconds
-}
-audio { 
-   display:none;
-}
-window.onscroll = function() {myFunction()};
-
-var navbar = document.getElementById("navbar");
-var sticky = navbar.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
-    navbar.classList.add("sticky")
-  } else {
-    navbar.classList.remove("sticky");
-  }
-}
-
 </script>
 
 	<div class='row'>
@@ -141,7 +78,7 @@ function myFunction() {
 		<div  id='navbar'>
 			<div class='card'>
 				<h2>Account Snapshot</h2>
-				<?php 
+				<?php
 				if(isset($_SESSION["sessionID"])){
 				if($_SESSION["sessionID"]){
 					$sessionID = $_SESSION["sessionID"];
@@ -170,7 +107,7 @@ function myFunction() {
 			</div>
 		</div>
 		</div>
-<?php	
+<?php
 	$counter = 0;
 	$randomItemList = [];
 	$conn = new mysqli("localhost","root","","group7_project_database");

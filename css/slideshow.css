@@ -1,18 +1,18 @@
 /* Slideshow container */
-.slideshow-container {
+/*.slideshow-container {
   max-width: 1000px;
   position: relative;
   margin: auto;
-}
+}*/
 
-/* Slideshow container 
+/* Slideshow container **/
 .slideshow-container {
   max-width: 10000px;
   position: relative;
   margin: auto;
   border: 2px solid #333;  
   border-radius: 12px; 
-} **/
+}
 
 /* Next & previous buttons */
 .prev, .next {
@@ -44,4 +44,8 @@
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
+}
+
+.mySlides img {
+  border-radius: 9px;
 }
