@@ -76,7 +76,7 @@
 		
 	<div class='rightcolumn'>
 		<div  id='navbar'>
-			<div class='card'>
+			<div class='account_card'>
 				<h2>Account Snapshot</h2>
 				<?php
 				if(isset($_SESSION["sessionID"])){

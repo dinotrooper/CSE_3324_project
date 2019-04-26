@@ -77,6 +77,15 @@ img {vertical-align: middle;}
     width: 27%;
 }
 
+/* card effect for account */
+.account_card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border: 2px solid #ccc;  
+    border-radius: 12px;
+    width: 100%;
+}
 /* Clear floats after the columns */
 .row:after {
     content: "";
